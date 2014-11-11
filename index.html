@@ -77,15 +77,18 @@ git add . 는 수정된 모든 파일을 저장할 것이라고 선언하는 것
 5. 구현이 완성되었다면, 메인 시스템에 반영해야 한다. 메인 시스템의 브랜치는 master임.
 	<code>git checkout master</code>
 	<code>git merge dev/login</code>
-master로 이동한 다음, dev/login을 메인 시스템에 합친다는 뜻.
+브랜치를 master로 이동한 다음, dev/login을 메인 시스템에 합친다는 뜻.
 
 6. 이제 서버에 변경한 내용을 업로드한다.
-	<code>git push origin</code>
-origin이라는 서버(위 git 세팅의 12번 참조)에 업로드한다는 뜻임.
+	<code>git push origin master</code>
+origin이라는 서버(위 git 세팅의 12번 참조)에 master 브랜치를 업로드한다는 뜻임.
 
-7. 만약 더 이상 dev/login이 필요 없을거 같으면 이 브랜치를 지움(변경 기록 등은 그대로 다 남아있음)
-	<code>git branch </code>
+7. 만약 다른 사람들도 같이 봐야 할 브랜치라면, 그 브랜치를 업로드할 수도 있음.
+	<code>git push origin dev/login</code>
+dev/login이 중요하다고 판단해, 서버에 올려서 다른 사람들과 공유하게 됨.
 
+8. 만약 더 이상 dev/login이 필요 없을거 같으면 이 브랜치를 지움(변경 기록 등은 그대로 다 남아있음)
+	<code>git branch -d dev/login</code>
 
 <b>이걸 다 봤다면, 위 과정처럼 작업해서 README.md에 개발자 목록에 자기 이름 추가할 것. <a href="https://github.com/ikasty/DBTeamProj/network">https://github.com/ikasty/DBTeamProj/network</a>를 참고한다.</b>
 아 그리고 저 파일을 원하는 대로 수정하는 것은 자유지만, 수정한 기록이 전부 남는다는 걸 생각해서 수정할 것.
