@@ -62,10 +62,10 @@
 	<code>git checkout -b dev/login</code>
 dev/login이 이름임. 폴더처럼 / 로 구분도 할 수 있음.
 
-2. 필요한 기능을 구현함. 자기 컴퓨터에 APMSETUP을 깔았으니까, 제대로 됬는지는 http://localhost 에 접속해서 보면 됨.
-
-3. 다음과 같이 입력해서 현재 상황을 볼 수 있음. 수시로 입력해보기 바람.
+2. 다음과 같이 입력해서 현재 상황을 볼 수 있음. 수시로 입력해보기 바람.
 	<code>git status</code>
+
+3. 필요한 기능을 구현함. 자기 컴퓨터에 APMSETUP을 깔았으니까, 구현이 제대로 됬는지는 http://localhost 에 접속해서 보면 됨.
 
 4. 구현하는 중간 중간마다 다음과 같이 쳐서 기록함
 	<code>git add .</code>
@@ -76,12 +76,15 @@ git add . 는 수정된 모든 파일을 저장할 것이라고 선언하는 것
 
 5. 구현이 완성되었다면, 메인 시스템에 반영해야 한다. 메인 시스템의 브랜치는 master임.
 	<code>git checkout master</code>
+	<code>git pull origin master</code>
 	<code>git merge dev/login</code>
-브랜치를 master로 이동한 다음, dev/login을 메인 시스템에 합친다는 뜻.
+브랜치를 master로 이동한 다음, 데이터를 불러와서, dev/login을 메인 시스템(master)에 합친다는 뜻.
 
 6. 이제 서버에 변경한 내용을 업로드한다.
 	<code>git push origin master</code>
 origin이라는 서버(위 git 세팅의 12번 참조)에 master 브랜치를 업로드한다는 뜻임.
+<b>!!! 만약 업로드가 안된다면, 내가 작업하는 사이에 누가 먼저 올려서 충돌이 났다는 뜻임.
+당황하지 말고 서버 데이터를 다시 불러온 다음, 5번부터 다시하자.</b>
 
 7. 만약 다른 사람들도 같이 봐야 할 브랜치라면, 그 브랜치를 업로드할 수도 있음.
 	<code>git push origin dev/login</code>
@@ -90,6 +93,8 @@ dev/login이 중요하다고 판단해, 서버에 올려서 다른 사람들과 
 8. 만약 더 이상 dev/login이 필요 없을거 같으면 이 브랜치를 지움(변경 기록 등은 그대로 다 남아있음)
 	<code>git branch -d dev/login</code>
 
+<font size=5>
+## 할 일 ##</font>
 <b>이걸 다 봤다면, 위 과정처럼 작업해서 README.md에 개발자 목록에 자기 이름 추가할 것. <a href="https://github.com/ikasty/DBTeamProj/network">https://github.com/ikasty/DBTeamProj/network</a>를 참고한다.</b>
 아 그리고 저 파일을 원하는 대로 수정하는 것은 자유지만, 수정한 기록이 전부 남는다는 걸 생각해서 수정할 것.
 </pre>
