@@ -77,18 +77,20 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 <nav id="bt-menu" class="bt-menu">
 	<a href="#" class="bt-menu-trigger"><span>Menu</span></a>
 	<ul>
-		<li><a href="#" class="octicon octicon-home">Home</a></li>
-		<li><a href="#" class="octicon octicon-graph">Graph</a></li>
-		<li><a href="#" class="octicon octicon-cloud-upload">Upload</a></li>
-		<li><a href="#" class="octicon octicon-law">Vote</a></li>
-		<li><a href="#" class="octicon octicon-tools">Setting</a></li>
-		<li><a href="#" class="octicon octicon-signout">Logout</a></li>
+		<li><a href="#" class="ajax_load octicon octicon-home">Home</a></li>
+		<li><a href="#" class="ajax_load octicon octicon-graph">Graph</a></li>
+		<li><a href="#" class="ajax_load octicon octicon-cloud-upload">Upload</a></li>
+		<li><a href="#" class="ajax_load octicon octicon-law">Vote</a></li>
+		<li><a href="#" class="ajax_load octicon octicon-tools">Setting</a></li>
+		<li><a href="#" class="ajax_load octicon octicon-signout">Logout</a></li>
 	</ul>
 </nav>
 
 <? foreach($js_headers as $header) : ?>
 <script type="text/javascript" src="js/<?=$header?>.js"></script>
 <? endforeach; ?>
+
+<div id="throbber" style="display:none;"><img src="/image/throbber.gif"/></div>
 
 </body>
 </html>

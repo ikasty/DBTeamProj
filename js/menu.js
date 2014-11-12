@@ -30,6 +30,7 @@
             closeClickFn = function( ev ) {
                 resetMenu();
                 overlay.removeEventListener( eventtype, closeClickFn );
+                menu.removeEventListener( eventtype, closeClickFn );
             };
  
         var overlay = document.createElement('div');
@@ -47,6 +48,7 @@
                 classie.remove( menu, 'bt-menu-close' );
                 classie.add( menu, 'bt-menu-open' );
                 overlay.addEventListener( eventtype, closeClickFn );
+                menu.addEventListener(eventtype, closeClickFn );
             }
         });
  
