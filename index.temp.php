@@ -11,7 +11,7 @@
  * 파일 맨 위에 다음 문장을 넣고 적합성 테스트 할 것.
  * if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
  */
-define("DBPROJ");
+define("DBPROJ", true);
 
 // session start
 session_start();
@@ -46,7 +46,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 	<title>DBapp</title>
 	<link rel="stylesheet" href="css/style.css">
 
-	<? foreach($header in $css_headers) : ?>
+	<? foreach($css_headers as $header) : ?>
 	<link rel="stylesheet" href="css/<?=$header?>">
 	<? endforeach; ?>
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -72,7 +72,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 
 </div>
 
-<? foreach($header in $js_headers) : ?>
+<? foreach($js_headers as $header) : ?>
 <script type="text/javascript" src="js/<?=$header?>"></script>
 <? endforeach; ?>
 
