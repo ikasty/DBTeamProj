@@ -1,0 +1,11 @@
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !(?:\.\w+)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ([^/]+)/?$ $1.php 
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ / [L,R]
