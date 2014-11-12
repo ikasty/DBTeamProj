@@ -54,10 +54,21 @@
     width: 100%;
     height: 4px;
     margin-top: -2px;
-    background-color: #98BCFF;
     font-size: 0px;
     user-select: none;
-    transition: background-color 0.3s;
+}
+
+.bt-menu-trigger span,
+.bt-menu-trigger span:before,
+.bt-menu-trigger span:after {
+    background: #98bcff;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.bt-menu-trigger:hover span:before,
+.bt-menu-trigger:hover span,
+.bt-menu-trigger:hover span:after {
+    background-color: #fff;
 }
 
 .bt-menu-open .bt-menu-trigger span {
@@ -70,9 +81,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #98BCFF;
     content: '';
-    transition: transform 0.3s;
 }
 
 .bt-menu-trigger span:before {
