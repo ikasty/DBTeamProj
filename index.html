@@ -84,7 +84,11 @@ git add . 는 수정된 모든 파일을 저장할 것이라고 선언하는 것
 	<code>git push origin master</code>
 origin이라는 서버(위 git 세팅의 12번 참조)에 master 브랜치를 업로드한다는 뜻임.
 <b>!!! 만약 업로드가 안된다면, 내가 작업하는 사이에 누가 먼저 올려서 충돌이 났다는 뜻임.
-당황하지 말고 서버 데이터를 다시 불러온 다음, 5번부터 다시하자.</b>
+당황하지 말고 아래처럼 작업하자.</b>
+	<code>git fetch origin master</code>
+	<code>git merge origin/master</code>
+	<code>git push origin master</code>
+<a href="http://git-scm.com/book/ko/v1/%EB%B6%84%EC%82%B0-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C%EC%9D%98-Git-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%97%90-%EA%B8%B0%EC%97%AC%ED%95%98%EA%B8%B0">http://git-scm.com/book/ko/v1/분산 환경에서의 Git 프로젝트에 기여하기</a>의 '비공개 소규모 팀'을 참조한다.
 
 7. 만약 다른 사람들도 같이 봐야 할 브랜치라면, 그 브랜치를 업로드할 수도 있음.
 	<code>git push origin dev/login</code>
