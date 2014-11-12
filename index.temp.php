@@ -45,7 +45,6 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>DBapp</title>
-	<link rel="stylesheet" href="css/style.css">
 
 	<? foreach($css_headers as $header) : ?>
 	<link rel="stylesheet" href="css/<?=$header?>.css">
@@ -54,7 +53,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 </head>
 <body>
 
-<div id='container'>
+<div id='container' class='container'>
 
 <!-- header -->
 <section id="header">
@@ -72,6 +71,20 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 </section>
 
 </div>
+
+<!-- nav -->
+<!-- original work from [http://tympanus.net/] -->
+<nav id="bt-menu" class="bt-menu">
+	<a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+	<ul>
+		<li><a href="#" class="octicon octicon-home">Home</a></li>
+		<li><a href="#" class="octicon octicon-graph">Graph</a></li>
+		<li><a href="#" class="octicon octicon-cloud-upload">Upload</a></li>
+		<li><a href="#" class="octicon octicon-law">Vote</a></li>
+		<li><a href="#" class="octicon octicon-tools">Setting</a></li>
+		<li><a href="#" class="octicon octicon-signout">Logout</a></li>
+	</ul>
+</nav>
 
 <? foreach($js_headers as $header) : ?>
 <script type="text/javascript" src="js/<?=$header?>.js"></script>

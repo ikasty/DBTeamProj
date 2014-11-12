@@ -29,19 +29,18 @@
 	box-shadow: 0 1px whitesmoke;
 }
 .login p {
-	margin: 20px 0 0;
+	margin: 25px 5px 5px;
 }
 .login p:first-child {
-	margin-top: 0;
+	margin-top: 5px;
 }
 .login p.submit {
 	text-align: right;
 }
 
 .login input[type=text], .login input[type=password] {
-	margin: 5px;
 	padding: 0 10px;
-	width: 278px;
+	width: 100%;
 	height: 34px;
 	color: #404040;
 	background: white;

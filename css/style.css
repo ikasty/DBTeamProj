@@ -56,11 +56,11 @@ table {
  */
 body {
 	background: -webkit-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, -webkit-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
-  background: -moz-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, -moz-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, -moz-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, -moz-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
-  background: -o-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, -o-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, -o-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, -o-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
-  background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
-  background-color: #40454f;
-  background-size: 16px 16px;
+	background: -moz-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, -moz-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, -moz-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, -moz-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
+	background: -o-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, -o-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, -o-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, -o-radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
+	background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 0 0, radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) 14%, transparent 15%) 7px 7px, radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 0 1px, radial-gradient(rgba(255, 255, 255, 0.1) 14%, transparent 16%) 7px 8px;
+	background-color: #40454f;
+	background-size: 16px 16px;
 	font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	color: #404040;
 }
