@@ -20,6 +20,7 @@ session_start();
 include('settings.php');
 
 // include classes
+include('menu.php');
 	/* class include here */
 
 // routing table
@@ -27,12 +28,17 @@ if ( !isset($_SESSION['id']) ) {
 	$content_include_file = 'view/login.php';
 }
 else {
-	$current = $_SESSION['user_id'];
+	$current = $_SESSION['id'];
 	$content_include_file = 'view/main.php';
 }
 
 // debug mpde
 if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . $_GET['page'];
+
+// ajax key generate
+if (!isset($_SESSION['AJAXKEY']))
+	$_SESSION['AJAXKEY'] = md5(microtime().rand());
+$ajaxkey = $_SESSION['AJAXKEY'];
 
 ?>
 <!DOCTYPE html>
@@ -49,6 +55,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 	<? foreach($css_headers as $header) : ?>
 	<link rel="stylesheet" href="css/<?=$header?>.css">
 	<? endforeach; ?>
+	<style type="text/css"><? printMenuHeader(); ?></style>
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
@@ -75,21 +82,16 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 <!-- nav -->
 <!-- original work from [http://tympanus.net/] -->
 <nav id="bt-menu" class="bt-menu">
-	<a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+	<a class="bt-menu-trigger"><span>Menu</span></a>
 	<ul>
-		<li><a href="#" class="ajax_load octicon octicon-home">Home</a></li>
-		<li><a href="#" class="ajax_load octicon octicon-graph">Graph</a></li>
-		<li><a href="#" class="ajax_load octicon octicon-cloud-upload">Upload</a></li>
-		<li><a href="#" class="ajax_load octicon octicon-law">Vote</a></li>
-		<li><a href="#" class="ajax_load octicon octicon-tools">Setting</a></li>
-		<li><a href="#" class="ajax_load octicon octicon-signout">Logout</a></li>
+		<? printMenuContents(); ?>
 	</ul>
 </nav>
 
 <? foreach($js_headers as $header) : ?>
 <script type="text/javascript" src="js/<?=$header?>.js"></script>
 <? endforeach; ?>
-
+<script type="text/javascript">var ajaxkey = "<?=$ajaxkey?>";</script>
 <div id="throbber" style="display:none;"><img src="/image/throbber.gif"/></div>
 
 </body>

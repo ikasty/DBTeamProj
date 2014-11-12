@@ -1,7 +1,6 @@
-//$.blockUI.defaults.css = {border: 0, textAlign: 'center'};
 $('document').ready(function() {
-	$('a.ajax_load').each(function(index, item) {
-		$(item).on("click", function() {
+	$('a.ajax_load').each(function() {
+		$(this).on("click", function() {
 			$.blockUI({
 				css: {backgroundColor: 'transparent', border: 0},
 				message: $('#throbber')
@@ -10,9 +9,11 @@ $('document').ready(function() {
 				url: '/ajax.php',
 				type: 'POST',
 				dataType: 'html',
-				data: {TARGET: 'view/main', AJAXKEY: 'test'}
+				data: {TARGET: $(this).attr('data-link'), AJAXKEY: ajaxkey}
 			}).done(function(data) {
-				$('#contents').html(data);
+				if (data != '-1')
+					$('#contents').html(data);
+				console.log(data);
 				$.unblockUI();
 			});
 		});
