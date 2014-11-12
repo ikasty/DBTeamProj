@@ -6,3 +6,6 @@ $js_headers = array();
 
 // debug mode
 //define('DEBUG');
+
+// login
+$css_headers[] = 'login';

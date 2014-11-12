@@ -48,7 +48,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 	<link rel="stylesheet" href="css/style.css">
 
 	<? foreach($css_headers as $header) : ?>
-	<link rel="stylesheet" href="css/<?=$header?>">
+	<link rel="stylesheet" href="css/<?=$header?>.css">
 	<? endforeach; ?>
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
@@ -74,7 +74,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 </div>
 
 <? foreach($js_headers as $header) : ?>
-<script type="text/javascript" src="js/<?=$header?>"></script>
+<script type="text/javascript" src="js/<?=$header?>.js"></script>
 <? endforeach; ?>
 
 </body>
