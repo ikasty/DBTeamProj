@@ -16,9 +16,23 @@ define("DBPROJ");
 // session start
 session_start();
 
-// include classes
-$css_headers = array();
+// include settings
+include('settings.php');
 
+// include classes
+	/* class include here */
+
+// routing table
+if ( !isset($_SESSION['id']) ) {
+	$content_include_file = 'view/login.php';
+}
+else {
+	$current = $_SESSION['user_id'];
+	$content_include_file = 'view/main.php';
+}
+
+// debug mpde
+if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . $_GET['page'];
 ?>
 <!DOCTYPE html>
 <!-- original work from [ http://www.cssflow.com ] -->
@@ -34,19 +48,33 @@ $css_headers = array();
 
 	<? foreach($header in $css_headers) : ?>
 	<link rel="stylesheet" href="css/<?=$header?>">
-	<? endfor;?>
+	<? endforeach; ?>
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
-<?
-// routing table
-if ( !isset($_SESSION['id']) ) {
-	include('view/login.php');
-}
-else {
-	$current = $_SESSION['user_id'];
-	include('view/main.php');
-}
-?>
+
+<div id='container'>
+
+<!-- header -->
+<section id="header">
+	
+</section>
+
+<!-- contents -->
+<section id="contents">
+<? include($content_include_file); ?>
+</section>
+
+<!-- footer -->
+<section id="footer">
+	
+</section>
+
+</div>
+
+<? foreach($header in $js_headers) : ?>
+<script type="text/javascript" src="js/<?=$header?>"></script>
+<? endforeach; ?>
+
 </body>
 </html>
