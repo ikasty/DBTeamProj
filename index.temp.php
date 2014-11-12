@@ -33,6 +33,7 @@ else {
 
 // debug mpde
 if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . $_GET['page'];
+
 ?>
 <!DOCTYPE html>
 <!-- original work from [ http://www.cssflow.com ] -->
