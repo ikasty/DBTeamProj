@@ -21,7 +21,9 @@ $target = '';
 
 if ( isset($_POST['TARGET']) )	$target = $_POST['TARGET'];
 else 							$target = 'view/main';
-if ( !isset($_SESSION['id']) )	$target = 'view/login';
+//if ( !isset($_SESSION['id']) )	$target = 'view/login';
+
+if (isset($_POST['ARGS'])) $ARGS = $_POST['ARGS'];
 
 if (!file_exists($target . '.php')) die(-1);
 include($target . '.php');

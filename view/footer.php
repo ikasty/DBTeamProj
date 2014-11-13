@@ -1,5 +1,11 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
+
+// ajax key generate
+if (!isset($_SESSION['AJAXKEY']))
+	$_SESSION['AJAXKEY'] = md5(microtime().rand());
+$ajaxkey = $_SESSION['AJAXKEY'];
+
 ?>
 </section>
 
@@ -16,3 +22,5 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 </nav>
 
 </section>
+
+<script type="text/javascript">var ajaxkey = "<?=$ajaxkey?>";</script>

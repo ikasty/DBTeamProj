@@ -31,6 +31,9 @@ $css_headers[] = 'style';
 
 // jquery
 $js_headers[] = 'jquery.blockUI';
+// jquery.ui
+$js_headers[] = 'jquery-ui.min';
+$css_headers[] = 'jquery-ui.min';
 
 // menu
 $css_headers[] = 'menu';

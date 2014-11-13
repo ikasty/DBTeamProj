@@ -1,8 +1,8 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
-function makeLink($type, $class, $text, $link = array(), $attr = '') {
-	$return = '<' . $type . ' class="' . $class . '" ';
+function makeLink($class, $text, $link = array(), $attr = '') {
+	$return = '<a class="ajax_load ' . $class . '" ';
 	if (isset($link['data-link'])) {
 		$return .= 'data-link="' . $link['data-link'] . '"';
 	} elseif (isset($link['data-func'])) {
@@ -33,7 +33,7 @@ function printMenuContents() {
 	foreach($menu_item as $menu) :
 		//if ($menu_type != $menu[0]) continue;
 		$classname = $menu[2] . " " . $menu[2] . "-" . $menu[3];
-		$link = makeLink('a', $classname, $menu[4], array('data-link'=>$menu[1]));
+		$link = makeLink($classname, $menu[4], array('data-link'=>$menu[1]));
 ?>
 	<li><?=$link?></li>
 <?
