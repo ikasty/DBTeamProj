@@ -43,7 +43,6 @@ $js_headers[] = 'menu';
 $js_headers[] = 'classie';
 
 // icons
-$css_headers[] = 'icons';
 $css_headers[] = 'octicons';
 
 // view
