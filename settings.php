@@ -2,7 +2,7 @@
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
 // debug mode
-//define('DEBUG');
+define('DEBUG', true);
 
 //////////////////////////////////////////////////////
 // include classes
@@ -11,13 +11,13 @@ include('include/functions.php');
 
 // menus
 $menu_item = array(
-/*	array("view name", "icon type", "icon name", "tooltip name")	*/	
-	array("main", "octicon", "home", "Home"),
-	array("", "octicon", "graph", "Graph"),
-	array("", "octicon", "cloud-upload", "Upload"),
-	array("", "octicon", "law", "Vote"),
-	array("", "octicon", "tools", "Setting"),
-	array("", "octicon", "sign-out", "Logout"),
+/*	array("menu_type", "view name", "icon type", "icon name", "tooltip name")	*/	
+	array("user", "main", "octicon", "home", "Home"),
+	array("user", "", "octicon", "graph", "Graph"),
+	array("user", "", "octicon", "cloud-upload", "Upload"),
+	array("user", "", "octicon", "law", "Vote"),
+	array("admin", "", "octicon", "tools", "Setting"),
+	array("user", "", "octicon", "sign-out", "Logout"),
 );
 
 
@@ -30,7 +30,6 @@ $js_headers = array();
 $css_headers[] = 'style';
 
 // jquery
-$js_headers[] = 'jquery-2.1.1.min';
 $js_headers[] = 'jquery.blockUI';
 
 // menu

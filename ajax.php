@@ -1,4 +1,11 @@
 <?
+/**
+ * DB 조별과제 Main view
+ * by 강대연
+ * 2014-11-13
+ */
+
+// ajax entry point
 define("DBPROJ", true);
 
 if (!isset($_POST['AJAXKEY'])) die(-1);
