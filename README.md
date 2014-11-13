@@ -11,3 +11,4 @@ DBTeamProj
 
 ### 작업자 목록 ###
 * 컴퓨터과학과 강대연 (2009147045), mail.ikasty@gmail.com
+* 컴퓨터과학과 김영훈 (2009147058), mail.rladudngs@gmail.com
