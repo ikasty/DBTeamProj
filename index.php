@@ -95,8 +95,11 @@ p { margin:0; }
 </head>
 
 <body>
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> ef76df1cb41e6d65ed52be43edfa8678de2b734e
 <div id="wrap">
 
 	<div id="container" align="center">
