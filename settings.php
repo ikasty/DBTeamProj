@@ -4,19 +4,27 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 // debug mode
 //define('DEBUG');
 
-$css_headers = array();
-$js_headers = array();
+//////////////////////////////////////////////////////
+// include classes
+include('include/functions.php');
+	/* include classes here */
 
 // menus
 $menu_item = array(
 /*	array("view name", "icon type", "icon name", "tooltip name")	*/	
-	array("view/main", "octicon", "home", "Home"),
+	array("main", "octicon", "home", "Home"),
 	array("", "octicon", "graph", "Graph"),
 	array("", "octicon", "cloud-upload", "Upload"),
 	array("", "octicon", "law", "Vote"),
 	array("", "octicon", "tools", "Setting"),
 	array("", "octicon", "sign-out", "Logout"),
 );
+
+
+//////////////////////////////////////////////////////
+// css, js headers
+$css_headers = array();
+$js_headers = array();
 
 // default
 $css_headers[] = 'style';

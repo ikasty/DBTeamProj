@@ -138,3 +138,7 @@ a:hover {
 	-webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 	box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
+
+a[data-link]:hover, a[data-func]:hover {
+    cursor: pointer;
+}

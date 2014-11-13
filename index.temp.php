@@ -5,23 +5,15 @@
  * 2014-11-12
  */
 
-
+define("DBPROJ", true);
 /**
  * 앞으로 모든 파일들은 이 index 파일을 통해서 접근된다.
  * 파일 맨 위에 다음 문장을 넣고 적합성 테스트 할 것.
  * if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
  */
-define("DBPROJ", true);
 
 // session start
 session_start();
-
-// include settings
-include('settings.php');
-
-// include classes
-include('menu.php');
-	/* class include here */
 
 // routing table
 if ( !isset($_SESSION['id']) ) {
@@ -32,7 +24,10 @@ else {
 	$content_include_file = 'view/main.php';
 }
 
-// debug mpde
+// include settings
+include('settings.php');
+
+// debug mode
 if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . $_GET['page'];
 
 // ajax key generate
@@ -55,7 +50,9 @@ $ajaxkey = $_SESSION['AJAXKEY'];
 	<? foreach($css_headers as $header) : ?>
 	<link rel="stylesheet" href="css/<?=$header?>.css">
 	<? endforeach; ?>
-	<style type="text/css"><? printMenuHeader(); ?></style>
+	<style type="text/css">
+	<? printMenuHeader(); ?>
+	</style>
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
@@ -84,7 +81,7 @@ $ajaxkey = $_SESSION['AJAXKEY'];
 <nav id="bt-menu" class="bt-menu">
 	<a class="bt-menu-trigger"><span>Menu</span></a>
 	<ul>
-		<? printMenuContents(); ?>
+<? printMenuContents(); ?>
 	</ul>
 </nav>
 

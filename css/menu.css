@@ -8,10 +8,6 @@
     padding: 80px;
 }
 
-.bt-menu a:hover{
-    cursor: pointer;
-}
-
 .bt-menu {
     position: fixed;
     top: 0;

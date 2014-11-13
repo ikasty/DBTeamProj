@@ -3,6 +3,9 @@ define("DBPROJ", true);
 
 if (!isset($_POST['AJAXKEY'])) die(-1);
 
+// include setting
+include('settings.php');
+
 // session start
 session_start();
 
@@ -13,4 +16,5 @@ if ( isset($_POST['TARGET']) )	$target = $_POST['TARGET'];
 else 							$target = 'view/main';
 if ( !isset($_SESSION['id']) )	$target = 'view/login';
 
+if (!file_exists($target . '.php')) die(-1);
 include($target . '.php');
