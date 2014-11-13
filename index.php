@@ -32,11 +32,6 @@ include('settings.php');
 // debug mode
 if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . $_GET['page'] . '.php';
 
-// ajax key generate
-if (!isset($_SESSION['AJAXKEY']))
-	$_SESSION['AJAXKEY'] = md5(microtime().rand());
-$ajaxkey = $_SESSION['AJAXKEY'];
-
 ?>
 <!DOCTYPE html>
 <!-- original work from [ http://www.cssflow.com ] -->
@@ -74,7 +69,6 @@ $ajaxkey = $_SESSION['AJAXKEY'];
 <? foreach($js_headers as $header) : ?>
 <script type="text/javascript" src="js/<?=$header?>.js"></script>
 <? endforeach; ?>
-<script type="text/javascript">var ajaxkey = "<?=$ajaxkey?>";</script>
 <div id="throbber" style="display:none;"><img src="/image/throbber.gif"/></div>
 
 </body>

@@ -98,17 +98,7 @@ a:hover {
 	-webkit-box-shadow: 0 0 100px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 0 100px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
 }
-.mainform:before {
-	content: '';
-	position: absolute;
-	top: -8px;
-	right: -8px;
-	bottom: -8px;
-	left: -8px;
-	z-index: -1;
-	border-radius: 4px;
-}
 
-[data-link]:hover, [data-func]:hover {
+a[data-link]:hover, a[data-func]:hover {
     cursor: pointer;
 }
