@@ -29,6 +29,9 @@ $js_headers = array();
 // default
 $css_headers[] = 'style';
 
+// pure css
+$css_headers[] = 'pure';
+
 // jquery
 $js_headers[] = 'jquery.blockUI';
 

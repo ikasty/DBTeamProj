@@ -111,6 +111,7 @@ a:hover {
 
 /* button class */
 .button {
+	display: inline-block;
 	padding: 0 18px;
 	height: 29px;
 	font-size: 12px;
