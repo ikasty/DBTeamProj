@@ -1,7 +1,7 @@
-function load_view(target, done_func, menu_reload = false) {
-	if (menu_reload) args.menu_reload = true;
-
+function load_view(target, done_func, menu_reload) {
 	var args = {TARGET: 'view/' + target, AJAXKEY: ajaxkey};
+	if (typeof menu_reload !== 'undefined') args.menu_reload = menu_reload;
+
 	$.ajax({
 		url: '/ajax.php',
 		type: 'POST',
@@ -51,7 +51,7 @@ $('document').ready(function() {
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
 				// trigger finish func
-				item.trigger('finish', [item, JSON.parse(data)]);
+				item.trigger('finish', [item, data]);
 				item.on("click", clickfunc);
 			});
 		};
