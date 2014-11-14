@@ -14,20 +14,22 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 	</form>
 	<script type="text/javascript">
 	$(".login form a.submit")
-	.on('args',
-		function (event, args) {
+	.on('start', function (event, args) {
 			args.userid = $('.login input[type=text]').val();
 			args.password = Base64.encode($('.login input[type=password]').val());
 			return true;
 		}
-	).on('finish',
-		function (event, item, data) {console.log(item, data);
+	).on('finish', function (event, item, data) {
 			if (data.success == 'failed') {
 				$(item).parents(".login").parent().effect("shake", {distance: 4, times: 3, duration: 10});
 				$('.login input[type=password]').val('');
 			} else {
-
+				view_change_start();
+				load_view('main', function(data) {
+					view_change_finish();
+				});
 			}
+			return true;
 		}
 	);
 	</script>

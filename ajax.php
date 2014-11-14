@@ -26,4 +26,12 @@ else 							$target = 'view/main';
 if (isset($_POST['ARGS'])) $ARGS = $_POST['ARGS'];
 
 if (!file_exists($target . '.php')) die(-1);
-include($target . '.php');
+
+// menu reload check
+if ( isset($ARGS['menu_reload']) && substr($target, 0, 4) == 'view' ) {
+	include('view/header.php');
+	include($target . '.php');
+	include('view/footer.php');
+} else {
+	include($target . '.php');
+}
