@@ -27,7 +27,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				view_change_start();
 				load_view('main', function(data) {
 					view_change_finish();
-				});
+				}, true);
 			}
 			return true;
 		}

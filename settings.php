@@ -28,6 +28,7 @@ $js_headers = array();
 
 // default
 $css_headers[] = 'style';
+$js_headers[] = 'main';
 
 // jquery
 $js_headers[] = 'jquery.blockUI';
