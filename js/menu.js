@@ -37,6 +37,7 @@ menu_init = function() {
         overlay.className = 'bt-overlay';
         menu.appendChild( overlay );
  
+        if (typeof trigger === 'undefined') return ;
         trigger.addEventListener( eventtype, function( ev ) {
             ev.stopPropagation();
             ev.preventDefault();

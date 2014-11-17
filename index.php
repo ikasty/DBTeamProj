@@ -14,7 +14,7 @@ define("DBPROJ", true);
  */
 
 // session start
-session_start();unset($_SESSION['id']);
+session_start();
 
 // routing table
 if ( !isset($_SESSION['id']) ) {

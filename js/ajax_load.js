@@ -1,6 +1,7 @@
 function load_view(target, done_func, menu_reload) {
 	var args = {TARGET: 'view/' + target, AJAXKEY: ajaxkey};
-	if (typeof menu_reload !== 'undefined') args.menu_reload = menu_reload;
+	if (typeof menu_reload !== 'undefined') menu_reload = false;
+	args.menu_reload = menu_reload;
 
 	$.ajax({
 		url: '/ajax.php',
@@ -14,10 +15,11 @@ function load_view(target, done_func, menu_reload) {
 
 		if (data != '-1') target.html(data);
 		done_func(data);
+		setajax();
 	});
 }
 
-$('document').ready(function() {
+function setajax() {
 	$('a.ajax_load[data-link]').each(function() {
 		var clickfunc = function() {
 			var item = $(this);
@@ -26,11 +28,15 @@ $('document').ready(function() {
 			// view change
 			view_change_start();
 
+			var menu_reload = false;
+			if (typeof item.attr('data-reload') !== 'undefined' &&
+				item.attr('data-reload') == 'true') menu_reload = true;
+//console.log(menu_reload);
 			// load view
 			load_view(item.attr('data-link'), function(data) {
 				view_change_finish();
 				item.on("click", clickfunc);
-			});		
+			}, menu_reload);
 		};
 		$(this).on("click", clickfunc);
 	});
@@ -57,4 +63,6 @@ $('document').ready(function() {
 		};
 		$(this).on("click", clickfunc);
 	});
-});
+}
+
+$('document').ready(setajax);

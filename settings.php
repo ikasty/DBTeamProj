@@ -11,13 +11,13 @@ include('include/functions.php');
 
 // menus
 $menu_item = array(
-/*	array("menu_type", "view name", "icon type", "icon name", "tooltip name")	*/	
+/*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
 	array("user", "main", "octicon", "home", "Home"),
 	array("user", "", "octicon", "graph", "Graph"),
 	array("user", "", "octicon", "cloud-upload", "Upload"),
 	array("user", "", "octicon", "law", "Vote"),
 	array("admin", "", "octicon", "tools", "Setting"),
-	array("user", "", "octicon", "sign-out", "Logout"),
+	array("user", "login", "octicon", "sign-out", "Logout", array('data-reload'=>true)),
 );
 
 

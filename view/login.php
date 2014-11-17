@@ -1,5 +1,9 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
+
+// force logout
+unset($_SESSION['id']);
+
 ?>
 <div class="temp_wrapper">
 <div class="login mainform">
