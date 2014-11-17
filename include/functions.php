@@ -46,6 +46,5 @@ function printMenuContents() {
 	endforeach;
 ?>
 	</ul>
-	<script type="text/javascript" src="/menu.js"></script>
 <?
 }

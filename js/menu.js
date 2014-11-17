@@ -8,7 +8,7 @@
  * Copyright 2013, Codrops
  * http://www.codrops.com
  */
-(function() {
+menu_init = function() {
  
     // http://stackoverflow.com/a/11381730/989439
     function mobilecheck() {
@@ -17,7 +17,7 @@
         return check;
     }
  
-    function init() {
+    function menu_init() {
  
         var menu = document.getElementById( 'bt-menu' ),
             trigger = menu.querySelector( 'a.bt-menu-trigger' ),
@@ -54,6 +54,8 @@
  
     }
  
-    init();
+    return menu_init;
  
-})();
+}();
+
+menu_init();

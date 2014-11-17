@@ -29,6 +29,7 @@ $js_headers = array();
 // default
 $css_headers[] = 'style';
 $js_headers[] = 'main';
+$js_headers[] = 'menu';
 
 // jquery
 $js_headers[] = 'jquery.blockUI';
