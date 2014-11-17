@@ -27,15 +27,25 @@ function printMenuHeader() {
 }
 
 function printMenuContents() {
-	global $menu_type, $menu_item;
-	//if ($menu_type == false) return ;
+	global $menu_item;
 
+	if (!isset($_SESSION['id'])) return ;
+	else $menu_type = 'user';
+?>
+	<a class="bt-menu-trigger"><span>Menu</span></a>
+	<ul>
+
+<?
 	foreach($menu_item as $menu) :
-		//if ($menu_type != $menu[0]) continue;
+		if ($menu_type != $menu[0]) continue;
 		$classname = $menu[2] . " " . $menu[2] . "-" . $menu[3];
 		$link = makeLink($classname, $menu[4], array('data-link'=>$menu[1]));
 ?>
-	<li><?=$link?></li>
+		<li><?=$link?></li>
 <?
 	endforeach;
+?>
+	</ul>
+	<script type="text/javascript" src="/menu.js"></script>
+<?
 }

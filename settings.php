@@ -38,7 +38,7 @@ $css_headers[] = 'jquery-ui.min';
 
 // menu
 $css_headers[] = 'menu';
-$js_headers[] = 'menu';
+//$js_headers[] = 'menu';
 
 // class helper func
 $js_headers[] = 'classie';

@@ -23,7 +23,9 @@ if ( isset($_POST['TARGET']) )	$target = $_POST['TARGET'];
 else 							$target = 'view/main';
 //if ( !isset($_SESSION['id']) )	$target = 'view/login';
 
+$ARGS = array();
 if (isset($_POST['ARGS'])) $ARGS = $_POST['ARGS'];
+$ARGS = array_merge($ARGS, $_POST);
 
 if (!file_exists($target . '.php')) die(-1);
 

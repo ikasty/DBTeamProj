@@ -15,10 +15,7 @@ $ajaxkey = $_SESSION['AJAXKEY'];
 <!-- nav -->
 <!-- original work from [http://tympanus.net/] -->
 <nav id="bt-menu" class="bt-menu">
-	<a class="bt-menu-trigger"><span>Menu</span></a>
-	<ul>
 <? printMenuContents(); ?>
-	</ul>
 </nav>
 
 </section>

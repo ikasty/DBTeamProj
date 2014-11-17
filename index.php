@@ -14,15 +14,13 @@ define("DBPROJ", true);
  */
 
 // session start
-session_start();
+session_start();unset($_SESSION['id']);
 
 // routing table
 if ( !isset($_SESSION['id']) ) {
-	$menu_type = false;
 	$content_include_file = 'view/login.php';
 }
 else {
-	$menu_type = 'main';
 	$content_include_file = 'view/main.php';
 }
 
