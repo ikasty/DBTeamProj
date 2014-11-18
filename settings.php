@@ -4,6 +4,14 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 // debug mode
 //define('DEBUG');
 
+// DB Settings
+$db_setting = array(
+	"db_name"	=> "dbproj",
+	"db_host"	=> "localhost",
+	"db_id"		=> "dbproj",
+	"db_pw"		=> "dbproj"
+);
+
 $css_headers = array();
 $js_headers = array();
 

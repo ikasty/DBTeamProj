@@ -75,14 +75,14 @@ class DB {
 	*
 	* @access public
 	* @param String $query
-	* @return null
+	* @return XQLObject
 	*/
 	public function query($query) {
 		return $this->mysqli->query($query);
 	}
 
 	/**
-	* 입력받은 쿼리를 실행하고 결과를 리턴하는 함수
+	* 입력받은 쿼리를 실행하고 결과를 배열로 리턴하는 함수
 	*
 	* @access public
 	* @param String $query
@@ -125,7 +125,7 @@ class DB {
 	}
 
 	/**
-	* 특정 조건대로 검색하여 열 하나로 받아오는 함수
+	* 특정 조건대로 검색하여 결과 개수를 받아오는 함수
 	*
 	* @access public
 	* @param String $query
@@ -138,6 +138,13 @@ class DB {
 		return (int) $result[0];
 	}
 
+	/**
+	 * insert helper function
+	 * @access public
+	 * @param String $table
+	 * @param array $value
+	 * @return SQLObject
+	 */
 	public function Insert($table, $value, $type) {
 		//우선 데이터를 준비한다
 		$fields = array_keys($value);	//key값
@@ -149,6 +156,10 @@ class DB {
 		$return = $this->mysqli->query( $this->MakeQuery( $query, $data ) );
 		if ($return) return $this->mysqli->insert_id;
 		else return $return;
+	}
+
+	public function insertedId() {
+		return $this->mysqli->insert_id();
 	}
 
 	public function Update($table, $value, $type, $where, $where_type) {
