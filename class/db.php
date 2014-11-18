@@ -140,26 +140,40 @@ class DB {
 
 	/**
 	 * insert helper function
+	 * usage:
+	 * 		$DB->insert('tablename', array("id"=>1, "name"=>"John", "count"=>10));
 	 * @access public
 	 * @param String $table
 	 * @param array $value
-	 * @return SQLObject
+	 * @return boolean
 	 */
-	public function Insert($table, $value, $type) {
+	public function insert($table, $value) {
+		if ( !count($value) ) return true;
+
 		//우선 데이터를 준비한다
-		$fields = array_keys($value);	//key값
-		$data = array_values($value);	//value값
+		if ( isset($value[0]) && is_array($value[0]) ) {
+			$multi = true;
+			$fields = array_keys($value[0]);
+		} else {
+			$multi = false;
+			$fields = array_keys($value);
+			$value = array($value);
+		}
 		
 		//그리고 sql문을 만든다
-		$query = "INSERT INTO " . $table . "(`" . implode("`,`", $fields) . "`) VALUES (" . implode(",", $type) . ")";
+		$query = "INSERT INTO " . $table . "(`" . implode("`,`", $fields) . "`) VALUES ";
 
-		$return = $this->mysqli->query( $this->MakeQuery( $query, $data ) );
-		if ($return) return $this->mysqli->insert_id;
-		else return $return;
+		$value_array = array();
+		foreach($value as $row) {
+			$value_array[] = "(" . $this->makeList($row) . ")";
+		}
+		$query .= implode(",", $$value_array);
+
+		return (bool) $this->query( $query );
 	}
 
 	public function insertedId() {
-		return $this->mysqli->insert_id();
+		return $this->mysqli->insert_id;
 	}
 
 	public function Update($table, $value, $type, $where, $where_type) {
@@ -191,6 +205,17 @@ class DB {
 		//그리고 sql문을 만든다
 		$query = "DELETE FROM " . $table . " WHERE " . implode(" AND ", $data);
 		return $this->mysqli->query( $this->MakeQuery($query, array_values($value)) );
+	}
+
+	public function makeList($array, $type = ) {
+		if (!is_array($array)) return '';
+
+		$list = array();
+		foreach ($array as $key => $value) {
+			$list[] = "'" . $this->mysqli->real_escape_string($value) . "'";
+		}
+
+		return implode(",", $list);
 	}
 
 }
