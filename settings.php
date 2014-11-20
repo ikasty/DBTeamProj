@@ -4,6 +4,9 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 // debug mode
 //define('DEBUG');
 
+// 자동 로그아웃 타임
+define("AUTO_LOGOUT_TIME", 900);
+
 // DB Settings
 $db_setting = array(
 	"db_name"	=> "dbproj",
