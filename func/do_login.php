@@ -2,14 +2,20 @@
 header('Content-Type: application/json');
 if (!defined("DBPROJ")) die(json_encode(-1));
 
-$return = array(
-	"message" => "try login as id = " . $ARGS['userid'] . ", password = " . $ARGS['password']
-);
+$return = array();
+$temp_user = User::getUser($ARGS['userid']);
 
-if ($ARGS['userid'] != 'test' || $ARGS['password'] != 'dGVzdA==') $return['success'] = "failed";
-else {
-	$_SESSION['id'] = $ARGS['userid'];
+if ($temp_user->login($ARGS['password'])) {
 	$return['success'] = "success";
+} else {
+	$return['success'] = "failed";
 }
+
+/*
+for test purpose,
+
+INSERT INTO `dbproj`.`유저` ( `id` , `비밀번호` , `이름` )
+VALUES ( 'test', 'dGVzdA==', '테스트' );
+*/
 echo json_encode($return);
 ?>
