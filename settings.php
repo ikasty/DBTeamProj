@@ -31,6 +31,9 @@ $css_headers[] = 'style';
 $js_headers[] = 'main';
 $js_headers[] = 'menu';
 
+// pure css
+$css_headers[] = 'pure';
+
 // jquery
 $js_headers[] = 'jquery.blockUI';
 // jquery.ui
@@ -45,7 +48,6 @@ $css_headers[] = 'menu';
 $js_headers[] = 'classie';
 
 // icons
-$css_headers[] = 'icons';
 $css_headers[] = 'octicons';
 
 // view
