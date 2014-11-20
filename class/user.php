@@ -1,6 +1,7 @@
 <?php
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
+//TODO: 클래스를 굳이 나누긴 했는데, 관리자 정보를 db에 따로 저장하지 않으니깐 그냥 하나의 클래스로 합쳐야할듯 (by 대연)
 class User
 {
 	
@@ -21,13 +22,13 @@ class User
 		global $DB;
 		
 		if($user_id !== "") {
-			$query = $DB->MakeQuery("SELECT * From user where user_id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From 유저 where id=%s", $user_id);
 			$user_info = $DB->getRow($query);
 
-			$this->user_id = $user_info["user_id"];
-			$this->password = ($user_info["password"]);
-			$this->name = $user_info["name"];
-			$this->privilege = intval($user_info["privilege"]);
+			$this->user_id = $user_info["id"];
+			$this->password = ($user_info["비밀번호"]);
+			$this->name = $user_info["이름"];
+			$this->privilege = 0;	//TODO: 이거 db에서 가져올 수 있도록 수정할 것 by 대연
 		}
 	}
 
@@ -111,21 +112,19 @@ class Developer extends User
 		
 		if($user_id !== "") {
 
-			$query = $DB->MakeQuery("SELECT * From developer where user_id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
 			$developer_info = $DB->getRow($query);
 
-			$this->developer_id = $developer_info["developer_id"];
-			$this->major = $developer_info["major"];
-			$this->university = $developer_info["university"];
-			$this->hometown = $developer_info["hometown"];
+			$this->developer_id = $developer_info["id"];
+			//$this->major = $developer_info["major"];
+			$this->university = $developer_info["대학교"];
+			$this->hometown = $developer_info["고향"];
 		}
 	}
 }
 
 class Administrator extends User
 {
-	private $admin_id = 0;
-
 	function __constructor($user_id)
 	{
 		global $DB;
@@ -134,14 +133,8 @@ class Administrator extends User
 		
 		if($user_id !== "" && $this->privilege == 1)
 		{
-			$query = $DB->MakeQuery("SELECT * From admin where user_id=%s", $user_id);
-			$admin_info = $DB->getRow($query);
-
-			$this->admin_id = intval($admin_info["admin_id"]);
+			// 딱히 할 일이 없음
 		}
 	}
 }
-
-
- 
 ?>

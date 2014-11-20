@@ -59,6 +59,8 @@ function setajax() {
 				// trigger finish func
 				item.trigger('finish', [item, data]);
 				item.on("click", clickfunc);
+			}).fail(function(jqHXR, textStatus, errorThrown) {
+				console.log(textStatus, errorThrown);
 			});
 		};
 		$(this).on("click", clickfunc);

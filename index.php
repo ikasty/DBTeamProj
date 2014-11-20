@@ -16,6 +16,9 @@ define("DBPROJ", true);
 // session start
 session_start();
 
+// include settings
+include('settings.php');
+
 // routing table
 if ( !isset($_SESSION['id']) ) {
 	$content_include_file = 'view/login.php';
@@ -23,9 +26,6 @@ if ( !isset($_SESSION['id']) ) {
 else {
 	$content_include_file = 'view/main.php';
 }
-
-// include settings
-include('settings.php');
 
 // debug mode
 if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . $_GET['page'] . '.php';
