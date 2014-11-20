@@ -125,31 +125,11 @@
     transition: transform 0.3s, opacity 0.2s, visibility 0s 0.3s;
 }
 
-.bt-menu ul li:first-child { 
-    transform: translate3d(-100%,200%,0);
-}
- 
-.bt-menu ul li:nth-child(2) { 
-    transform: translate3d(-100%,100%,0);
-}
- 
-.bt-menu ul li:nth-child(3) { 
-    transform: translate3d(-100%,0,0);
-}
- 
-.bt-menu ul li:nth-child(4) { 
-    transform: translate3d(-100%,-100%,0);
-}
- 
-.bt-menu ul li:nth-child(5) { 
-    transform: translate3d(-100%,-200%,0);
-}
-
 .bt-menu.bt-menu-open ul li {
     visibility: visible;
     opacity: 1;
     transition: transform 0.3s, opacity 0.3s;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0) !important;
 }
 
 .bt-menu ul li a {
