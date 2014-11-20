@@ -32,7 +32,7 @@ unset($_SESSION['id']);
 				load_view('main', function(data) {
 					view_change_finish();
 					menu_init();
-				}, true);
+				}, 'true');
 			}
 			return true;
 		}

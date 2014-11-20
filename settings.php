@@ -32,7 +32,7 @@ $menu_item = array(
 	array("user", "", "octicon", "cloud-upload", "Upload"),
 	array("user", "", "octicon", "law", "Vote"),
 	array("admin", "", "octicon", "tools", "Setting"),
-	array("user", "login", "octicon", "sign-out", "Logout", array('data-reload'=>true)),
+	array("user", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
 );
 
 

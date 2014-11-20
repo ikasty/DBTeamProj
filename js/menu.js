@@ -20,9 +20,11 @@ menu_init = function() {
     function menu_init() {
  
         var menu = document.getElementById( 'bt-menu' ),
-            trigger = menu.querySelector( 'a.bt-menu-trigger' ),
+            trigger = menu.querySelector( 'a.bt-menu-trigger' );
+        if (trigger === null) return ;
+
             // event type (if mobile, use touch events)
-            eventtype = mobilecheck() ? 'touchstart' : 'click',
+        var eventtype = mobilecheck() ? 'touchstart' : 'click',
             resetMenu = function() {
                 classie.remove( menu, 'bt-menu-open' );
                 classie.add( menu, 'bt-menu-close' );
@@ -37,7 +39,6 @@ menu_init = function() {
         overlay.className = 'bt-overlay';
         menu.appendChild( overlay );
  
-        if (trigger === null) return ;
         trigger.addEventListener( eventtype, function( ev ) {
             ev.stopPropagation();
             ev.preventDefault();
