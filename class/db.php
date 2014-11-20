@@ -25,7 +25,7 @@ class DB {
 	* @access public
 	* @return object
 	*/
-	public function DB() {
+	public function __construct() {
 		global $db_setting;
 
 		//데이터베이스 이름 불러오기
@@ -207,7 +207,7 @@ class DB {
 		return $this->mysqli->query( $this->MakeQuery($query, array_values($value)) );
 	}
 
-	public function makeList($array, $type = ) {
+	public function makeList($array, $type = ',') {
 		if (!is_array($array)) return '';
 
 		$list = array();
@@ -217,6 +217,14 @@ class DB {
 
 		return implode(",", $list);
 	}
+}
 
+function getDB() {
+	static $__DB = NULL;
+
+	if ($__DB === NULL)
+		$__DB = new DB();
+
+	return $__DB;
 }
 ?>

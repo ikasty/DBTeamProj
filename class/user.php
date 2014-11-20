@@ -17,9 +17,9 @@ class User
 	private $privilege = -1; //default = 0(developer) <--> 1(admin)
 	private $auth = ""; 
 
-	private function __constructor($user_id)
+	protected function __construct($user_id)
 	{
-		global $DB;
+		$DB = getDB();
 		
 		if($user_id !== "") {
 			$query = $DB->MakeQuery("SELECT * From 유저 where id=%s", $user_id);
@@ -104,11 +104,11 @@ class Developer extends User
 	public $university = "";
 	public $hometown = "";
 
-	function __constructor($user_id)
+	function __construct($user_id)
 	{
-		global $DB;
+		$DB = getDB();
 
-		parent::__constructor($user_id);
+		parent::__construct($user_id);
 		
 		if($user_id !== "") {
 
@@ -125,11 +125,9 @@ class Developer extends User
 
 class Administrator extends User
 {
-	function __constructor($user_id)
+	function __construct($user_id)
 	{
-		global $DB;
-
-		parent::__constructor($user_id);
+		parent::__construct($user_id);
 		
 		if($user_id !== "" && $this->privilege == 1)
 		{

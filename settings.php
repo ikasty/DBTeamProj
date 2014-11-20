@@ -21,6 +21,7 @@ $db_setting = array(
 // include classes
 include('include/functions.php');
 include('class/user.php');
+include('class/db.php');
 	/* include classes here */
 
 // menus
