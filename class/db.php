@@ -100,7 +100,7 @@ class DB {
 	* @param String $query
 	* @return value
 	*/
-	public function getCount($query) {
+	public function getValue($query) {
 		$result = $this->mysqli->query($query);
 		if (!$result) return false;
 		$result = $result->fetch_array();

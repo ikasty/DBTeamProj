@@ -1,0 +1,48 @@
+DB 사용방법
+
+// 우선 DB객체를 구함
+$DB = getDB();
+
+// -- select문 --
+
+// 학생 테이블에서 학생 id, 이름, 성적 구하기
+$query = $DB->select(
+	"Student",					// table
+	array("id", "name, "score")	// field
+	"deptid = 1"				// condition(생략 가능)
+);
+// $query == "SELECT id, name, score FROM Student WHERE deptid = 1";
+$result = $DB->getResult($query);	// 배열로 들어옴
+
+// 학생수 구하기
+$query = $DB->select(
+	"Student",							// table
+	array("count" => "COUNT(*)"),		// field(배열로 쓰면 별명 붙일 수 있음)
+	array(
+		"score" => 2.0					// 조건도 배열로 줄 수 있음.
+		"deptid" => array(1, 2, 3))		// 값을 배열로 주면 IN 으로 검사
+);
+// $query == "SELECT COUNT(*) FROM Student WHERE score = 2.0, deptid IN (1, 2, 3)";
+$result = $DB->getValue($query);
+
+// 복잡한 query문
+$query = $DB->select(
+	array("S" => "Student", "P" => "Professor"),		// table list
+	array("name" => "P.name", count => "COUNT(S.id)"),	// field list
+	array(												// condition
+		"S.score > 3.0",
+		"S.deptid" => array(
+				$DB->select(
+					"Department",
+					"id",
+					array("place" => "신촌")
+				)
+		)
+	),
+	array("SORT BY" => "S.pid"),						// option(생략 가능)
+	array("P" => array("INNER JOIN", "S.pid = P.id"))	// JOIN 설정
+);
+// $query == "SELECT P.name name, COUNT(S.id) count FROM Student S INNER JOIN Professor P ON (S.pid = P.id)
+				WHERE S.score > 3.0, S.deptid IN (
+					SELECT id FROM Department WHERE place = '신촌'
+				) SORT BY S.pid"
