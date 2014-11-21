@@ -40,37 +40,6 @@ class DB {
 	}
 
 	/**
-	* 쿼리 문장을 만들어주는 함수
-	*
-	* @access public
-	* @param String $query
-	* @params String $Values
-	* @return String
-	*/
-	public function MakeQuery($query, $values) {
-		//우선 대체할 값들을 받은 다음
-		$values = func_get_args();
-		array_shift($values);
-		//values가 여러개인 경우 배열 제거
-		if (is_array($values[0])) $values = $values[0];
-
-		//SQL Injection 방지 처리 후
-		foreach ($values as $key=>$value)
-			$values[$key] = addslashes($value);
-
-		//혹시모를 "%s"에서 따옴표를 제거한다
-		$query = str_replace("'%s'", "%s", $query);
-		$query = str_replace('"%s"', "%s", $query);
-
-		$query = str_replace('%s', "'%s'", $query);
-
-		//'' 없는 문자열 처리
-		$query = str_replace('%p', "%s", $query);
-
-		return @vsprintf($query, $values);
-	}
-
-	/**
 	* 입력받은 쿼리를 실행하는 함수
 	*
 	* @access public
@@ -82,7 +51,7 @@ class DB {
 	}
 
 	/**
-	* 입력받은 쿼리를 실행하고 결과를 배열로 리턴하는 함수
+	* 입력받은 쿼리를 실행하고 각 결과를 배열로 리턴하는 함수
 	*
 	* @access public
 	* @param String $query
@@ -100,7 +69,7 @@ class DB {
 	*
 	* @access public
 	* @param String $query
-	* @return Array
+	* @return Object
 	*/
 	public function getRow($query) {
 		$result = $this->mysqli->query($query);
@@ -125,27 +94,129 @@ class DB {
 	}
 
 	/**
-	* 특정 조건대로 검색하여 결과 개수를 받아오는 함수
+	* 특정 조건대로 검색하여 결과값을 받아오는 함수
 	*
 	* @access public
 	* @param String $query
-	* @return integer
+	* @return value
 	*/
 	public function getCount($query) {
 		$result = $this->mysqli->query($query);
 		if (!$result) return false;
 		$result = $result->fetch_array();
-		return (int) $result[0];
+		return $result[0];
 	}
+
+	/**
+	 * select helper func
+	 * usage:
+	 * 		select(array('A'=>'Apartment'), array('id', 'name'=>'apartName'));
+	 */
+	public function select($tables, $field, $cond, $option, $join) {
+		$query = "SELECT";
+
+		// add field
+		$query .= ' ' . $this->makeFieldName($field);
+
+		// add table name
+		// make 'FROM Customer C, Products P INNER JOIN Orders O ON (C.id=O.cid) ...'
+		$query .= " FROM " . $this->makeTableName($tables, $join);
+
+		// add where clause
+		if ( !empty($cond) )
+			$query .= " WHERE " . $this->makeCondition($cond);
+
+		return $query;
+	}
+
+	private function makeFieldName($fields) {
+		if (!is_array($fields)) return $fields;
+
+		$ret = array();
+		foreach($fields as $alias => $field) {
+			if ($alias !== $field)
+				$ret[] = $field . ' ' . $alias;
+			else
+				$ret[] = $field;
+		}
+
+		return implode(',', $ret);
+	}
+
+	private function makeTableName($tables, $join) {
+		if (!is_array($tables)) return $tables;
+
+		// make table names
+		foreach ($tables as $alias => $table) {
+			if ( !is_string($alias) ) $alias = $table;
+
+			// make 'table' or 'table alias'
+			$tblclause = ($alias == $table) ?
+						 ($table) :
+						 ($table . ' ' . $this->addIdentifierQuotes($alias));
+
+			if ( isset($join[$alias]) ) {
+				list( $jointype, $joincond ) = $join[$alias];
+
+				// 'INNER JOIN table' or 'INNER JOIN table alias'
+				$tblclause = $jointype . ' ' . $tblclause;
+
+				$on = $this->makeList($joincond, 'AND');
+				if ($on != '') $tblclause .= 'ON (' . $on . ')';
+
+				$tblJoin[] = $tblclause;
+			} else {
+				$tblname[] = $tblclause;
+			}
+		} // end foreach
+
+		return implode(',', $tblname) . ' ' . (!empty($tblJoin) ? implode(' ', $tblJoin) : '');
+	}
+
+	private function makeCondition($conds) {
+		if (!is_array($conds)) return $conds;
+
+		$ret = array();
+		foreach ($conds as $field => $cond) {
+			$ret_temp = $field;
+			
+			if (is_integer($field)) {
+				$ret_temp = $cond;
+			}
+			else if (is_string($field)) {
+				$ret_temp .= ' ' . $cond;
+			}
+			else if (is_array($cond)) {
+				$ret_temp .= ' IN (' . implode(',', $cond) . ')';
+			} else {
+				continue;
+			}
+			$ret[] = $ret_temp;
+		}
+	}
+
+	private function makeList($array, $type = ',') {
+		if (!is_array($array)) return '';
+
+		$list = array();
+		foreach ($array as $key => $value) {
+			$list[] = "'" . $this->mysqli->real_escape_string($value) . "'";
+		}
+
+		return implode($type, $list);
+	}
+
+	private function addIdentifierQuotes($s) { return '"' . str_replace('"', '""', $s) . '"'; }
 
 	/**
 	 * insert helper function
 	 * usage:
 	 * 		$DB->insert('tablename', array("id"=>1, "name"=>"John", "count"=>10));
+	 *
 	 * @access public
 	 * @param String $table
 	 * @param array $value
-	 * @return boolean
+	 * @return String
 	 */
 	public function insert($table, $value) {
 		if ( !count($value) ) return true;
@@ -169,12 +240,20 @@ class DB {
 		}
 		$query .= implode(",", $$value_array);
 
-		return (bool) $this->query( $query );
+		return (bool) $query;
 	}
 
+	/**
+	 * return last insert id value
+	 * @access public
+	 * @return integer
+	 */
 	public function insertedId() {
 		return $this->mysqli->insert_id;
 	}
+
+	//////////////////////////////////////////////////////////////
+	// unrefactorized
 
 	public function Update($table, $value, $type, $where, $where_type) {
 		$data = array();
@@ -207,15 +286,36 @@ class DB {
 		return $this->mysqli->query( $this->MakeQuery($query, array_values($value)) );
 	}
 
-	public function makeList($array, $type = ',') {
-		if (!is_array($array)) return '';
 
-		$list = array();
-		foreach ($array as $key => $value) {
-			$list[] = "'" . $this->mysqli->real_escape_string($value) . "'";
-		}
+	/**
+	* 쿼리 문장을 만들어주는 함수
+	*
+	* @access public
+	* @param String $query
+	* @params String $Values
+	* @return String
+	*/
+	public function MakeQuery($query, $values) {
+		//우선 대체할 값들을 받은 다음
+		$values = func_get_args();
+		array_shift($values);
+		//values가 여러개인 경우 배열 제거
+		if (is_array($values[0])) $values = $values[0];
 
-		return implode(",", $list);
+		//SQL Injection 방지 처리 후
+		foreach ($values as $key=>$value)
+			$values[$key] = addslashes($value);
+
+		//혹시모를 "%s"에서 따옴표를 제거한다
+		$query = str_replace("'%s'", "%s", $query);
+		$query = str_replace('"%s"', "%s", $query);
+
+		$query = str_replace('%s', "'%s'", $query);
+
+		//'' 없는 문자열 처리
+		$query = str_replace('%p', "%s", $query);
+
+		return @vsprintf($query, $values);
 	}
 }
 
