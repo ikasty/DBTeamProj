@@ -8,13 +8,15 @@ class User
 	public $user_id = "";
 	private $password = "";
 	public $user_name = "";
-	//public $sex = "";
-	//public $address = "";
-	//public $address_ = "";
-	//public $phone = "";
-	//public $email = "";
-	//public $birth = "";
-	private $auth = ""; 
+
+	public $developer_id = "";
+	public $university = "";
+	public $hometown = "";
+
+	public $major = "";
+
+	public $company = "";
+	public $department_id = "";
 
 	protected function __construct($user_id)
 	{
@@ -27,6 +29,28 @@ class User
 			$this->user_id = $user_info["id"];
 			$this->password = ($user_info["비밀번호"]);
 			$this->name = $user_info["이름"];
+
+			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
+			$developer_info = $DB->getRow($query);
+
+			$this->developer_id = $developer_info["id"];
+			$this->university = $developer_info["대학교"];
+			$this->hometown = $developer_info["고향"];
+
+			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+			$major_info = $DB->getRow($query);
+
+			$this->major = $major_info["전문분야"];
+
+			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $developer_id);
+			$work_on_info = $DB->getRow($query);
+
+			$this->company = $major_info["회사이름"];
+
+			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $company);
+			$department_info = $DB->getRow($query);
+
+			$this->company = $department_info["부서id"];
 		}
 	}
 
@@ -98,51 +122,6 @@ class User
 		else return false; 
 	}
 
-}
-
-class Developer extends User 
-{
-	public $developer_id = "";
-	public $university = "";
-	public $hometown = "";
-
-	public $major = "";
-
-	public $company = "";
-	public $department_id = "";
-
-	function __construct($user_id)
-	{
-		$DB = getDB();
-
-		parent::__construct($user_id);
-		
-		if($user_id !== "") {
-
-			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
-			$developer_info = $DB->getRow($query);
-
-			$this->developer_id = $developer_info["id"];
-			$this->university = $developer_info["대학교"];
-			$this->hometown = $developer_info["고향"];
-
-			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
-			$major_info = $DB->getRow($query);
-
-			$this->major = $major_info["전문분야"];
-
-			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $developer_id);
-			$work_on_info = $DB->getRow($query);
-
-			$this->company = $major_info["회사이름"];
-
-			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $company);
-			$department_info = $DB->getRow($query);
-
-			$this->company = $department_info["부서id"];
-
-		}
-	}
 	function is_admin($user_id)
 	{
 		global $DB;
@@ -162,7 +141,6 @@ class Developer extends User
 			return true;
 		}
 	}
-
 	function update()
 	{
 		global $DB;
@@ -251,20 +229,6 @@ class Developer extends User
 
 	}
 
-}
-
-class Administrator extends User
-{
-	function __construct($user_id)
-	{
-		parent::__construct($user_id);
-		
-		if($user_id !== "")
-		{
-			// 딱히 할 일이 없음
-		}
-	}
-
 	function mapping()
 	{
 
@@ -284,5 +248,6 @@ class Administrator extends User
 	{
 
 	}
+
 }
 ?>
