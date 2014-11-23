@@ -27,12 +27,12 @@ include('class/db.php');
 // menus
 $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
-	array("user", "main", "octicon", "home", "Home"),
+	array("all", "main", "octicon", "home", "Home"),
 	array("user", "", "octicon", "graph", "Graph"),
 	array("user", "", "octicon", "cloud-upload", "Upload"),
-	array("user", "", "octicon", "law", "Vote"),
+	array("user", "eval", "octicon", "law", "Evaluate"),
 	array("admin", "", "octicon", "tools", "Setting"),
-	array("user", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
+	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
 );
 
 
