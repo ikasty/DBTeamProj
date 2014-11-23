@@ -18,6 +18,8 @@ class User
 	public $company = "";
 	public $department_id = "";
 
+	public $file_list[] = "";
+
 	protected function __construct($user_id)
 	{
 		$DB = getDB();
@@ -42,15 +44,20 @@ class User
 
 			$this->major = $major_info["전문분야"];
 
-			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $developer_id);
+			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $this->developer_id);
 			$work_on_info = $DB->getRow($query);
 
 			$this->company = $major_info["회사이름"];
 
-			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $company);
+			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $this->company);
 			$department_info = $DB->getRow($query);
 
 			$this->company = $department_info["부서id"];
+
+			//다중속성
+			$query = $DB->MakeQuery("SELECT 평가자료 From 평가자료 where 개발자id=%s", $this->developer_id);
+			$file_list = $DB->getColumn($query);
+			
 		}
 	}
 
@@ -126,7 +133,7 @@ class User
 	{
 		global $DB;
 		$temp = new User($user_id);
-		if ($user_id === "") return flase;
+		if ($user_id === "") return false;
 		
 		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
 		$developer_info = $DB->getRow($query);
@@ -134,7 +141,7 @@ class User
 
 		if ($developer_info["id"] != "") //개발자 ID 로 관리자 체크
 		{
-			return flase;
+			return false;
 		}
 		else
 		{
@@ -196,52 +203,123 @@ class User
 		$_SESSION["session_user"] = serialize($this);
 	}
 
+	static function check_count() // 현재시간이 평가회차 시간에 유효한지
+	{
+		$year = data("Y");
+		$month = data("M");
+		$day = data("D");
+		$start_data = "2014-08-15"; 
+		$end_data = "2014-08-30";//예시
+
+		if($year > substr($start_data,0,4) && $year < substr($end_date,0,4) ) {
+			if($month > substr($start_data,5,2) && $month < substr($end_data,5,2)) {
+				if($day > substr($start_data,8,2) && $day < substr($end_data,8,2)) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
+
 	function Demand_Evaluate($file_id)
 	{
 		global $DB;
 
-		$query = $DB->MakeQuery("SELECT * From 평가자료 where 개발자id=%s", $this->developer_id);
-		$Evaluate_info = $DB->getRow($query);
-
-		if(strpos($Evaluate_info["자료id"],$file_id) == true)
+		if(strpos($this->file_list,$file_id) == true && check_count() == true)
 		{
-			//신청 기간인 경우 해당 파일 평가등록 수행
+			//해당 파일 신청
 		}
 		else
 		{
-			//개발자가 해당 파일을 갖고 있지 않음
+			return false;
+			//시간 혹은 파일 오류
 		}
 
 	}
 
-	function Evalate()
+	function Evalate($file_id)
 	{
+		global $DB;
 
+		$query = $DB->MakeQuery("SELECT * From 평가자 선정 where 개발자id=%s", $this->developer_id);
+		$group_info = $DB->getRow($query);
+
+		$Count = $group_info["평가회차"];
+		$Egroup_id = $group_info["평가그룹"];
+
+		$query = $DB->MakeQuery("SELECT 그룹id From 피평가자 그룹 where 평가회차id=%s AND 평가자그룹=%s", $Count, $Egroup_id);
+		$Dgroup_id = $DB->getRow($query); //피평가자 그룹 id 
+
+		$query = $DB->MakeQuery("SELECT 개발자id From 피평가자 신청 where 평가회차id=%s AND 평가그룹=%s", $Count, $Dgroup_id);
+		$D_list[] = $DB->getColumn($query); //매핑된 피평가자 그룹의 개발자 목록
+
+		$i=0;
+		while(i < count($D_list)) {
+			$query = $DB->MakeQuery("SELECT 자료id From 평가자료 where 개발자id=%s", $D_list[i++]);
+			$DFile_list[] = $DB->getColumn($query);
+
+			if(strpos($DFile_list,$file_id) == true) {
+				//평가 
+			}
+			else {
+				return false;
+			}
+		}
 	}
 
 	function File_Upload()
 	{
-
-	}
-
-	function Serach()
-	{
-
-	}
-
-	function mapping()
-	{
-
-	}
-
-	function admin_search()
-	{
-
-	}
-
-	function admin_update()
-	{
-
+		$target_dir = "uploads/";
+		$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+		$uploadOk = 1;
+		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+		// Check if image file is a actual image or fake image
+		if(isset($_POST["submit"])) {
+		    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+		    if($check !== false) {
+		        echo "File is an image - " . $check["mime"] . ".";
+		        $uploadOk = 1;
+		    } else {
+		        echo "File is not an image.";
+		        $uploadOk = 0;
+		    }
+		}
+		// Check if file already exists
+		if (file_exists($target_file)) {
+		    echo "Sorry, file already exists.";
+		    $uploadOk = 0;
+		}
+		// Check file size
+		if ($_FILES["fileToUpload"]["size"] > 500000) {
+		    echo "Sorry, your file is too large.";
+		    $uploadOk = 0;
+		}
+		// Allow certain file formats
+		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+		&& $imageFileType != "gif" ) {
+		    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		    $uploadOk = 0;
+		}
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		    echo "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+		        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+		    } else {
+		        echo "Sorry, there was an error uploading your file.";
+		    }
+		}
 	}
 
 	function StartEvaluate()
