@@ -10,8 +10,8 @@ function load_view(target, done_func, menu_reload) {
 		data: args
 	}).done(function(data) {
 		// replace view
-		if (menu_reload)	target = $('#container');
-		else				target = $('#contents');
+		if (menu_reload === 'true')	target = $('#container');
+		else						target = $('#contents');
 
 		if (data != '-1') target.html(data);
 		done_func(data);
