@@ -12,13 +12,14 @@ function makeLink($class, $text, $link = array(), $attr = '') {
 function printMenuHeader() {
 	global $menu_item;
 
+	$current_menu_type[] = 'all';
 	if (!isset($_SESSION['id'])) return ;
 	else $current_menu_type = 'user';
 
 	$i = 0;
 	foreach($menu_item as $menu) :
 		$menu_type = $menu[0];
-		if ($current_menu_type != $menu_type && $menu_type != 'all') continue;
+		if ( !in_array($menu_type, $current_menu_type) ) continue;
 		$i++;
 ?>
 	.bt-menu ul li:nth-child(<?=$i?>) {transform: translate3d(-100%,<?=(300 - 100 * $i)?>%,0);}
@@ -29,8 +30,9 @@ function printMenuHeader() {
 function printMenuContents() {
 	global $menu_item;
 
+	$current_menu_type[] = 'all';
 	if (!isset($_SESSION['id'])) return ;
-	else $current_menu_type = 'user';
+	else $current_menu_type[] = 'user';
 ?>
 	<a class="bt-menu-trigger"><span>Menu</span></a>
 	<ul>
@@ -39,7 +41,7 @@ function printMenuContents() {
 	foreach($menu_item as $menu) :
 		list($menu_type, $view_name, $icon_type, $icon_name, $tooltip_name, $optional) = $menu;
 
-		if ($current_menu_type != $menu_type && $menu_type != 'all') continue;
+		if ( !in_array($menu_type, $current_menu_type) ) continue;
 		$classname = $icon_type . " " . $icon_type . "-" . $icon_name;
 		$option = array('data-link'=>$view_name);
 		if (isset($optional) && is_array($optional)) $option = array_merge($option, $optional);

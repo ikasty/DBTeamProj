@@ -4,7 +4,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 $user_count = 10; // 회원수 구하기
 
 ?>
-<div class="mainform">
+<div class="notice mainform">
 	<p>안녕하세요, <?=$current_user->user_name?>님!</p>
 <?// if ($current_user->is_admin()) : ?>
 	<p>현재 <?=$user_count?>명의 개발자가 등록되어 있습니다.</p>

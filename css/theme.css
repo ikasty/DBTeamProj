@@ -1,3 +1,5 @@
+/* custom margin */
+.pure-g {margin-bottom: 30px;}
 
 /* from PURE buttons-core.css */
 .pure-skin-dbproj .pure-button {

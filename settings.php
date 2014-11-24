@@ -28,7 +28,8 @@ include('class/db.php');
 $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
 	array("all", "main", "octicon", "home", "Home"),
-	array("user", "", "octicon", "graph", "Graph"),
+	array("user", "eval-attend", "octicon", "checklist", "Attend evaluate"),
+	//array("user", "", "octicon", "graph", "Graph"),
 	array("user", "", "octicon", "cloud-upload", "Upload"),
 	array("user", "eval", "octicon", "law", "Evaluate"),
 	array("admin", "", "octicon", "tools", "Setting"),

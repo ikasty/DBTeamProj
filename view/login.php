@@ -12,8 +12,7 @@ unset($_SESSION['id']);
 		<p><input type="text" name="login" value="" placeholder="Username"></p>
 		<p><input type="password" name="password" value="" placeholder="Password"></p>
 		<p class="submit">
-			<a data-func="do_login" data-func-arg="login_args" data-func-end="login_finish"
-			class="pure-button submit ajax_load" type="button" name="commit">Login</a>
+			<a data-func="do_login" class="pure-button submit ajax_load" type="button" name="commit">Login</a>
 		</p>
 	</form>
 	<script type="text/javascript">
