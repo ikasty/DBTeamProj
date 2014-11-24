@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 호스트: localhost
--- 처리한 시간: 14-11-22 23:09 
+-- 처리한 시간: 14-11-24 16:35 
 -- 서버 버전: 5.1.41
 -- PHP 버전: 5.2.12
 
@@ -155,8 +155,9 @@ CREATE TABLE IF NOT EXISTS `평가` (
 
 CREATE TABLE IF NOT EXISTS `평가일정` (
   `평가회차` int(11) NOT NULL AUTO_INCREMENT COMMENT '평가회차',
-  `시작일` date NOT NULL COMMENT '평가시작일',
-  `종료일` date DEFAULT NULL COMMENT '평가종료일',
+  `모집시작일` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '평가시작일',
+  `평가시작일` timestamp NULL DEFAULT NULL,
+  `종료일` timestamp NULL DEFAULT NULL COMMENT '평가종료일',
   PRIMARY KEY (`평가회차`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='평가의 일정 조정' AUTO_INCREMENT=1 ;
 
