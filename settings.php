@@ -45,6 +45,7 @@ $js_headers = array();
 $css_headers[] = 'style';
 $js_headers[] = 'main';
 $js_headers[] = 'menu';
+$css_headers[] = 'theme';
 
 // pure css
 $css_headers[] = 'pure';
@@ -54,6 +55,9 @@ $js_headers[] = 'jquery.blockUI';
 // jquery.ui
 $js_headers[] = 'jquery-ui.min';
 $css_headers[] = 'jquery-ui.min';
+
+// Charts
+$js_headers[] = 'Chart.min';
 
 // menu
 $css_headers[] = 'menu';

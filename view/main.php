@@ -17,5 +17,9 @@ $user_count = 10; // 회원수 구하기
 	<p>현재 <?=$current_user->company_name?>에서 근무중이십니다. 작업하신 프로젝트를 관리해보세요!</p>
 <?// endif; ?>
 </div>
-
-
+<?
+//if ($current_user->is_admin())
+//	include("main/admin-graph.php");
+//else
+	include("main/developer-graph.php");
+?>

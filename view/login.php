@@ -6,7 +6,7 @@ unset($_SESSION['id']);
 
 ?>
 <div class="temp_wrapper">
-<div class="login mainform">
+<div class="login mainform pure-skin-dbproj">
 	<h1>System Login</h1>
 	<form method="post">
 		<p><input type="text" name="login" value="" placeholder="Username"></p>
