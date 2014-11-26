@@ -14,7 +14,6 @@ class User
 	//public $phone = "";
 	//public $email = "";
 	//public $birth = "";
-	private $privilege = -1; //default = 0(developer) <--> 1(admin)
 	private $auth = ""; 
 
 	protected function __construct($user_id)
@@ -28,7 +27,6 @@ class User
 			$this->user_id = $user_info["id"];
 			$this->password = ($user_info["비밀번호"]);
 			$this->name = $user_info["이름"];
-			$this->privilege = 0;	//TODO: 이거 db에서 가져올 수 있도록 수정할 것 by 대연
 		}
 	}
 
@@ -38,11 +36,15 @@ class User
 		$temp = new User($user_id);
 		if ($user_id === "") return $temp;
 
-		if ($temp->privilege == 0)
+		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
+		$developer_info = $DB->getRow($query);
+
+
+		if ($developer_info["id"] != "")
 		{
 			return new Developer($user_id);
 		}
-		else if ($temp->privilege == 1)
+		else
 		{
 			return new Administrator($user_id);
 		}
@@ -95,14 +97,19 @@ class User
 		if( eregi("([a-z0-9\_\-\.]+)@([a-z0-9\_\-\.]+)", $str) ) return true;
 		else return false; 
 	}
+
 }
 
 class Developer extends User 
 {
 	public $developer_id = "";
-	public $major = "";
 	public $university = "";
 	public $hometown = "";
+
+	public $major = "";
+
+	public $company = "";
+	public $department_id = "";
 
 	function __construct($user_id)
 	{
@@ -116,11 +123,134 @@ class Developer extends User
 			$developer_info = $DB->getRow($query);
 
 			$this->developer_id = $developer_info["id"];
-			//$this->major = $developer_info["major"];
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
+
+			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+			$major_info = $DB->getRow($query);
+
+			$this->major = $major_info["전문분야"];
+
+			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $developer_id);
+			$work_on_info = $DB->getRow($query);
+
+			$this->company = $major_info["회사이름"];
+
+			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $company);
+			$department_info = $DB->getRow($query);
+
+			$this->company = $department_info["부서id"];
+
 		}
 	}
+	function is_admin($user_id)
+	{
+		global $DB;
+		$temp = new User($user_id);
+		if ($user_id === "") return flase;
+		
+		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
+		$developer_info = $DB->getRow($query);
+
+
+		if ($developer_info["id"] != "") //개발자 ID 로 관리자 체크
+		{
+			return flase;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	function update()
+	{
+		global $DB;
+		//유저, 개발자, 전문분야, 근무, 부서 table값 전부 업데이트
+		$DB->Update('유저',
+		array('user_id'=>$_POST["id"],
+			'password'=>md5($_POST["비밀번호"]),
+			'user_name'=>$_POST["이름"]),
+		array("%s", "%s", "%s"),
+		array('id'=>$this->id),
+		array("%d"));
+		
+		$this->user_id = $_POST["id"];
+		$this->password = $_POST["비밀번호"];
+		$this->user_name = $_POST["이름"];
+
+		$DB->Update('개발자',
+		array('developer_id'=>$_POST["id"],
+			'university'=>md5($_POST["대학교"]),
+			'hometown'=>$_POST["고향"]),
+		array("%s", "%s", "%s"),
+		array('id'=>$this->id),
+		array("%d"));
+		
+		$this->developer_id = $_POST["id"];
+		$this->university = $_POST["비밀번호"];
+		$this->hometown = $_POST["이름"];
+
+		$DB->Update('전문분야',
+		array('major'=>$_POST["전문분야"]),
+		array("%s"),
+		array('id'=>$this->id),
+		array("%d"));
+		
+		$this->major = $_POST["전문분야"];
+
+		$DB->Update('근무',
+		array('company'=>$_POST["회사이름"]),
+		array("%s"),
+		array('id'=>$this->id),
+		array("%d"));
+		
+		$this->company = $_POST["회사이름"];
+
+		$DB->Update('부서',
+		array('department_id'=>$_POST["부서id"]),
+		array("%s"),
+		array('id'=>$this->id),
+		array("%d"));
+
+		$this->department_id = $_POST["부서id"];
+		
+		$_SESSION["session_user"] = serialize($this);
+	}
+
+	function Demand_Evaluate($file_id)
+	{
+		global $DB;
+
+		$query = $DB->MakeQuery("SELECT * From 평가자료 where 개발자id=%s", $this->developer_id);
+		$Evaluate_info = $DB->getRow($query);
+
+		if(strpos($Evaluate_info["자료id"],$file_id) == true)
+		{
+			//신청 기간인 경우 해당 파일 평가등록 수행
+		}
+		else
+		{
+			//개발자가 해당 파일을 갖고 있지 않음
+		}
+
+	}
+
+	function Evalate()
+	{
+
+	}
+
+	function File_Upload()
+	{
+
+	}
+
+	function Serach()
+	{
+
+	}
+
 }
 
 class Administrator extends User
@@ -129,10 +259,30 @@ class Administrator extends User
 	{
 		parent::__construct($user_id);
 		
-		if($user_id !== "" && $this->privilege == 1)
+		if($user_id !== "")
 		{
 			// 딱히 할 일이 없음
 		}
+	}
+
+	function mapping()
+	{
+
+	}
+
+	function admin_search()
+	{
+
+	}
+
+	function admin_update()
+	{
+
+	}
+
+	function StartEvaluate()
+	{
+
 	}
 }
 ?>

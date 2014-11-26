@@ -51,9 +51,16 @@ class developer
 			$developer_info = $DB->getRow($query);
 
 			$this->developer_id = $developer_info["id"];
-			$this->major = $developer_info["전공"];		//DB에 없음
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
+
+			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+			$major_info = $DB->getRow($query);
+
+			$this->major = $major_info["전문분야"];
+
+
+
 		}
 	}
 
@@ -73,9 +80,14 @@ class developer
 			$developer_info = $DB->getRow($query);
 
 			$this->developer_id = $developer_info["id"];
-			$this->major = $developer_info["전공"];		//DB에 없음
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
+
+			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+			$major_info = $DB->getRow($query);
+
+			$this->major = $major_info["전문분야"];
+
 			$_SESSION["session_user"] = serialize($this);
 			$_SESSION["login_time"] = time();
 			
@@ -128,6 +140,7 @@ class developer
 			//WHERE
 		array("%d"));
 			//WHERETYPE ?
+		/*여기 반대로 한듯*/
 		
 		$this->user_id = $_POST["user_id"];
 		$this->비밀번호 = $_POST["password"];
@@ -148,13 +161,74 @@ class developer
 			//WHERE
 		array("%d"));
 			//WHERETYPE 
-		
+
 		$this->id = $_POST["developer_id"];
-		$this->전공 = $_POST["major"];
 		$this->대학교 = $_POST["university"];
 		$this->고향 = $_POST["hometown"];
+
+		$DB->Update('전문분야',
+			//TABEL
+		array(	'전문분야'=>$_POST["major"]),
+			//VALUE
+		array("%s"),
+			//TYPE
+		array('id'=>$this->user_id),
+			//WHERE
+		array("%d"));
+			//WHERETYPE 
+
+
+		$this->major = $_POST["전문분야"];
+		
+		
 		$_SESSION["session_user"] = serialize($this);
 		//this의 정보를 보관하는 session_user 라는 이름의 SESSION 값 같은데 사용법을 모름
+	}
+	
+	function upload()
+	{
+		$target_dir = "uploads/";
+		$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+		$uploadOk = 1;
+		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+		// Check if image file is a actual image or fake image
+		if(isset($_POST["submit"])) {
+		    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+		    if($check !== false) {
+		        echo "File is an image - " . $check["mime"] . ".";
+		        $uploadOk = 1;
+		    } else {
+		        echo "File is not an image.";
+		        $uploadOk = 0;
+		    }
+		}
+		// Check if file already exists
+		if (file_exists($target_file)) {
+		    echo "Sorry, file already exists.";
+		    $uploadOk = 0;
+		}
+		// Check file size
+		if ($_FILES["fileToUpload"]["size"] > 500000) {
+		    echo "Sorry, your file is too large.";
+		    $uploadOk = 0;
+		}
+		// Allow certain file formats
+		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+		&& $imageFileType != "gif" ) {
+		    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		    $uploadOk = 0;
+		}
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		    echo "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+		        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+		    } else {
+		        echo "Sorry, there was an error uploading your file.";
+		    }
+		}
 	}
 
 
@@ -212,9 +286,14 @@ class administrator extends developer
 				$developer_info = $DB->getRow($query);
 
 				$this->developer_id = $developer_info["id"];
-				$this->major = $developer_info["전공"];		//미구현
 				$this->university = $developer_info["대학교"];
 				$this->hometown = $developer_info["고향"];
+
+				$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+				$major_info = $DB->getRow($query);
+
+				$this->major = $major_info["전문분야"];
+
 
 				$query = $DB->MakeQuery("SELECT * From 관리자 where 유저id=%s", $user_id);
 				$admin_info = $DB->getRow($query);
