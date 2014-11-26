@@ -8,13 +8,17 @@ class User
 	public $user_id = "";
 	private $password = "";
 	public $user_name = "";
-	//public $sex = "";
-	//public $address = "";
-	//public $address_ = "";
-	//public $phone = "";
-	//public $email = "";
-	//public $birth = "";
-	private $auth = ""; 
+
+	public $developer_id = "";
+	public $university = "";
+	public $hometown = "";
+
+	public $major = "";
+
+	public $company = "";
+	public $department_id = "";
+
+	public $file_list = array();
 
 	protected function __construct($user_id)
 	{
@@ -27,6 +31,33 @@ class User
 			$this->user_id = $user_info["id"];
 			$this->password = ($user_info["비밀번호"]);
 			$this->name = $user_info["이름"];
+
+			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
+			$developer_info = $DB->getRow($query);
+
+			$this->developer_id = $developer_info["id"];
+			$this->university = $developer_info["대학교"];
+			$this->hometown = $developer_info["고향"];
+
+			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+			$major_info = $DB->getRow($query);
+
+			$this->major = $major_info["전문분야"];
+
+			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $this->developer_id);
+			$work_on_info = $DB->getRow($query);
+
+			$this->company = $major_info["회사이름"];
+
+			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $this->company);
+			$department_info = $DB->getRow($query);
+
+			$this->company = $department_info["부서id"];
+
+			//다중속성
+			$query = $DB->MakeQuery("SELECT 평가자료 From 평가자료 where 개발자id=%s", $this->developer_id);
+			$file_list = $DB->getColumn($query);
+			
 		}
 	}
 
@@ -99,56 +130,11 @@ class User
 		else return false; 
 	}
 
-}
-
-class Developer extends User 
-{
-	public $developer_id = "";
-	public $university = "";
-	public $hometown = "";
-
-	public $major = "";
-
-	public $company = "";
-	public $department_id = "";
-
-	function __construct($user_id)
-	{
-		$DB = getDB();
-
-		parent::__construct($user_id);
-		
-		if($user_id !== "") {
-
-			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
-			$developer_info = $DB->getRow($query);
-
-			$this->developer_id = $developer_info["id"];
-			$this->university = $developer_info["대학교"];
-			$this->hometown = $developer_info["고향"];
-
-			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
-			$major_info = $DB->getRow($query);
-
-			$this->major = $major_info["전문분야"];
-
-			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $developer_id);
-			$work_on_info = $DB->getRow($query);
-
-			$this->company = $major_info["회사이름"];
-
-			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $company);
-			$department_info = $DB->getRow($query);
-
-			$this->company = $department_info["부서id"];
-
-		}
-	}
 	function is_admin($user_id)
 	{
 		global $DB;
 		$temp = new User($user_id);
-		if ($user_id === "") return flase;
+		if ($user_id === "") return false;
 		
 		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
 		$developer_info = $DB->getRow($query);
@@ -156,14 +142,13 @@ class Developer extends User
 
 		if ($developer_info["id"] != "") //개발자 ID 로 관리자 체크
 		{
-			return flase;
+			return false;
 		}
 		else
 		{
 			return true;
 		}
 	}
-
 	function update()
 	{
 		global $DB;
@@ -182,7 +167,7 @@ class Developer extends User
 
 		$DB->Update('개발자',
 		array('developer_id'=>$_POST["id"],
-			'university'=>md5($_POST["대학교"]),
+			'university'=>$_POST["대학교"],
 			'hometown'=>$_POST["고향"]),
 		array("%s", "%s", "%s"),
 		array('id'=>$this->id),
@@ -219,71 +204,83 @@ class Developer extends User
 		$_SESSION["session_user"] = serialize($this);
 	}
 
+	static function check_count() // 현재시간이 평가회차 시간에 유효한지
+	{
+		$year = data("Y");
+		$month = data("M");
+		$day = data("D");
+		$start_data = "2014-08-15"; 
+		$end_data = "2014-08-30";//예시
+
+		if($year > substr($start_data,0,4) && $year < substr($end_date,0,4) ) {
+			if($month > substr($start_data,5,2) && $month < substr($end_data,5,2)) {
+				if($day > substr($start_data,8,2) && $day < substr($end_data,8,2)) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
+
 	function Demand_Evaluate($file_id)
 	{
 		global $DB;
 
-		$query = $DB->MakeQuery("SELECT * From 평가자료 where 개발자id=%s", $this->developer_id);
-		$Evaluate_info = $DB->getRow($query);
-
-		if(strpos($Evaluate_info["자료id"],$file_id) == true)
+		if(strpos($this->file_list,$file_id) == true && check_count() == true)
 		{
-			//신청 기간인 경우 해당 파일 평가등록 수행
+			//해당 파일 신청
 		}
 		else
 		{
-			//개발자가 해당 파일을 갖고 있지 않음
+			return false;
+			//시간 혹은 파일 오류
 		}
 
 	}
-
-	function Evalate()
+	//평가라고 하기 부족함
+	function Evalate($file_id)
 	{
+		global $DB;
 
-	}
+		$query = $DB->MakeQuery("SELECT * From 평가자 선정 where 개발자id=%s", $this->developer_id);
+		$group_info = $DB->getRow($query);
 
-	function File_Upload()
-	{
+		$Count = $group_info["평가회차"];
+		$Egroup_id = $group_info["평가그룹"];
 
-	}
+		$query = $DB->MakeQuery("SELECT 그룹id From 피평가자 그룹 where 평가회차id=%s AND 평가자그룹=%s", $Count, $Egroup_id);
+		$Dgroup_id = $DB->getRow($query); //피평가자 그룹 id 
 
-	function Serach()
-	{
+		$query = $DB->MakeQuery("SELECT 개발자id From 피평가자 신청 where 평가회차id=%s AND 평가그룹=%s", $Count, $Dgroup_id);
+		$D_list[] = $DB->getColumn($query); //매핑된 피평가자 그룹의 개발자 목록
 
-	}
+		$i=0;
+		while(i < count($D_list)) {
+			$query = $DB->MakeQuery("SELECT 자료id From 평가자료 where 개발자id=%s", $D_list[$i++]);
+			$DFile_list[] = $DB->getColumn($query);
 
-}
-
-class Administrator extends User
-{
-	function __construct($user_id)
-	{
-		parent::__construct($user_id);
-		
-		if($user_id !== "")
-		{
-			// 딱히 할 일이 없음
+			if(strpos($DFile_list,$file_id) == true) {
+				//평가 
+			}
+			else {
+				return false;
+			}
 		}
-	}
-
-	function mapping()
-	{
-
-	}
-
-	function admin_search()
-	{
-
-	}
-
-	function admin_update()
-	{
-
 	}
 
 	function StartEvaluate()
 	{
 
 	}
+
 }
 ?>
