@@ -14,7 +14,7 @@ function printMenuHeader() {
 
 	$current_menu_type[] = 'all';
 	if (!isset($_SESSION['id'])) return ;
-	else $current_menu_type = 'user';
+	else $current_menu_type[] = 'user';
 
 	$i = 0;
 	foreach($menu_item as $menu) :
