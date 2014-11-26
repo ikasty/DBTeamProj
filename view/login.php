@@ -6,14 +6,13 @@ unset($_SESSION['id']);
 
 ?>
 <div class="temp_wrapper">
-<div class="login mainform">
+<div class="login mainform pure-skin-dbproj">
 	<h1>System Login</h1>
 	<form method="post">
 		<p><input type="text" name="login" value="" placeholder="Username"></p>
 		<p><input type="password" name="password" value="" placeholder="Password"></p>
 		<p class="submit">
-			<a data-func="do_login" data-func-arg="login_args" data-func-end="login_finish"
-			class="pure-button submit ajax_load" type="button" name="commit">Login</a>
+			<a data-func="do_login" class="pure-button submit ajax_load" type="button" name="commit">Login</a>
 		</p>
 	</form>
 	<script type="text/javascript">
@@ -32,7 +31,7 @@ unset($_SESSION['id']);
 				load_view('main', function(data) {
 					view_change_finish();
 					menu_init();
-				}, true);
+				}, 'true');
 			}
 			return true;
 		}

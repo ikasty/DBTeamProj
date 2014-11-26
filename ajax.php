@@ -31,7 +31,7 @@ $ARGS = array_merge($ARGS, $_POST);
 if (!file_exists($target . '.php')) die(-1);
 
 // menu reload check
-if ( isset($ARGS['menu_reload']) && $ARGS['menu_reload'] == true && substr($target, 0, 4) == 'view' ) {
+if ( isset($ARGS['menu_reload']) && $ARGS['menu_reload'] == 'true' && substr($target, 0, 4) == 'view' ) {
 	include('view/header.php');
 	include($target . '.php');
 	include('view/footer.php');

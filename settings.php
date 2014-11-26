@@ -27,12 +27,13 @@ include('class/db.php');
 // menus
 $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
-	array("user", "main", "octicon", "home", "Home"),
-	array("user", "", "octicon", "graph", "Graph"),
+	array("all", "main", "octicon", "home", "Home"),
+	array("user", "eval-attend", "octicon", "checklist", "Attend evaluate"),
+	//array("user", "", "octicon", "graph", "Graph"),
 	array("user", "", "octicon", "cloud-upload", "Upload"),
-	array("user", "", "octicon", "law", "Vote"),
+	array("user", "eval", "octicon", "law", "Evaluate"),
 	array("admin", "", "octicon", "tools", "Setting"),
-	array("user", "login", "octicon", "sign-out", "Logout", array('data-reload'=>true)),
+	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
 );
 
 
@@ -41,10 +42,14 @@ $menu_item = array(
 $css_headers = array();
 $js_headers = array();
 
+// main font
+$css_headers[] = 'jejugothic';
+
 // default
 $css_headers[] = 'style';
 $js_headers[] = 'main';
 $js_headers[] = 'menu';
+$css_headers[] = 'theme';
 
 // pure css
 $css_headers[] = 'pure';
@@ -54,6 +59,9 @@ $js_headers[] = 'jquery.blockUI';
 // jquery.ui
 $js_headers[] = 'jquery-ui.min';
 $css_headers[] = 'jquery-ui.min';
+
+// Charts
+$js_headers[] = 'Chart.min';
 
 // menu
 $css_headers[] = 'menu';
@@ -68,7 +76,8 @@ $css_headers[] = 'octicons';
 // view
 //   login
 $css_headers[] = 'login';
-
+//   eval
+$css_headers[] = 'eval';
 
 // ajax load
 $js_headers[] = 'ajax_load';

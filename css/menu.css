@@ -156,3 +156,25 @@
         font-size: 32px;
     }
 }
+
+/* notice */
+.notice {
+    position: absolute;
+    top: -10px;
+    width: 90%;
+    z-index: 1000;
+
+    background-color: #ffeaa8;
+    border: 1px solid #ffc237;
+    color: #826200;
+    background-size: 40px 40px;
+
+    background-image: -webkit-gradient(linear,left top,right bottom,color-stop(.25,rgba(255,255,255,0.15)),color-stop(.25,rgba(0,0,0,0)),color-stop(.5,rgba(0,0,0,0)),color-stop(.5,rgba(255,255,255,0.15)),color-stop(.75,rgba(255,255,255,0.15)),color-stop(.75,rgba(0,0,0,0)),to(rgba(0,0,0,0)));
+    background-image: -webkit-linear-gradient(135deg,rgba(255,255,255,0.15) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0));
+    background-image: -moz-linear-gradient(135deg,rgba(255,255,255,0.15) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0));
+    background-image: -ms-linear-gradient(135deg,rgba(255,255,255,0.15) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0));
+    background-image: -o-linear-gradient(135deg,rgba(255,255,255,0.15) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0));
+    background-image: linear-gradient(135deg,rgba(255,255,255,0.15) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.15) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0));
+    -webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,0.4);
+    -moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+}

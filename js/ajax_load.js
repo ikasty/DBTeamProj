@@ -1,6 +1,6 @@
 function load_view(target, done_func, menu_reload) {
 	var args = {TARGET: 'view/' + target, AJAXKEY: ajaxkey};
-	if (typeof menu_reload !== 'undefined') menu_reload = false;
+	if (typeof menu_reload === 'undefined') menu_reload = 'false';
 	args.menu_reload = menu_reload;
 
 	$.ajax({
@@ -10,8 +10,8 @@ function load_view(target, done_func, menu_reload) {
 		data: args
 	}).done(function(data) {
 		// replace view
-		if (menu_reload)	target = $('#container');
-		else				target = $('#contents');
+		if (menu_reload === 'true')	target = $('#container');
+		else						target = $('#contents');
 
 		if (data != '-1') target.html(data);
 		done_func(data);
@@ -28,10 +28,10 @@ function setajax() {
 			// view change
 			view_change_start();
 
-			var menu_reload = false;
-			if (typeof item.attr('data-reload') !== 'undefined' &&
-				item.attr('data-reload') == 'true') menu_reload = true;
-//console.log(menu_reload);
+			var menu_reload = 'false';
+			if (typeof item.attr('data-reload') !== 'undefined')
+				menu_reload = 'true';
+
 			// load view
 			load_view(item.attr('data-link'), function(data) {
 				view_change_finish();
