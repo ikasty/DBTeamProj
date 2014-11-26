@@ -17,6 +17,7 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
+	font-family: 'Jeju Gothic';
 }
 
 article, aside, details, figcaption, figure,
@@ -101,8 +102,4 @@ a:hover {
 
 a[data-link]:hover, a[data-func]:hover {
     cursor: pointer;
-}
-
-.notice {
-	margin-bottom: 30px;
 }

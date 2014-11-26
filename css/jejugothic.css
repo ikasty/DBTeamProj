@@ -1,0 +1,13 @@
+/*
+ * Jeju Gothic (Korean) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+  font-family: 'Jeju Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/JejuGothic-Regular.eot);
+  src: url(/fonts/JejuGothic-Regular.eot?#iefix) format('embedded-opentype'),
+       url(/fonts/JejuGothic-Regular.woff2) format('woff2'),
+       url(/fonts/JejuGothic-Regular.woff) format('woff'),
+       url(/fonts/JejuGothic-Regular.ttf) format('truetype');
+}
