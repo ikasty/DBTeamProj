@@ -61,3 +61,11 @@ menu_init = function() {
 }();
 
 menu_init();
+
+$(document).ready(function(){
+    notice = $(".notice");
+    notice.parent().show({effect: "slide", easing: "easeOutCubic", direction: "up", duration: 1000});
+    notice.find("#close-btn").click(function(){
+        notice.hide();
+    })
+});

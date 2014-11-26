@@ -1,5 +1,6 @@
 /* custom margin */
 .pure-g {margin-bottom: 30px;}
+.pure-g [class *= "pure-u"] { padding: 10px; }
 
 /* from PURE buttons-core.css */
 .pure-skin-dbproj .pure-button {

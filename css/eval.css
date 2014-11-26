@@ -1,0 +1,15 @@
+.get-eval, .do-eval {
+	padding: 0;
+	text-align: center;
+}
+
+.eval-attend-box { margin: 0px auto; }
+
+.get-eval > .box-title, .do-eval > .box-title {
+	font-size: 1.8em;
+	color: #fff;
+}
+
+.get-eval > div, .do-eval > div {
+	padding: 30px;
+}

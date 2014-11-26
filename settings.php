@@ -42,6 +42,9 @@ $menu_item = array(
 $css_headers = array();
 $js_headers = array();
 
+// main font
+$css_headers[] = 'jejugothic';
+
 // default
 $css_headers[] = 'style';
 $js_headers[] = 'main';
@@ -73,7 +76,8 @@ $css_headers[] = 'octicons';
 // view
 //   login
 $css_headers[] = 'login';
-
+//   eval
+$css_headers[] = 'eval';
 
 // ajax load
 $js_headers[] = 'ajax_load';
