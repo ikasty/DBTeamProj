@@ -33,6 +33,7 @@ class User
 	// 이제 user를 구할 때는 $user = User::getUser($id); 처럼 한다
 	public static function getUser($user_id)
 	{
+		$DB = getDB();
 		$temp = new User($user_id);
 		if ($user_id === "") return $temp;
 

@@ -56,6 +56,7 @@ function setajax() {
 				dataType: 'json',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
+				console.log(JSON.stringify(data));
 				// trigger finish func
 				item.trigger('finish', [item, data]);
 				item.on("click", clickfunc);
