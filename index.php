@@ -21,7 +21,7 @@ include('settings.php');
 
 // routing table
 if ( !isset($_SESSION['id']) ) {
-	$content_include_file = 'view/login.php';
+	$content_include_file = 'view/main.php';
 }
 else {
 	$content_include_file = 'view/main.php';

@@ -1,0 +1,15 @@
+.upload {
+	padding: 0;
+	text-align: center;
+}
+
+.upload-box { margin: 0px auto; }
+
+.upload > .box-title {
+	font-size: 1.8em;
+	color: #fff;
+}
+
+.upload > div {
+	padding: 30px;
+}

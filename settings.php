@@ -79,6 +79,8 @@ $css_headers[] = 'font-awesome.min';
 $css_headers[] = 'login';
 //   eval
 $css_headers[] = 'eval';
+// upload
+$css_headers[] = 'upload';
 
 // ajax load
 $js_headers[] = 'ajax_load';
