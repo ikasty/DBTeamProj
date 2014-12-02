@@ -9,7 +9,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 	<? endif; ?>
 </div>
 <? if ( isset($current_eval) && $current_eval->is_attendable() || true ) : ?>
-<div class="pure-g">
+<div class="pure-g" style="text-align:center;">
 	<div class="eval-attend-box pure-u-2-5">
 		<div class="mainform get-eval">
 			<div class="box-title" style="background: #519251;">
@@ -44,6 +44,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 	</div>
 </div>
 <script type="text/javascript">
+	// id가 get-eval 또는 do-eval인 개체
 	$("#get-eval, #do-eval").each(function() {
 		var item = $(this);
 		item
