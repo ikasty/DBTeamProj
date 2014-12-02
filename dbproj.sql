@@ -18,7 +18,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- 데이터베이스: `dbproj`
 --
-CREATE DATABASE `dbproj` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+-- 제출할 때는 아래 CREATE DATABASE 문 주석 제거할 것!
+-- CREATE DATABASE `dbproj` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `dbproj`;
 
 -- --------------------------------------------------------

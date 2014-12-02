@@ -70,16 +70,7 @@ class User
 
 		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
 		$developer_info = $DB->getRow($query);
-
-
-		if ($developer_info["id"] != "")
-		{
-			return new Developer($user_id);
-		}
-		else
-		{
-			return new Administrator($user_id);
-		}
+		return $temp;		
 	}
 
 	public function login($password)

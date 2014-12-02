@@ -28,7 +28,7 @@ include('class/db.php');
 $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
 	array("all", "main", "octicon", "home", "Home"),
-	array("user", "eval-attend", "octicon", "checklist", "Attend evaluate"),
+	array("user", "eval-attend", "fa", "sign-in", "Attend evaluate"),
 	//array("user", "", "octicon", "graph", "Graph"),
 	array("user", "", "octicon", "cloud-upload", "Upload"),
 	array("user", "eval", "octicon", "law", "Evaluate"),
@@ -72,6 +72,7 @@ $js_headers[] = 'classie';
 
 // icons
 $css_headers[] = 'octicons';
+$css_headers[] = 'font-awesome.min';
 
 // view
 //   login

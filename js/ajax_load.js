@@ -48,20 +48,26 @@ function setajax() {
 
 			// get args
 			var args = {};
-			item.trigger('start', args);
+			var option = {'success': true};
+			item.trigger('start', [args, option]);
+			if (!option.success) {
+				item.on("click", clickfunc);
+				return ;
+			}
 
 			$.ajax({
 				url: '/ajax.php',
 				type: 'POST',
-				dataType: 'json',
+				dataType: 'html',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
-				console.log(JSON.stringify(data));
+				console.log(data);data = JSON.parse(data);
 				// trigger finish func
 				item.trigger('finish', [item, data]);
-				item.on("click", clickfunc);
 			}).fail(function(jqHXR, textStatus, errorThrown) {
 				console.log(textStatus, errorThrown);
+			}).complete(function(jqHXR, textStatus) {
+				item.on("click", clickfunc);
 			});
 		};
 		$(this).on("click", clickfunc);
