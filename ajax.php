@@ -10,11 +10,11 @@ define("DBPROJ", true);
 
 if (!isset($_POST['AJAXKEY'])) die(-1);
 
-// include setting
-include('settings.php');
-
 // session start
 session_start();
+
+// include setting
+include('settings.php');
 
 if ($_POST['AJAXKEY'] !== $_SESSION['AJAXKEY']) die(-1);
 $target = '';
