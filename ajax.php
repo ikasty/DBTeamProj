@@ -26,6 +26,7 @@ else 							$target = 'view/main';
 
 $ARGS = array();
 if (isset($_POST['ARGS'])) $ARGS = $_POST['ARGS'];
+if (!is_array($ARGS)) var_dump($ARGS);
 $ARGS = array_merge($ARGS, $_POST);
 
 if (!file_exists($target . '.php')) die(-1);

@@ -30,7 +30,7 @@ $menu_item = array(
 	array("all", "main", "octicon", "home", "Home"),
 	array("user", "eval-attend", "fa", "sign-in", "Attend evaluate"),
 	//array("user", "", "octicon", "graph", "Graph"),
-	array("user", "", "octicon", "cloud-upload", "Upload"),
+	array("user", "upload", "octicon", "cloud-upload", "Upload"),
 	array("user", "eval", "octicon", "law", "Evaluate"),
 	array("admin", "", "octicon", "tools", "Setting"),
 	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
