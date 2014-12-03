@@ -81,6 +81,9 @@ $css_headers[] = 'login';
 $css_headers[] = 'eval';
 // upload
 $css_headers[] = 'upload';
+// evaluate
+$css_headers[] = 'evaluate';
+
 
 // ajax load
 $js_headers[] = 'ajax_load';
