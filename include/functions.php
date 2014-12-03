@@ -54,3 +54,8 @@ function printMenuContents() {
 	</ul>
 <?
 }
+
+function addMessage($message) {
+	$br = isset($_SESSION["noti-message"]) && $_SESSION["noti-message"] !== "" ? "\n" : "";
+	$_SESSION["noti-message"] .= $br . $message;
+}

@@ -63,7 +63,10 @@ menu_init = function() {
 menu_init();
 
 function get_notice() {
-    notice = $(".notice").parent();
+    notice = $(".notice");
+    if (notice.length != 1) return ;
+    notice = notice.parent();
+
     notice.show({effect: "slide", easing: "easeOutCubic"});
     notice.find("#notice-close-btn").click(function(){
         notice.hide();

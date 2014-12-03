@@ -7,4 +7,5 @@ function view_change_start() {
 }
 function view_change_finish() {
 	$.unblockUI();
+	get_notice();
 }

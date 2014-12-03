@@ -7,6 +7,7 @@ $temp_user = User::getUser($ARGS['userid']);
 
 if ($temp_user->login($ARGS['password'])) {
 	$return['success'] = "success";
+	addMessage("로그인에 성공하였습니다!");
 } else {
 	$return['success'] = "failed";
 }
