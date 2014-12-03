@@ -43,12 +43,15 @@ if (substr($target, 0, 4) == 'view') {
 } else
 if (substr($target, 0, 4) == 'func') {
 	$return = array();
+	ob_start();
 	include($target . '.php');
-	if ( isset($_SESSION['noti-message']) && $_SESSION['noti-message'] !== '' ) {
-		$return = array(
-			'noti-message' => $_SESSION['noti-message'],
-			'orig-return' => $return);
-		$_SESSION['noti-message'] = '';
-	}
+	$debug_msg = ob_end_flush();
+	
+	$return = array(
+		'noti-message' => $_SESSION['noti-message'],
+		'debug-message' => $debug_msg,
+		'orig-return' => $return);
+	$_SESSION['noti-message'] = '';
+	
 	echo json_encode($return);
 }
