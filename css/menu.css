@@ -159,13 +159,17 @@
 
 /* notice */
 .notice {
+    display: none;
     position: absolute;
     top: -10px;
-    width: 50%;
+    left: 0; right: 0;
+    margin: 0 auto;
+    width: 750px;
     z-index: 1000;
 
     background-color: #ffeaa8;
     border: 1px solid #ffc237;
+    border-radius: 3px;
     color: #826200;
     background-size: 40px 40px;
 
