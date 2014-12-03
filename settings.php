@@ -19,9 +19,10 @@ $db_setting = array(
 
 //////////////////////////////////////////////////////
 // include classes
+include('class/db.php');
+
 include('include/functions.php');
 include('class/user.php');
-include('class/db.php');
 	/* include classes here */
 
 // menus

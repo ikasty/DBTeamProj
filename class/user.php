@@ -4,7 +4,8 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 //TODO: 클래스를 굳이 나누긴 했는데, 관리자 정보를 db에 따로 저장하지 않으니깐 그냥 하나의 클래스로 합쳐야할듯 (by 대연)
 class User
 {
-	
+	public $user_type = "user";
+
 	public $user_id = "";
 	private $password = "";
 	public $user_name = "";
@@ -34,6 +35,10 @@ class User
 
 			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
 			$developer_info = $DB->getRow($query);
+			if (!$developer_info) {
+				$this->user_type = "admin";
+				return ;
+			}
 
 			$this->developer_id = $developer_info["id"];
 			$this->university = $developer_info["대학교"];
@@ -96,7 +101,7 @@ class User
 	{
 		global $current_user;
 		// 가짜 유저를 넣음
-		$current_user = getUser("");
+		$current_user = User::getUser("");
 
 		unset($_SESSION["id"]);
 		unset($_SESSION["login_time"]);
@@ -112,7 +117,11 @@ class User
 	}
 
 	public function usertype() {
-		return get_class($this);
+		return $this->user_type;
+	}
+
+	public function is_admin()	{
+		return $this->usertype() == "admin";
 	}
 
 	public static function ismail( $str ) 
@@ -121,25 +130,6 @@ class User
 		else return false; 
 	}
 
-	function is_admin($user_id)
-	{
-		global $DB;
-		$temp = new User($user_id);
-		if ($user_id === "") return false;
-		
-		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
-		$developer_info = $DB->getRow($query);
-
-
-		if ($developer_info["id"] != "") //개발자 ID 로 관리자 체크
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
 	function update()
 	{
 		global $DB;
@@ -274,4 +264,7 @@ class User
 	}
 
 }
+
+if (isset($_SESSION["id"]))
+	$current_user = unserialize($_SESSION["id"]);
 ?>

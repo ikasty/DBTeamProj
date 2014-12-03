@@ -32,7 +32,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				<span class="mega-octicon octicon-law"></span> 평가하기
 			</div>
 			<div class="descript">
-				다른 개발자들의 작업물을 감상하시고, 평가하고, 소통하세요!
+				다른 개발자들의 작업물을 감상하시고, 평가하세요!
 			</div>
 			<div>
 				<a id="do-eval" data-func="do-eval"
