@@ -64,11 +64,13 @@ function setajax() {
 			$.ajax({
 				url: '/ajax.php',
 				type: 'POST',
-				dataType: 'html',
+				dataType: 'json',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
-				console.log(data);
-				data = JSON.parse(data);
+				//data = JSON.parse(data);
+
+				if (typeof data['debug-message'] !== "undefined")
+					console.log(data['debug-message']);
 
 				if (typeof data['noti-message'] !== "undefined") {
 					$("#notice-message").html(data['noti-message']);
