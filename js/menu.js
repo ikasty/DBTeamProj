@@ -65,6 +65,7 @@ menu_init();
 function get_notice() {
     notice = $(".notice");
     if (notice.length != 1) return ;
+    if (notice.children("#notice-message").html().trim() === '') return ;
     notice = notice.parent();
 
     notice.show({effect: "slide", easing: "easeOutCubic"});

@@ -31,11 +31,24 @@ $ARGS = array_merge($ARGS, $_POST);
 
 if (!file_exists($target . '.php')) die(-1);
 
-// menu reload check
-if ( isset($ARGS['menu_reload']) && $ARGS['menu_reload'] == 'true' && substr($target, 0, 4) == 'view' ) {
-	include('view/header.php');
+if (substr($target, 0, 4) == 'view') {
+	// menu reload check
+	if ( isset($ARGS['menu_reload']) && $ARGS['menu_reload'] == 'true' ) {
+		include('view/header.php');
+		include($target . '.php');
+		include('view/footer.php');
+	} else {
+		include($target . '.php');
+	}
+} else
+if (substr($target, 0, 4) == 'func') {
+	$return = array();
 	include($target . '.php');
-	include('view/footer.php');
-} else {
-	include($target . '.php');
+	if ( isset($_SESSION['noti-message']) && $_SESSION['noti-message'] !== '' ) {
+		$return = array(
+			'noti-message' => $_SESSION['noti-message'],
+			'orig-return' => $return);
+		$_SESSION['noti-message'] = '';
+	}
+	echo json_encode($return);
 }

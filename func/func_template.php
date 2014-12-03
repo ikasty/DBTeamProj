@@ -8,6 +8,8 @@ if (!defined("DBPROJ")) die(json_encode(-1));
 // 주의: func에서만 사용 가능함
 addMessage("정상 작동합니다.");
 
-// return
-echo json_encode($AJAX);
+// 결과물은 $return에 넣을 것
+
+$return = "결과물";
+
 ?>

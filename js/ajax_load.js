@@ -67,7 +67,15 @@ function setajax() {
 				dataType: 'html',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
-				console.log(data);data = JSON.parse(data);
+				console.log(data);
+				data = JSON.parse(data);
+
+				if (typeof data['noti-message'] !== "undefined") {
+					$("#notice-message").html(data['noti-message']);
+					get_notice();
+					data = data['orig-return'];
+				}
+
 				// trigger finish func
 				item.trigger('finish', [item, data]);
 			}).fail(function(jqHXR, textStatus, errorThrown) {

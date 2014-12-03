@@ -5,12 +5,16 @@ $_SESSION["noti-message"] = "";
 ?>
 <!-- header -->
 <section id="header">
-<? if (isset($noti_message) && $noti_message !== "") : ?>
 	<div style="display:none;"><div class="mainform notice">
-		<?=str_replace("\n", "<br>", $noti_message);?>
+		<span id="notice-message">
+<?
+			if (isset($noti_message) && $noti_message !== "") {
+				echo str_replace("\n", "<br>", $noti_message);
+			}
+?>
+		</span>
 		<span id="notice-close-btn" class="octicon octicon-x"></span>
 	</div></div>
-<? endif; ?>
 </section>
 
 <!-- contents -->
