@@ -5,9 +5,12 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 class Material
 {
 
+	//수정이 필요함
+
 	public $file_id = "";
 	public $upload_time = "";
-
+	//public $contribution = 0;
+	//public $url = "";
 
 	//public $file_major = "";      평가자료의 전문분야 CS
 	public $file_category = "";  //평가자료의 자료구분  Embedded System
