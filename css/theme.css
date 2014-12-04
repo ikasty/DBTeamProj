@@ -1,6 +1,7 @@
 /* custom margin */
 .pure-g {margin-bottom: 30px;}
 .pure-g [class *= "pure-u"] { padding: 10px; }
+.box-title { font-size: 1.8em; color: #fff; }
 
 /* from PURE buttons-core.css */
 .pure-skin-dbproj .pure-button {
