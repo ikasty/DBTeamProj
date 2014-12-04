@@ -49,26 +49,26 @@ class evaluation{
 
 		// 현재 진행중인 회차의 평가 일정의 회차를 확인한다.
 		$query = $DB->MakeQuery(
-			"SELECT 평가회차
-			FROM 평가일정
-			WHERE now()>=시작일
-				AND now()<=종료일")
+			"SELECT '평가회차'
+			FROM '평가일정'
+			WHERE now()>='시작일'
+				AND now()<='종료일'")
 		$period = $DB->getResult($query);
 
 		// 현재 접속중인 개발자가 현재 회차의 평가자 / 피평가자 그룹의 목록에 해당하는지 확인한다.
 		$query = $DB->MakeQuery(
 			"SELECT ifnull ( 1 , 0 )
-			FROM 평가자 선정
-			WHERE 평가회차=%s
-				AND 개발자id = %s",
+			FROM '평가자 선정'
+			WHERE '평가회차'=%s
+				AND '개발자id' = %s",
 			$period, $developerId);
 		$result1 = $DB->getResult($query);
 
 		$query = $DB->MakeQuery(
 			"SELECT ifnull ( 2 , 0 )
-			FROM 피평가자 선정
-			WHERE 평가회차=%s
-				AND 개발자id = %s",
+			FROM '피평가자 선정'
+			WHERE '평가회차'=%s
+				AND '개발자id' = %s",
 			$period, $developerId);
 		$result2 = $DB->getResult($query);
 
@@ -101,22 +101,22 @@ class evaluation{
 		if(is_null($id))
 		{
 			$query = $DB->MakeQuery(
-				"SELECT max(평가id)
-				FROM 평가");
+				"SELECT max('평가id')
+				FROM '평가'");
 			$result = $DB->getResult($query);
 
 			$id = $result + 1;
 
 			$query =$DB->MakeQuery(
-				"INSERT INTO 평가
-				SET 평가id=%d", $id
+				"INSERT INTO '평가'
+				SET '평가id'=%d", $id
 			);
 		}
 
 		// 평가하기에 data 입력
 		$query = $DB->MakeQuery(
-			"INSERT INTO 평가하기
-			(평가id, 자료id, 개발자id, 평가날짜)
+			"INSERT INTO '평가하기'
+			('평가id', '자료id', '개발자id', '평가날짜')
 			VALUES(%d,%d,%d,now())
 			",$id,$dataId,$developerId);
 
@@ -124,8 +124,8 @@ class evaluation{
 
 		// 평가지표에 data 입력
 		$query = $DB->MakeQuery(
-			"INSERT INTO 평가지표
-			(평가id, 지표이름, 점수)
+			"INSERT INTO '평가지표'
+			('평가id', '지표이름', '점수')
 			VALUES(%d,%s,%d)
 			",$id,$indicator,$point);
 

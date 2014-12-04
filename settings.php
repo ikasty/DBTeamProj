@@ -35,6 +35,8 @@ $menu_item = array(
 	array("user", "evaluate", "octicon", "law", "Evaluate"),
 	array("admin", "", "octicon", "tools", "Setting"),
 	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
+	array("all", "userlist", "octicon", "home", "Userlist"),
+	array("all", "companylist", "octicon", "home", "Companylist")
 );
 
 
