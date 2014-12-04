@@ -45,13 +45,13 @@ if (substr($target, 0, 4) == 'func') {
 	$return = array();
 	ob_start();
 	include($target . '.php');
-	$debug_msg = ob_end_flush();
+	$debug_msg = ob_get_clean();
 	
 	$return = array(
 		'noti-message' => $_SESSION['noti-message'],
 		'debug-message' => $debug_msg,
 		'orig-return' => $return);
 	$_SESSION['noti-message'] = '';
-	
+
 	echo json_encode($return);
 }
