@@ -75,8 +75,8 @@ function setajax() {
 				if (typeof data['noti-message'] !== "undefined") {
 					$("#notice-message").html(data['noti-message']);
 					get_notice();
-					data = data['orig-return'];
 				}
+				data = data['orig-return'];
 
 				// trigger finish func
 				item.trigger('finish', [item, data]);
