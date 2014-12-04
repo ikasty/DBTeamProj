@@ -267,4 +267,6 @@ class User
 
 if (isset($_SESSION["id"]))
 	$current_user = unserialize($_SESSION["id"]);
+else
+	$current_user = User::getUser("");
 ?>
