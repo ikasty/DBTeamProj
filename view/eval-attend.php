@@ -19,10 +19,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				자신의 자료를 최대 5개까지 등록하여 평가받을 수 있습니다.
 			</div>
 			<div>
-				<a id="get-eval" data-func="get-eval"
+				<a id="get-eval" data-func="eval_attend"
 				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
 					<span class="octicon octicon-checklist"></span> 참여하기
 				</a>
+				<span class="checker" style="position:absolute; margin-left: 16px;"> </span>
 			</div>
 		</div>
 	</div>
@@ -35,10 +36,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				다른 개발자들의 작업물을 감상하시고, 평가하세요!
 			</div>
 			<div>
-				<a id="do-eval" data-func="do-eval"
+				<a id="do-eval" data-func="eval_attend"
 				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
 					<span class="octicon octicon-law"></span> 참가하기
 				</a>
+				<span class="checker" style="position:absolute; margin-left: 16px;"> </span>
 			</div>
 		</div>
 	</div>
@@ -49,12 +51,16 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 		var item = $(this);
 		item
 		.on('start', function (event, args) {
+				args.jointype = item.attr('id');
+				item.parent().children(".checker").html('<img src="/image/throbber_small.gif">');
 				item.addClass("pure-button-disabled");
 				return true;
 			}
-		).on('finish', function (event, item, data) {
+		).on('finish', function (event, item, data) {console.log(data, item.parent().children(".checker"));
 				if (data.success == 'failed') {
+					item.parent().children(".checker").html('<span class="mega-octicon octicon-alert" style="color:red;"></span>');
 				} else {
+					item.parent().children(".checker").html('<span class="mega-octicon octicon-check" style="color:green;"></span>');
 				}
 				item.removeClass("pure-button-disabled");
 				return true;
