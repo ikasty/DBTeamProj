@@ -14,6 +14,11 @@ if ($ARGS["jointype"] === "get-eval") {
 	$result = $db->query("INSERT INTO `평가자 선정` (`평가회차`, `개발자id`) VALUES (" . $current_eval->id . ", " . $current_user->developer_id . ")");
 }
 
-$return['success'] = ($result !== false) ? "success" : "failed";
+if ($result !== false) {
+	$return['success'] = "success";
+} else {
+	$return['success'] = "failed";
+	addMessage("이미 신청하셨습니다.");
+}
 
 ?>

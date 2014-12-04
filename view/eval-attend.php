@@ -59,10 +59,10 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 		).on('finish', function (event, item, data) {console.log(data, item.parent().children(".checker"));
 				if (data.success == 'failed') {
 					item.parent().children(".checker").html('<span class="mega-octicon octicon-alert" style="color:red;"></span>');
+					item.removeClass("pure-button-disabled");
 				} else {
 					item.parent().children(".checker").html('<span class="mega-octicon octicon-check" style="color:green;"></span>');
 				}
-				item.removeClass("pure-button-disabled");
 				return true;
 			}
 		);
