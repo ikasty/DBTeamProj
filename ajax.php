@@ -13,6 +13,9 @@ if (!isset($_POST['AJAXKEY'])) die(-1);
 // session start
 session_start();
 
+// 비쥬얼을 위해 일부러 시간 끌기
+sleep(1);
+
 // include setting
 include('settings.php');
 
