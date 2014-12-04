@@ -1,11 +1,11 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 ?>
-<div class="notice mainform">
+<div class="mainform">
 	<? if ( isset($current_eval) && $current_eval->is_attendable() ) : ?>
-	<?=$current_eval->getTime()?>회 평가 신청을 받고 있습니다. 아래에서 신청해주세요!
+	<span class="octicon octicon-info"></span> <?=$current_eval->getTime()?>회 평가 신청을 받고 있습니다. 아래에서 신청해주세요!
 	<? else: ?>
-	신청할 수 있는 평가가 없습니다. 다음 번에 신청해주세요!
+	<span class="octicon octicon-alert"></span> 신청할 수 있는 평가가 없습니다. 다음 번에 신청해주세요!
 	<? endif; ?>
 </div>
 <? if ( isset($current_eval) && $current_eval->is_attendable() || true ) : ?>
