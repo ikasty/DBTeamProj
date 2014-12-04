@@ -12,27 +12,24 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				오른쪽 평가자료를 평가해 주세요
 			</div>
 			<form id="values" method="POST">
-				<label>Speed
+				Speed
 				<input type="number" name="Speed" min="0" max="100" placeholder="0~100">
-				</label><br><br>
-				<label>Size
+				<br><br>
+				Size
 				<input type="number" name="Size" min="0" max="100" placeholder="0~100">
-				</label><br><br>
-				<label>Ease of Use
+				<br><br>
+				Ease of Use
 				<input type="number" name="Ease-of-Use" min="0" max="100" placeholder="0~100">
-				</label><br><br>
-				<label>Reliability
+				<br><br>
+				Reliability
 				<input type="number" name="Reliability" min="0" max="100" placeholder="0~100">
-				</label><br><br>
-				<label>Robustness
+				<br><br>
+				Robustness
 				<input type="number" name="Robustness 구성" min="0" max="100" placeholder="0~100">
-				</label><br><br>
-				<label>Portability
+				<br><br>
+				Portability
 				<input type="number" name="Portability" min="0" max="100" placeholder="0~100">
-				</label><br><br>
-				<label>Contribution
-				<input type="number" name="Contribution" min="0" max="1" placeholder="0~1" step="0.01">
-				</label><br><br>
+				<br><br>
 			</form>
 			<div>
 				<a id="do-evaluate" data-func="do-evaluate"
@@ -51,10 +48,34 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				평가할 개발자의 소스코드 입니다.
 			</div>
 			<div>
-				<!-- 평가할 소스코드 -->
+				<!-- 평가할 소스코드 불러오기 -->
 			</div>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$("#evaluate").each(function() {
+		var item = $(this);
+		item
+		.on('start', function (event, args) {
+			item.addClass("pure-button-disabled");
+			args.speed = $('.evaluate input[name=Speed]').val();
+			args.src_size = $('.evaluate input[name=Size]').val();
+			args.ease_use = $('.evaluate input[name=Ease-of-Use]').val();
+			args.reliabiltiy = $('.evaluate input[name=Reliability]').val();
+			args.robustness = $('.evaluate input[name=Robustness]').val();
+			args.portability = $('.evaluate input[name=Portability]').val();
+			return true;
+		}
+		).on('finish', function (event, item, data) {
+				if (data.success == 'failed') {
+				} else {
+				}
+				item.removeClass("pure-button-disabled");
+				return true;
+			}
+		);
+	});
+</script>
 <?
 ?>
