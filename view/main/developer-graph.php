@@ -5,28 +5,27 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 $dummy_stat_data = array(
 	1 => array(
 		'count' => 1,
+		'date-start' => "2013-12-01",
+		'date-end' => "2013-12-02",
+		'eval-average' => 88
+	),
+	2 => array(
+		'count' => 2,
+		'date-start' => "2014-01-05",
+		'date-end' => "2014-01-10",
+		'eval-average' => 85
+	),
+	4 => array(
+		'count' => 4,
+		'date-start' => "2014-08-01",
+		'date-end' => "2014-08-10",
+		'eval-average' => 81
+	),
+	7 => array(
+		'count' => 7,
 		'date-start' => "2014-12-01",
-		'date-end' => "2014-12-02",
-		'evaluate' => array(
-			array(
-				'title' => "1번자료",
-				'upload-date' => "2014-11-28",
-				'speed' => 80,
-				'size' => 75,
-				'ease of use' => 90,
-				'reliability' => 60,
-				'portability' => 70
-			),
-			array(
-				'title' => "2번자료",
-				'upload-date' => "2014-11-29",
-				'speed' => 70,
-				'size' => 55,
-				'ease of use' => 40,
-				'reliability' => 100,
-				'portability' => 95
-			)
-		)
+		'date-end' => "2014-12-05",
+		'eval-average' => 87
 	)
 );
 $dummy_work_data = array(
@@ -59,17 +58,17 @@ $stat_all = array("labels" => $label, "datasets" => array(
 		"label" => "평균 데이터",
 		"fillColor" => "rgba(151,187,205,0.5)",
 		"strokeColor" => "rgba(151,187,205,0.8)",
-		"highlightFill" => "rgba(151,187,205,0.75)",
-		"highlightStroke" => "rgba(151,187,205,1)",
+//		"highlightFill" => "rgba(151,187,205,0.75)",
+//		"highlightStroke" => "rgba(151,187,205,1)",
+		"pointColor" => "rgba(151,187,205,1)",
+		"pointStrokeColor" => "#fff",
+		"pointHighlightFill" => "#fff",
+		"pointHighlightStroke" => "rgba(151,187,205,1)",
 		"data" => array()
 	)
 ));
 foreach ($data as $count => $value) {
-	$count = 0; $sum = 0;
-	foreach($value["evaluate"] as $dataset) {
-		//dataset의 speed, size, etc.. 등을 고려하여 합과 개수를 구함
-	}
-	$stat_all["datasets"][0]["data"][] = ($count != 0) ? ($sum / $count) : 0;
+	$stat_all["datasets"][0]["data"][] = $value["eval-average"];
 }
 
 ///////////////////////////////
@@ -127,7 +126,10 @@ foreach ($work_data as &$value) {
 		$(document).ready(function(){
 			var eval_stat_all_ctx = $("#eval-stat-all").get(0).getContext("2d");
 			var eval_stat_all_data = <?=json_encode($stat_all)?>;
-			var eval_stat_all_chart = new Chart(eval_stat_all_ctx).Bar(eval_stat_all_data);
+			var eval_stat_all_chart = new Chart(eval_stat_all_ctx).Line(eval_stat_all_data, {
+				scaleBeginAtZero : false,
+				bezierCurve: false
+			});
 		});
 	</script>
 </div>
