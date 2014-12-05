@@ -78,6 +78,10 @@ class User
 		return $temp;		
 	}
 
+	public function is_logged_in() {
+		return $this->user_id !== "";
+	}
+
 	public function login($password)
 	{
 		// 처음부터 md5로 변환된 패스워드가 넘어옴
@@ -267,4 +271,6 @@ class User
 
 if (isset($_SESSION["id"]))
 	$current_user = unserialize($_SESSION["id"]);
+else
+	$current_user = User::getUser("");
 ?>
