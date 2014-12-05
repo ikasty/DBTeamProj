@@ -1,11 +1,11 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 ?>
-<div class="notice mainform">
+<div class="mainform">
 	<? if ( isset($current_eval) && $current_eval->is_attendable() ) : ?>
-	<?=$current_eval->getTime()?>회 평가 신청을 받고 있습니다. 아래에서 신청해주세요!
+	<span class="octicon octicon-info"></span> <?=$current_eval->getTime()?>회 평가 신청을 받고 있습니다. 아래에서 신청해주세요!
 	<? else: ?>
-	신청할 수 있는 평가가 없습니다. 다음 번에 신청해주세요!
+	<span class="octicon octicon-alert"></span> 신청할 수 있는 평가가 없습니다. 다음 번에 신청해주세요!
 	<? endif; ?>
 </div>
 <? if ( isset($current_eval) && $current_eval->is_attendable() || true ) : ?>
@@ -19,10 +19,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				자신의 자료를 최대 5개까지 등록하여 평가받을 수 있습니다.
 			</div>
 			<div>
-				<a id="get-eval" data-func="get-eval"
+				<a id="get-eval" data-func="eval_attend"
 				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
 					<span class="octicon octicon-checklist"></span> 참여하기
 				</a>
+				<span class="checker" style="position:absolute; margin-left: 16px;"> </span>
 			</div>
 		</div>
 	</div>
@@ -35,10 +36,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				다른 개발자들의 작업물을 감상하시고, 평가하세요!
 			</div>
 			<div>
-				<a id="do-eval" data-func="do-eval"
+				<a id="do-eval" data-func="eval_attend"
 				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
 					<span class="octicon octicon-law"></span> 참가하기
 				</a>
+				<span class="checker" style="position:absolute; margin-left: 16px;"> </span>
 			</div>
 		</div>
 	</div>
@@ -49,14 +51,18 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 		var item = $(this);
 		item
 		.on('start', function (event, args) {
+				args.jointype = item.attr('id');
+				item.parent().children(".checker").html('<img src="/image/throbber_small.gif">');
 				item.addClass("pure-button-disabled");
 				return true;
 			}
-		).on('finish', function (event, item, data) {
+		).on('finish', function (event, item, data) {console.log(data, item.parent().children(".checker"));
 				if (data.success == 'failed') {
+					item.parent().children(".checker").html('<span class="mega-octicon octicon-alert" style="color:red;"></span>');
+					item.removeClass("pure-button-disabled");
 				} else {
+					item.parent().children(".checker").html('<span class="mega-octicon octicon-check" style="color:green;"></span>');
 				}
-				item.removeClass("pure-button-disabled");
 				return true;
 			}
 		);
