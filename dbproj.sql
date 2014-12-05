@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 호스트: localhost
--- 처리한 시간: 14-12-05 00:45 
+-- 처리한 시간: 14-12-05 19:46 
 -- 서버 버전: 5.1.41
 -- PHP 버전: 5.2.12
 
@@ -18,8 +18,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- 데이터베이스: `dbproj`
 --
-CREATE DATABASE `dbproj` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `dbproj`;
 
 -- --------------------------------------------------------
 
@@ -46,7 +44,7 @@ INSERT INTO `개발자` (`id`, `대학교`, `고향`, `유저id`) VALUES
 ('gyeongi4', '경기대학교', '경기도', '4'),
 ('busan5', '부산대학교', '부산', '5'),
 ('ulsan6', '울산대학교', '울산', '6'),
-('postech7', '포항공대7', '포항', '7'),
+('postech7', '포항공대', '포항', '7'),
 ('kaist8', '카이스트', '대전', '8'),
 ('ewha9', '이화여자대학교', '서울특별시 서대문구', '9');
 
@@ -95,6 +93,17 @@ CREATE TABLE IF NOT EXISTS `부서` (
 -- 테이블의 덤프 데이터 `부서`
 --
 
+INSERT INTO `부서` (`회사이름`, `부서id`) VALUES
+('NHN', 0),
+('NHN', 1),
+('NHN', 2),
+('넥슨', 0),
+('넥슨', 1),
+('넥슨', 2),
+('넥슨', 3),
+('넥슨', 4),
+('넥슨', 5),
+('넥슨', 6);
 
 -- --------------------------------------------------------
 
@@ -141,6 +150,17 @@ CREATE TABLE IF NOT EXISTS `자료분야` (
 -- 테이블의 덤프 데이터 `자료분야`
 --
 
+INSERT INTO `자료분야` (`자료id`, `자료분야`) VALUES
+('10', '짝수'),
+('11', '소수'),
+('12', '짝수'),
+('3', '소수'),
+('4', '제곱수'),
+('5', '소수'),
+('6', '짝수'),
+('7', '소수'),
+('8', '짝수'),
+('9', '제곱수');
 
 -- --------------------------------------------------------
 
@@ -158,6 +178,18 @@ CREATE TABLE IF NOT EXISTS `전문분야` (
 -- 테이블의 덤프 데이터 `전문분야`
 --
 
+INSERT INTO `전문분야` (`id`, `전문분야`) VALUES
+('busan5', '지방대'),
+('ewha9', '수도권'),
+('gyeongi4', '수도권'),
+('kaist8', '공대'),
+('kaist8', '지방대'),
+('korea2', 'SKY'),
+('postech7', '공대'),
+('postech7', '지방대'),
+('seoul3', 'SKY'),
+('ulsan6', '지방대'),
+('yonsei1', 'SKY');
 
 -- --------------------------------------------------------
 
@@ -187,12 +219,14 @@ CREATE TABLE IF NOT EXISTS `평가일정` (
   `평가시작일` timestamp NULL DEFAULT NULL,
   `종료일` timestamp NULL DEFAULT NULL COMMENT '평가종료일',
   PRIMARY KEY (`평가회차`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='평가의 일정 조정' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='평가의 일정 조정' AUTO_INCREMENT=3 ;
 
 --
 -- 테이블의 덤프 데이터 `평가일정`
 --
 
+INSERT INTO `평가일정` (`평가회차`, `모집시작일`, `평가시작일`, `종료일`) VALUES
+(2, '2014-12-05 16:05:45', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -214,6 +248,38 @@ CREATE TABLE IF NOT EXISTS `평가자 그룹` (
 -- --------------------------------------------------------
 
 --
+-- 테이블 구조 `평가자료`
+--
+
+CREATE TABLE IF NOT EXISTS `평가자료` (
+  `자료id` int(11) NOT NULL AUTO_INCREMENT,
+  `자료이름` varchar(20) DEFAULT NULL COMMENT '사용자의 자료구분 편의를 위한 이름',
+  `개발자id` varchar(20) DEFAULT NULL,
+  `업로드시간` datetime DEFAULT NULL,
+  `기여도` float DEFAULT NULL COMMENT '기여도',
+  `자료정보` varchar(200) DEFAULT NULL COMMENT '업로드 자료 정보(url)',
+  PRIMARY KEY (`자료id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='평가자료 정보' AUTO_INCREMENT=13 ;
+
+--
+-- 테이블의 덤프 데이터 `평가자료`
+--
+
+INSERT INTO `평가자료` (`자료id`, `자료이름`, `개발자id`, `업로드시간`, `기여도`, `자료정보`) VALUES
+(4, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 1, 'test'),
+(3, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 1, 'test'),
+(5, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 1, 'test'),
+(6, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 1, 'test'),
+(7, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 0.7, 'test'),
+(8, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 0.3, 'test'),
+(9, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 1, 'test'),
+(10, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 0.5, 'test'),
+(11, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 0.2, 'test'),
+(12, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 0.3, 'test');
+
+-- --------------------------------------------------------
+
+--
 -- 테이블 구조 `평가자 선정`
 --
 
@@ -225,25 +291,6 @@ CREATE TABLE IF NOT EXISTS `평가자 선정` (
 
 --
 -- 테이블의 덤프 데이터 `평가자 선정`
---
-
-
--- --------------------------------------------------------
-
---
--- 테이블 구조 `평가자료`
---
-
-CREATE TABLE IF NOT EXISTS `평가자료` (
-  `자료id` int(11) NOT NULL AUTO_INCREMENT,
-  `개발자id` varchar(20) DEFAULT NULL,
-  `업로드시간` datetime DEFAULT NULL,
-  `기여도` float DEFAULT NULL COMMENT '기여도',
-  PRIMARY KEY (`자료id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='평가자료 정보' AUTO_INCREMENT=1 ;
-
---
--- 테이블의 덤프 데이터 `평가자료`
 --
 
 
