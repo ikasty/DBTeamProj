@@ -36,6 +36,9 @@ addMessage("평가가 시작되었습니다.");
 }
 
 if ($ARGS["func_type"] == "평가끝") {
+$eval = new evaluation;
+$period = $eval->get_period();
+
 $DB = getDB();
 
 $query = $DB->MakeQuery(
