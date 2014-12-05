@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 호스트: localhost
--- 처리한 시간: 14-12-06 05:02 
+-- 처리한 시간: 14-12-05 23:27 
 -- 서버 버전: 5.1.41
 -- PHP 버전: 5.2.12
 
@@ -125,7 +125,11 @@ CREATE TABLE IF NOT EXISTS `유저` (
 --
 
 INSERT INTO `유저` (`id`, `비밀번호`, `이름`) VALUES
+<<<<<<< HEAD
 ('test', 'test', 'test id'),
+=======
+('test', 'dGVzdA==', 'test id'),
+>>>>>>> 0ccff3eadbcebf3502cf98834ce6e5a70a4488df
 ('1', '1', '연세대1'),
 ('2', '2', '고려대2'),
 ('3', '3', '서울대3'),
@@ -221,14 +225,22 @@ CREATE TABLE IF NOT EXISTS `평가일정` (
   `평가시작일` timestamp NULL DEFAULT NULL,
   `종료일` timestamp NULL DEFAULT NULL COMMENT '평가종료일',
   PRIMARY KEY (`평가회차`)
+<<<<<<< HEAD
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='평가의 일정 조정' AUTO_INCREMENT=4 ;
+=======
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='평가의 일정 조정' AUTO_INCREMENT=3 ;
+>>>>>>> 0ccff3eadbcebf3502cf98834ce6e5a70a4488df
 
 --
 -- 테이블의 덤프 데이터 `평가일정`
 --
 
 INSERT INTO `평가일정` (`평가회차`, `모집시작일`, `평가시작일`, `종료일`) VALUES
+<<<<<<< HEAD
 (2, '2014-12-06 01:27:39', '2014-12-06 03:45:12', NULL);
+=======
+(2, '2014-12-05 16:05:45', NULL, NULL);
+>>>>>>> 0ccff3eadbcebf3502cf98834ce6e5a70a4488df
 
 -- --------------------------------------------------------
 
@@ -277,7 +289,11 @@ CREATE TABLE IF NOT EXISTS `평가자료` (
   `업로드시간` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `기여도` float DEFAULT NULL COMMENT '기여도',
   `자료정보` varchar(200) DEFAULT NULL COMMENT '업로드 자료 정보(url)',
+<<<<<<< HEAD
   PRIMARY KEY (`자료id`,`업로드시간`)
+=======
+  PRIMARY KEY (`자료id`)
+>>>>>>> 0ccff3eadbcebf3502cf98834ce6e5a70a4488df
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='평가자료 정보' AUTO_INCREMENT=13 ;
 
 --
@@ -294,8 +310,12 @@ INSERT INTO `평가자료` (`자료id`, `자료이름`, `개발자id`, `업로�
 (9, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 1, 'test'),
 (10, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 0.5, 'test'),
 (11, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 0.2, 'test'),
+<<<<<<< HEAD
 (12, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 0.3, 'test'),
 (4, 'yonsei1 test edit', 'yonsei1', '2014-12-06 00:24:52', 1, 'test edit');
+=======
+(12, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 0.3, 'test');
+>>>>>>> 0ccff3eadbcebf3502cf98834ce6e5a70a4488df
 
 -- --------------------------------------------------------
 
@@ -363,7 +383,11 @@ CREATE TABLE IF NOT EXISTS `피평가자 신청` (
   `평가그룹` int(11) NOT NULL DEFAULT '0' COMMENT '어떤 그룹인지',
   `개발자id` varchar(20) NOT NULL DEFAULT '' COMMENT '피평가받는 개발자가',
   `자료id` int(11) NOT NULL COMMENT '자료id',
+<<<<<<< HEAD
   PRIMARY KEY (`자료id`)
+=======
+  PRIMARY KEY (`평가회차`,`평가그룹`,`개발자id`)
+>>>>>>> 0ccff3eadbcebf3502cf98834ce6e5a70a4488df
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='피평가받는 개발자가 어떤 회차에 어떤 그룹인지';
 
 --

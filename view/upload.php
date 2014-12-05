@@ -3,14 +3,20 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 ?>
 
 <div class="pure-g">
-	<div class="upload-box pure-u-1-1">
+	<div class="upload-box pure-u-2-3">
 		<div class="mainform upload">
 			<div class="box-title" style="background: #00bfFf;">
 				<span class="mega-octicon octicon-move-up"></span>&nbsp;소스코드 업로드
 			</div>
 			<div class="descript">
 				<form method="post">
-					<textarea rows="10" cols="70" placeholder="Input Source Code"></textarea>
+					URL :
+					<input type="URL" name="URL" placeholder="Input Your URL"><br><br>
+					FIle Type :
+					논문<input type="radio" name="FileType" value="Paper">&nbsp;
+					소스코드<input type="radio" name="FileType" value="SourceCode">&nbsp;
+					레포트<input type="radio" name="FileType" value="Report"><br><br>
+					기여도 :<input type="number" name="Contribution" placeholder="0~1" step="0.01">
 				</form>
 			</div>
 			<div>
@@ -28,26 +34,24 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 		item
 		.on('start', function (event, args) {
 			item.addClass("pure-button-disabled");
-			args.srccode = $('.upload textarea').val();
+			args.url = $('.upload input[name=URL]').val();
+			args.filetype = $('.upload input[name=FileType]').val();
+<<<<<<< HEAD
+			args.majortype = $('.upload input[name=MajorType]').val();
+=======
+>>>>>>> upload03
+			args.contribution = $('.upload input[name=Contribution]').val();
 			return true;
 		}
 		).on('finish', function (event, item, data) {
 				if (data.success == 'failed') {
-					$('.upload textarea').val('123');
 				} else {
 				}
 				item.removeClass("pure-button-disabled");
-				/*view_change_start();
-				load_view('', function(data) {
-					view_change_finish();
-					menu_init();
-				}, {menu_reload:'true'}); */
 				return true;
 			}
 		);
 	});
 </script>
-
-
 <?
 ?>

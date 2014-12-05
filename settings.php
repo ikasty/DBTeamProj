@@ -52,7 +52,7 @@ $css_headers[] = 'jejugothic';
 
 // default
 $css_headers[] = 'style';
-$js_headers[] = 'main';
+//$js_headers[] = 'main';
 $js_headers[] = 'menu';
 $css_headers[] = 'theme';
 
@@ -80,13 +80,15 @@ $css_headers[] = 'octicons';
 $css_headers[] = 'font-awesome.min';
 
 // view
+//	mainpage
+$css_headers[] = 'mainpage';
 //   login
 $css_headers[] = 'login';
 //   eval
 $css_headers[] = 'eval';
-// upload
+//	upload
 $css_headers[] = 'upload';
-// evaluate
+//	evaluate
 $css_headers[] = 'evaluate';
 
 
