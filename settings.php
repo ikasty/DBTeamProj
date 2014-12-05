@@ -48,7 +48,7 @@ $css_headers[] = 'jejugothic';
 
 // default
 $css_headers[] = 'style';
-$js_headers[] = 'main';
+//$js_headers[] = 'main';
 $js_headers[] = 'menu';
 $css_headers[] = 'theme';
 

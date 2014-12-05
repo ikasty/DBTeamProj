@@ -1,7 +1,11 @@
-/* custom margin */
+/* custom style */
 .pure-g {margin-bottom: 30px;}
 .pure-g [class *= "pure-u"] { padding: 10px; }
 .box-title { font-size: 1.8em; color: #fff; }
+.pure-button[disabled], .pure-button-disabled, .pure-button-disabled:hover, .pure-button-disabled:focus, .pure-button-disabled:active {
+    cursor: not-allowed !important;
+    text-decoration: none;
+}
 
 /* from PURE buttons-core.css */
 .pure-skin-dbproj .pure-button {

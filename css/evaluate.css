@@ -12,11 +12,3 @@
 .evaluate-box > div > div, .src-code-box > div > div {
 	padding: 0;
 }
-
-.evaluate-box > div > form > label {
-	
-	font-size:18px; 
-}
-	
-
-/* Input 사이사이 간격 벌리고 싶은데 CSS...*/

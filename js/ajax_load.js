@@ -67,6 +67,7 @@ function setajax() {
 				dataType: 'json',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
+				//console.log("ajax_load.js func data: ", data);
 				//data = JSON.parse(data);
 
 				if (typeof data['debug-message'] !== "undefined")
@@ -75,8 +76,9 @@ function setajax() {
 				if (typeof data['noti-message'] !== "undefined") {
 					$("#notice-message").html(data['noti-message']);
 					get_notice();
-					data = data['orig-return'];
 				}
+				if (typeof data['orig-return'] !== "undefined")
+					data = data['orig-return'];
 
 				// trigger finish func
 				item.trigger('finish', [item, data]);
@@ -91,3 +93,15 @@ function setajax() {
 }
 
 $('document').ready(setajax);
+
+// view change effects
+function view_change_start() {
+	$.blockUI({
+		css: {backgroundColor: 'transparent', border: 0},
+		message: $('#throbber')
+	});
+}
+function view_change_finish() {
+	$.unblockUI();
+	get_notice();
+}

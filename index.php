@@ -67,7 +67,7 @@ if (defined('DEBUG') && isset($_GET['page'])) $content_include_file = 'view/' . 
 <? foreach($js_headers as $header) : ?>
 <script type="text/javascript" src="js/<?=$header?>.js"></script>
 <? endforeach; ?>
-<div id="throbber" style="display:none;"><img src="/image/throbber.gif"/></div>
+<div id="throbber" style="display:none;"><img src="/image/throbber.gif" style="width:100px;"/></div>
 
 </body>
 </html>

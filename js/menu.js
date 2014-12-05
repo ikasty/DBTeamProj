@@ -68,9 +68,9 @@ function get_notice() {
     if (notice.children().children("#notice-message").html().trim() === '') return ;
     //notice = notice.parent();
 
-    notice.show({effect: "slide", easing: "easeOutCubic"});
+    notice.show({effect: "slide", easing: "easeOutCubic", direction: "up"});
     notice.find("#notice-close-btn").click(function(){
-        notice.hide();
+        notice.hide({effect: "slide", easing: "easeOutCubic", direction: "up"});
     })
 }
 

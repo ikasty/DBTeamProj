@@ -4,6 +4,9 @@ if (!defined("DBPROJ")) die(json_encode(-1));
 
 // ** add code here **
 
+// 변수는 $ARGS에 담겨있음
+var_dump($ARGS);
+
 // addMessage를 사용해서 알림영역에 메시지를 쓸 수 있음.
 // 주의: func에서만 사용 가능함
 addMessage("정상 작동합니다.");
