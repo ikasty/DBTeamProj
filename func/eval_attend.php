@@ -2,14 +2,23 @@
 header('Content-Type: application/json');
 if (!defined("DBPROJ")) die(json_encode(-1));
 
-var_dump($ARGS);
-
 $db = getDB();
-var_dump($db);
 
 $result = false;
 if ($ARGS["jointype"] === "get-eval") {
-	$result = $db->query("INSERT INTO `피평가자 신청` (`평가회차`, `개발자id`) VALUES (" . $current_eval->id . ", " . $current_user->developer_id . ")");
+$current_eval->id = 1;
+
+	foreach ($ARGS["join_data"] as $data_value) {
+		$query = $db->MakeQuery(
+			"INSERT INTO `피평가자 신청` (`평가회차`, `평가그룹`, `개발자id`, `자료id`) VALUES (%d, %d, %s, %d)",
+			$current_eval->id,
+			-1,
+			$current_user->developer_id,
+			$data_value);
+		print_r($query);
+		$result = $db->query($query);
+	}
+
 } else if ($ARGS["jointype"] === "do-eval") {
 	$result = $db->query("INSERT INTO `평가자 선정` (`평가회차`, `개발자id`) VALUES (" . $current_eval->id . ", " . $current_user->developer_id . ")");
 }

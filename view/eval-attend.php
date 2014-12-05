@@ -30,7 +30,7 @@ $data[] = array("자료이름"=> "test", "업로드시간" => "지금", "자료i
 					<fieldset>
 						<? foreach ($data as $value) : ?>
 						<label for="data-<?=$value['자료id']?>" class="pure-checkbox">
-							<input id="data-<?=$value['자료id']?>" class="data-chkbox" type="checkbox" value="">
+							<input id="data-<?=$value['자료id']?>" class="data-chkbox" type="checkbox" value="<?=$value['자료id']?>">
 							<?=$value["자료이름"]?> (<?=$value["업로드시간"]?>)
 						</label>
 						<? endforeach; ?>
@@ -71,6 +71,9 @@ $data[] = array("자료이름"=> "test", "업로드시간" => "지금", "자료i
 		item
 		.on('start', function (event, args) {
 				args.jointype = item.attr('id');
+				args.join_data = [];
+				$(".data-chkbox:checked").each(function(){args.join_data.push($(this).val())})
+
 				item.parent().children(".checker").html('<img src="/image/throbber_small.gif">');
 				item.addClass("pure-button-disabled");
 				return true;
@@ -90,7 +93,7 @@ $data[] = array("자료이름"=> "test", "업로드시간" => "지금", "자료i
 		var item = $(this);
 		var btn = $("#get-eval");
 		item.click(function() {
-			var count = $(".data-chkbox:checked").length;console.log(count);
+			var count = $(".data-chkbox:checked").length;
 			if (count > 0) {
 				btn.removeClass("pure-button-disabled");
 			} else {
