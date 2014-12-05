@@ -154,7 +154,7 @@ class evaluation{
 				$query = $DB->MakeQuery("INSERT INTO `평가자 그룹`(`평가회차`,`평가그룹`,`개발자id`) VALUES(%d,%d,%s)",$date,$number,$result);
 				$number++;
 			}
-			if($number > $count/2) break;
+			if($number == $count) break;
 		}
 		//평가자 그루핑
 	}
