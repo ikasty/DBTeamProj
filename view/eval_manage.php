@@ -33,7 +33,7 @@ var_dump($case);
 			load_view('main', function(data) {
 				view_change_finish();
 				menu_init();
-			}, {menu_reload:'true'});
+			}, {menu_reload:'false'});
 			
 			return true;
 		}
@@ -63,7 +63,7 @@ var_dump($case);
 			load_view('main', function(data) {
 				view_change_finish();
 				menu_init();
-			}, {menu_reload:'true'});
+			}, {menu_reload:'false'});
 			
 			return true;
 		}
@@ -93,7 +93,7 @@ var_dump($case);
 			load_view('main', function(data) {
 				view_change_finish();
 				menu_init();
-			}, {menu_reload:'true'});
+			}, {menu_reload:'false'});
 			
 			return true;
 		}
