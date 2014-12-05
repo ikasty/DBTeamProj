@@ -26,14 +26,14 @@ class User
 		$DB = getDB();
 		
 		if($user_id !== "") {
-			$query = $DB->MakeQuery("SELECT * From 유저 where id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From `유저` where id=%s", $user_id);
 			$user_info = $DB->getRow($query);
 
 			$this->user_id = $user_info["id"];
 			$this->password = ($user_info["비밀번호"]);
 			$this->name = $user_info["이름"];
 
-			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From `개발자` where `유저id`=%s", $user_id);
 			$developer_info = $DB->getRow($query);
 			if (!$developer_info) {
 				$this->user_type = "admin";
@@ -44,23 +44,23 @@ class User
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
 
-			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From `전문분야` where id=%s", $user_id);
 			$major_info = $DB->getRow($query);
 
 			$this->major = $major_info["전문분야"];
 
-			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $this->developer_id);
+			$query = $DB->MakeQuery("SELECT * From `근무` where id=%s", $this->developer_id);
 			$work_on_info = $DB->getRow($query);
 
 			$this->company = $major_info["회사이름"];
 
-			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $this->company);
+			$query = $DB->MakeQuery("SELECT * From `부서` where `회사이름`=%s", $this->company);
 			$department_info = $DB->getRow($query);
 
 			$this->company = $department_info["부서id"];
 
 			//다중속성
-			$query = $DB->MakeQuery("SELECT 평가자료 From 평가자료 where 개발자id=%s", $this->developer_id);
+			$query = $DB->MakeQuery("SELECT `평가자료` From `평가자료` where `개발자id`=%s", $this->developer_id);
 			$file_list = $DB->getColumn($query);
 			
 		}
@@ -73,7 +73,7 @@ class User
 		$temp = new User($user_id);
 		if ($user_id === "") return $temp;
 
-		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
+		$query = $DB->MakeQuery("SELECT * From `개발자` where id=%s", $user_id);
 		$developer_info = $DB->getRow($query);
 		return $temp;		
 	}
@@ -231,7 +231,8 @@ class User
 		}
 
 	}
-	//평가라고 하기 부족함
+	//평가라고 하기 부족함 ** 삭제요망 **
+	/*
 	function Evalate($file_id)
 	{
 		global $DB;
@@ -261,7 +262,7 @@ class User
 			}
 		}
 	}
-
+*/
 	function StartEvaluate()
 	{
 
