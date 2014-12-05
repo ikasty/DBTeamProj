@@ -37,8 +37,8 @@ $filetype = $DB->getResult($query);
 				Robustness
 				<input type="number" name="Robustness 구성" min="0" max="100" placeholder="0~100">
 				<br><br>
-				Portability
-				<input type="number" name="Portability" min="0" max="100" placeholder="0~100">
+				Generality
+				<input type="number" name="Generality" min="0" max="100" placeholder="0~100">
 				<br><br>
 			</form>
 			<div>
@@ -74,9 +74,9 @@ $filetype = $DB->getResult($query);
 			args.speed = $('.evaluate input[name=Speed]').val();
 			args.src_size = $('.evaluate input[name=Size]').val();
 			args.ease_use = $('.evaluate input[name=Ease-of-Use]').val();
-			args.reliabiltiy = $('.evaluate input[name=Reliability]').val();
+			args.reliability = $('.evaluate input[name=Reliability]').val();
 			args.robustness = $('.evaluate input[name=Robustness]').val();
-			args.portability = $('.evaluate input[name=Portability]').val();
+			args.generality = $('.evaluate input[name=Generality]').val();
 			return true;
 		}
 		).on('finish', function (event, item, data) {
