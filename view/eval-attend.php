@@ -1,12 +1,20 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
+$current_eval->id = 1; // temp current eval
+
 $db = getDB();
-$query = $db->makeQuery("SELECT * FROM `평가자료` a WHERE `업로드시간` = (\n"
-    . "SELECT MAX(`업로드시간`) FROM `평가자료` b WHERE a.`자료id` = b.`자료id` GROUP BY b.`자료id`)"
+$query = $db->makeQuery(
+	"SELECT * FROM `평가자료` a WHERE `업로드시간` = (\n"
+    	. "SELECT MAX(`업로드시간`) FROM `평가자료` b WHERE a.`자료id` = b.`자료id` GROUP BY b.`자료id`)"
+	. " AND a.`자료id` NOT IN (\n"
+		. $db->makeQuery(
+			"SELECT `자료id` FROM `피평가자 신청` c WHERE c.`평가회차` = %d AND c.`개발자id` = %s",
+			$current_eval->id, $current_user->developer_id)
+		. ")"
 	. " AND `개발자id`=%s", $current_user->developer_id);
-$data = $db->getResult($query);
-$data[] = array("자료이름"=> "test", "업로드시간" => "지금", "자료id" => 100);
+
+$data = $db->getResult($query);unset($current_eval);
 ?>
 <div class="mainform">
 	<? if ( isset($current_eval) && $current_eval->is_attendable() ) : ?>

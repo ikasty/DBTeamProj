@@ -6,13 +6,13 @@ $db = getDB();
 
 $result = false;
 if ($ARGS["jointype"] === "get-eval") {
-$current_eval->id = 1;
+$current_eval->id = 1;	// temp current eval
 
 	foreach ($ARGS["join_data"] as $data_value) {
 		$query = $db->MakeQuery(
 			"INSERT INTO `피평가자 신청` (`평가회차`, `평가그룹`, `개발자id`, `자료id`) VALUES (%d, %d, %s, %d)",
 			$current_eval->id,
-			-1,
+			0,
 			$current_user->developer_id,
 			$data_value);
 		print_r($query);
