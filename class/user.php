@@ -39,7 +39,7 @@ class User
 				$this->user_type = "admin";
 				return ;
 			}
-
+			
 			$this->developer_id = $developer_info["id"];
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];

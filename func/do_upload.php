@@ -8,7 +8,7 @@ $time = date("Y-m-d H:i:s");
 //$query = $DB->MakeQuery("INSERT INTO 평가자료(자료id, 개발자id,업로드시간,기여도,자료정보) VALUES('',%s,%s,%s,%s)",$dvel_id,NOW(),$ARGS['contribution'],$ARGS['url']);
 
 $query = $DB->MakeQuery("INSERT INTO `평가자료`(`개발자id`,`업로드시간`,`기여도`,`자료정보`,`자료이름`) VALUES(%s,%s,%f,%s,%s);",$current_user->developer_id,$time,$ARGS['contribution'],$ARGS['url'],$ARGS['fname']);
-var_dump($query);
+//var_dump($query);
 $DB->query($query);
 // $query = $DB->insert('평가자료', array(
 // 	"자료id" => "",
