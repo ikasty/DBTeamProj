@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 호스트: localhost
--- 처리한 시간: 14-12-05 19:46 
+-- 처리한 시간: 14-12-05 23:27 
 -- 서버 버전: 5.1.41
 -- PHP 버전: 5.2.12
 
@@ -18,6 +18,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- 데이터베이스: `dbproj`
 --
+CREATE DATABASE `dbproj` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `dbproj`;
 
 -- --------------------------------------------------------
 
@@ -248,6 +250,23 @@ CREATE TABLE IF NOT EXISTS `평가자 그룹` (
 -- --------------------------------------------------------
 
 --
+-- 테이블 구조 `평가자 선정`
+--
+
+CREATE TABLE IF NOT EXISTS `평가자 선정` (
+  `평가회차` int(11) NOT NULL DEFAULT '0' COMMENT '몇회차인지',
+  `평가그룹` int(11) NOT NULL DEFAULT '0' COMMENT '어떤그룹인지',
+  `개발자id` varchar(20) NOT NULL COMMENT '어떤 개발자가'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='개발자의 어떤 평가 회차별 소속 평가자 그룹';
+
+--
+-- 테이블의 덤프 데이터 `평가자 선정`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- 테이블 구조 `평가자료`
 --
 
@@ -276,23 +295,6 @@ INSERT INTO `평가자료` (`자료id`, `자료이름`, `개발자id`, `업로�
 (10, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 0.5, 'test'),
 (11, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 0.2, 'test'),
 (12, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 0.3, 'test');
-
--- --------------------------------------------------------
-
---
--- 테이블 구조 `평가자 선정`
---
-
-CREATE TABLE IF NOT EXISTS `평가자 선정` (
-  `평가회차` int(11) NOT NULL DEFAULT '0' COMMENT '몇회차인지',
-  `평가그룹` int(11) NOT NULL DEFAULT '0' COMMENT '어떤그룹인지',
-  `개발자id` varchar(20) NOT NULL COMMENT '어떤 개발자가'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='개발자의 어떤 평가 회차별 소속 평가자 그룹';
-
---
--- 테이블의 덤프 데이터 `평가자 선정`
---
-
 
 -- --------------------------------------------------------
 
@@ -359,6 +361,7 @@ CREATE TABLE IF NOT EXISTS `피평가자 신청` (
   `평가회차` int(11) NOT NULL DEFAULT '0' COMMENT '어떤 회차에',
   `평가그룹` int(11) NOT NULL DEFAULT '0' COMMENT '어떤 그룹인지',
   `개발자id` varchar(20) NOT NULL DEFAULT '' COMMENT '피평가받는 개발자가',
+  `자료id` int(11) NOT NULL COMMENT '자료id',
   PRIMARY KEY (`평가회차`,`평가그룹`,`개발자id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='피평가받는 개발자가 어떤 회차에 어떤 그룹인지';
 
