@@ -47,7 +47,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 			item.addClass("pure-button-disabled");
 			args.url = $('.upload input[type=textarea]').val();
 			args.filetype = $('.upload input[name=FileType]').val();
-			args.majortype = $('.upload input[name=MajorType]').val();)
+			args.majortype = $('.upload input[name=MajorType]').val();
 			args.contribution = $('.upload input[name=Contribution]').val();
 			return true;
 		}
