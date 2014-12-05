@@ -26,10 +26,50 @@ class evaluation{
 
 //	private $evalGroup;				// eval Group
 
-	global $current_user;
 	function __construct()
 	{
+		global $current_user;
 		$developerId = $current_user->user_id;
+	}
+
+	function get_period()
+	{
+		$DB = getDB();
+
+		$query = "SELECT `평가회차` as period
+			FROM `평가일정`
+			WHERE now()>=`모집시작일`
+				AND isnull(`종료일`)";
+		$this->period = $DB->getValue($query);
+
+		return $this->period;
+	}
+
+	function current_state()
+	{
+		$period = $this->get_period();
+
+		$DB = getDB();
+		$query = $DB->MakeQuery(
+			"SELECT `평가회차` as period, `모집시작일` as reqdate, `평가시작일` as evalbegin, `종료일` as enddate
+			FROM `평가일정`
+			WHERE `평가회차`=%d",$period);
+
+		$result = $DB->getRow($query);
+
+		var_dump($period);
+		var_dump($result);
+
+		if(is_null($period)||is_null($result["reqdate"]))
+			$case = "start";
+		else if(is_null($result["evalbegin"]))
+			$case = "recruiting";
+		else if(is_null($result["enddate"]))
+			$case = "evaling";
+		else
+			$case = "end";
+
+		return $case;
 	}
 
 /*	function setEvalId()
@@ -56,8 +96,8 @@ class evaluation{
 			"SELECT `평가회차`
 			FROM `평가일정`
 			WHERE now()>=`시작일`
-				AND now()<=`종료일`")
-		$period = $DB->getResult($query);
+				AND now()<=`종료일`");
+		$this->period = $DB->getResult($query);
 
 		// 현재 접속중인 개발자가 현재 회차의 평가자 / 피평가자 그룹의 목록에 해당하는지 확인한다.
 		$query = $DB->MakeQuery(

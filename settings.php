@@ -23,6 +23,7 @@ include('class/db.php');
 
 include('include/functions.php');
 include('class/user.php');
+include('class/evaluation.php');
 	/* include classes here */
 
 // menus
@@ -36,7 +37,8 @@ $menu_item = array(
 	array("admin", "", "octicon", "tools", "Setting"),
 	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
 	array("all", "userlist", "octicon", "home", "Userlist"),
-	array("all", "companylist", "octicon", "home", "Companylist")
+	array("all", "companylist", "octicon", "home", "Companylist"),
+	array("all", "eval_manage", "octicon", "tools", "Eval_manage")
 );
 
 
