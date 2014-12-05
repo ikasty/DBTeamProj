@@ -1,5 +1,12 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
+
+$db = getDB();
+$query = $db->makeQuery("SELECT * FROM `평가자료` a WHERE `업로드시간` = (\n"
+    . "SELECT MAX(`업로드시간`) FROM `평가자료` b WHERE a.`자료id` = b.`자료id` GROUP BY b.`자료id`)"
+	. " AND `개발자id`=%s", $current_user->developer_id);
+$data = $db->getResult($query);
+$data[] = array("자료이름"=> "test", "업로드시간" => "지금", "자료id" => 100);
 ?>
 <div class="mainform">
 	<? if ( isset($current_eval) && $current_eval->is_attendable() ) : ?>
@@ -16,11 +23,23 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				<span class="mega-octicon octicon-checklist"></span> 평가받기
 			</div>
 			<div class="descript">
-				자신의 자료를 최대 5개까지 등록하여 평가받을 수 있습니다.
+				자신의 자료를 5개까지 등록하여 평가받을 수 있습니다.
+			</div>
+			<div class="data-select">
+				<form class="pure-form pure-form-alligned" style="padding-left: 40px; text-align: left;">
+					<fieldset>
+						<? foreach ($data as $value) : ?>
+						<label for="data-<?=$value['자료id']?>" class="pure-checkbox">
+							<input id="data-<?=$value['자료id']?>" class="data-chkbox" type="checkbox" value="">
+							<?=$value["자료이름"]?> (<?=$value["업로드시간"]?>)
+						</label>
+						<? endforeach; ?>
+					</fieldset>
+				</form>
 			</div>
 			<div>
 				<a id="get-eval" data-func="eval_attend"
-				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
+				class="pure-button pure-button-primary submit ajax_load pure-button-disabled" type="button" name="commit">
 					<span class="octicon octicon-checklist"></span> 참여하기
 				</a>
 				<span class="checker" style="position:absolute; margin-left: 16px;"> </span>
@@ -66,6 +85,22 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				return true;
 			}
 		);
+	});
+	$(".data-chkbox").each(function() {
+		var item = $(this);
+		var btn = $("#get-eval");
+		item.click(function() {
+			var count = $(".data-chkbox:checked").length;console.log(count);
+			if (count > 0) {
+				btn.removeClass("pure-button-disabled");
+			} else {
+				btn.addClass("pure-button-disabled");
+			}
+
+			if (count > 5) {
+				item.prop('checked', false);
+			}
+		});
 	});
 </script>
 <? endif; ?>
