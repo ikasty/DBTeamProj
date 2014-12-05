@@ -5,11 +5,6 @@
 
 .eval-attend-box { margin: 0px auto; }
 
-.get-eval > .box-title, .do-eval > .box-title {
-	font-size: 1.8em;
-	color: #fff;
-}
-
 .get-eval > div, .do-eval > div {
-	padding: 30px;
+	padding: 10px 30px;
 }
