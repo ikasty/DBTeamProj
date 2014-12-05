@@ -14,8 +14,18 @@ class User
 	public $university = "";
 	public $hometown = "";
 
+	//전공은 배열로 만들어 주세요
 	public $major = "";
 
+	// 회사는 array(
+	// 		array(
+	// 			'name'=>&&&, 
+	// 			'start_day'=>YYYY-MM-DD, 
+	// 			'end_day'=>YYYY-MM-DD
+	// 		),
+	//    array(...)
+	// )
+	// 형태로 만들어 주세요.
 	public $company = "";
 	public $department_id = "";
 
@@ -75,7 +85,7 @@ class User
 
 		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
 		$developer_info = $DB->getRow($query);
-		return $temp;		
+		return $temp;
 	}
 
 	public function is_logged_in() {
