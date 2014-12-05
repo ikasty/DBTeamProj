@@ -118,61 +118,78 @@ class evaluation{
 		$date = $DB->getResult($query);
 
 		$DB->Update('평가일정',
-		array('rate_date'=>$_POST["평가시작일"]),
+		array('rate_date'=>$_POST['평가시작일']),
 		array("%s"),
-		array(`평가회차`=>$date),
+		array('평가회차'=>$date),
 		array("%d"));
 		$this->rate_date = NOW();
 
 		//개발자id 로 GROUP BY 해서 개발자id LIST 를 받고 피평가자 신청에서 각 개발자마다 그룹 id를 1부터 부여
 		$query = $DB->MakeQuery("SELECT `개발자id` FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id`",$date);
-		$person = $DB->getResult($query);
-
-		foreach($person as $result)
-		{
-			$count =1;
-			$DB->Update(`피평가자 신청`,
-				array('group'=>$_POST[`평가그룹`]),
+		$evaluater = $DB->getResult($query);
+		
+		$count =1;
+		foreach($evaluater as $result)
+		{	
+			$DB->Update('피평가자 신청',
+				array('group'=>$_POST['평가그룹']),
 				array("%s"),
-				array(`개발자id`=>$result),
+				array('개발자id'=>$result),
 				array("%d"));
 			$this->group=$count;
 			$count++;
 		}
-	}
-
-	function request()
-	{
-		$DB = getDB();
+		//여기까지 피평가자 그루핑
 
 		$query = $DB->MakeQuery("SELECT `개발자id` FROM `평가자료` ORDER BY `업로드시간` DESC");
 		$evaluator = $DB->getResult($query);
-		//업로드 시간 순으로 개발자 뽑기
-		
+		//업로드 순으로 개발자 뽑기
+		$number =1;
+		foreach($evaluator as $result)
+		{
+			if(($home != $result->hometown) && ($univ != $result->university)) {
+
+				$home = $result->hometown;
+				$univ = $result->university;
+				$query = $DB->MakeQuery("INSERT INTO `평가자 그룹`(`평가회차`,`평가그룹`,`개발자id`) VALUES(%d,%d,%s)",$date,$number,$result);
+				$number++;
+			}
+			if($number > $count/2) break;
+		}
+		//평가자 그루핑
+	}
+
+	function Mapping()
+	{
+		$DB = getDB();
+
 		$time = NOW();
 		$query = $DB->MakeQuery("SELECT `평가회차` FROM `평가일정` WHERE (`평가시작일`<=%s) AND (`종료일` == NULL)",$time);
 		$date = $DB->getResult($query);
 		//현재 평가회차
 
-		$query = $DB->MakeQuery("SELECT `개발자id` FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id` ", $date);
+		$query = $DB->MakeQuery("SELECT * FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `평가그룹` ", $date);
 		$evaluater = $DB->getResult($query);
 		//이번 평가회차에 신청한 피평가자 리스트
 
+		$query = $DB->MakeQuery("SELECT * FROM `평가자 선정` WHERE `평가회차`=%s GROUP BY `평가그룹`",$date);
+		$evaluator = $DB->getResult($query);
+
 		//학연 지연이 다르면 매핑
-		foreach($evaluater as $ter) {
-			foreach($evaluator as $tor) {
-				$tmp = USER::getUser($ter); //피평가자
-				$tmp2 = USER::getUser($tor); //평가자
+		foreach($evaluator as $tor["개발자id"]) {
+			foreach($evaluater as $ter["개발자id"]) {
+				$tmp = USER::getUser($tor["개발자id"]); //평가자
+				$tmp2 = USER::getUser($ter["개발자id"]); //피평가자
 
 				if((tmp->university != tmp2->university) && (tmp->hometown != tmp2->hometown)) {
 
-					$query = $DB->MakeQuery("SELECT `평가그룹` FROM `피평가자 신청` WHERE `개발자id`=%s GROUP BY `개발자id`",$ter);
+					$query = $DB->MakeQuery("SELECT `평가그룹` FROM `피평가자 신청` WHERE `개발자id`=%s GROUP BY `개발자id`",$ter["개발자id"]);
 					$group = $DB->getResult($query);
 
-					$query = $DB->MakeQuery("INSERT INTO `평가자 선정`(`평가회차`,`평가그룹`,`개발자id`) VALUES(%d,%s,%s);",$date,$group,$tor);
+					$query = $DB->MakeQuery("INSERT INTO `피평가자 그룹`(`평가회차`,`그룹id`,`평가자그룹`) VALUES(%d,%s,%s);",$date,$ter["평가그룹"],$tor["평가그룹"]);
 				}
 			}
-		} 
+		}
 
 	}
 
