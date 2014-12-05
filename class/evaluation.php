@@ -110,6 +110,37 @@ class evaluation{
 		$result = $DB->getResult($query);
 	}
 
+	function assginGroup()
+	{
+		$DB = getDB();
+		//모집시작일 < 현재시각 이고, 평가시작일=NULL인 회차 구해서 그 tuple의 평가시작일을 현재시간으로 수정
+		$query = $DB->MakeQuery("SELECT `평가회차` FROM `평가일정` WHERE (`일모집시작`<=%s) AND (`평가시작일` == NULL)",$time);
+		$date = $DB->getResult($query);
+
+		$DB->Update('평가일정',
+		array('rate_date'=>$_POST["평가시작일"]),
+		array("%s"),
+		array(`평가회차`=>$date),
+		array("%d"));
+		$this->rate_date = NOW();
+
+		//개발자id 로 GROUP BY 해서 개발자id LIST 를 받고 피평가자 신청에서 각 개발자마다 그룹 id를 1부터 부여
+		$query = $DB->MakeQuery("SELECT `개발자id` FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id`",$date);
+		$person = $DB->getResult($query);
+
+		foreach($person as $result)
+		{
+			$count =1;
+			$DB->Update(`피평가자 신청`,
+				array('group'=>$_POST[`평가그룹`]),
+				array("%s"),
+				array(`개발자id`=>$result),
+				array("%d"));
+			$this->group=$count;
+			$count++;
+		}
+	}
+
 	function request()
 	{
 		$DB = getDB();
@@ -119,16 +150,9 @@ class evaluation{
 		//업로드 시간 순으로 개발자 뽑기
 		
 		$time = NOW();
-		$query = $DB->MakeQuery("SELECT `평가회차` FROM `평가일정` WHERE (`일모집시작`<=%s) AND (`평가시작일` == NULL)",$time);
+		$query = $DB->MakeQuery("SELECT `평가회차` FROM `평가일정` WHERE (`평가시작일`<=%s) AND (`종료일` == NULL)",$time);
 		$date = $DB->getResult($query);
 		//현재 평가회차
-		$DB->Update('평가일정',
-		array('rate_date'=>$_POST["평가시작일"]),
-		array("%s"),
-		array('id'=>$this->id),
-		array("%d"));
-		$this->rate_date = NOW();
-		//현재 진행중인 평가회차의 평가시작일을 NULL에서 지금 시간으로 업데이트
 
 		$query = $DB->MakeQuery("SELECT `개발자id` FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id` ", $date);
 		$evaluater = $DB->getResult($query);
