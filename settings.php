@@ -29,10 +29,11 @@ include('class/user.php');
 $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
 	array("all", "main", "octicon", "home", "Home"),
-	array("user", "eval-attend", "fa", "sign-in", "Attend evaluate"),
+	array("user", "eval-attend", "fa", "pencil", "Attend evaluate"),
 	//array("user", "", "octicon", "graph", "Graph"),
 	array("user", "upload", "octicon", "cloud-upload", "Upload"),
 	array("user", "evaluate", "octicon", "law", "Evaluate"),
+	array("all", "search", "octicon", "search", "Search"),
 	array("admin", "", "octicon", "tools", "Setting"),
 	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
 );

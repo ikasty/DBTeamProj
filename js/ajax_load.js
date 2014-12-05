@@ -11,6 +11,8 @@ function load_view(target, done_func, args) {
 		if (menu_reload === 'true')	target = $('#container');
 		else						target = $('#contents');
 
+		if (typeof args.selector !== 'undefined') target = $(args.selector);
+
 		if (data != '-1') target.html(data);
 		done_func(data);
 		setajax();
