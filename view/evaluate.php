@@ -1,7 +1,17 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
-?>
 
+/*
+$DB = getDB();
+
+$var 은 평가할 자료id
+$query = $DB->MakeQuery("SELECT '자료정보' as url FROM '평가자료' WHERE 자료id=%s", $var);
+$url = $DB->getResult($query);
+
+$query = $DB->MakeQuery("SELECT '자료분야' as filetype FROM '자료분야' WHERE 자료id=%s", $var);
+$filetype = $DB->getResult($query);
+*/
+?>
 <div class="pure-g" style="text-align:center;">
 	<div class="evaluate-box pure-u-2-5">
 		<div class="mainform evaluate">
@@ -45,10 +55,12 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				<span class="mega-octicon octicon-file-pdf"></span> 소스코드
 			</div>
 			<div class="descript">
-				평가할 개발자의 소스코드 입니다.
+				평가할 개발자의 소스코드 URL 입니다.
 			</div>
 			<div>
-				<!-- 평가할 소스코드 불러오기 -->
+				<!-- 평가할 소스코드 불러오기
+				$url[url]
+				$filetype[filetype] -->
 			</div>
 		</div>
 	</div>
