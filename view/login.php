@@ -36,7 +36,7 @@ unset($_SESSION['id']);
 			}
 
 			// 패스워드 암호화
-			args.password = Base64.encode(args.password);
+			//args.password = Base64.encode(args.password);
 			return true;
 		}
 	// 클릭 이벤트 종료시 (= 서버에서 데이터를 정상적으로 받아온 경우)

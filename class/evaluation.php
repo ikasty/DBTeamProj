@@ -22,11 +22,55 @@ class evaluation{
 	private $evalDate;				// evaldate @평가하기
 	private $indicator;				// eval indicator @평가지표
 	private $point;					// eval point @평가지표
-	private $period;				// period @평가자 그룹, @피평가자 그룹
+	private $period;				// period 평가회차 @평가자 그룹, @피평가자 그룹
+
 //	private $evalGroup;				// eval Group
 
-	global $current_user;
-	$developerId = $current_user->user_id;
+	function __construct()
+	{
+		global $current_user;
+		$developerId = $current_user->user_id;
+	}
+
+	function get_period()
+	{
+		$DB = getDB();
+
+		$query = "SELECT `평가회차` as period
+			FROM `평가일정`
+			WHERE now()>=`모집시작일`
+				AND isnull(`종료일`)";
+		$this->period = $DB->getValue($query);
+
+		return $this->period;
+	}
+
+	function current_state()
+	{
+		$period = $this->get_period();
+
+		$DB = getDB();
+		$query = $DB->MakeQuery(
+			"SELECT `평가회차` as period, `모집시작일` as reqdate, `평가시작일` as evalbegin, `종료일` as enddate
+			FROM `평가일정`
+			WHERE `평가회차`=%d",$period);
+
+		$result = $DB->getRow($query);
+
+		var_dump($period);
+		var_dump($result);
+
+		if(is_null($period)||is_null($result["reqdate"]))
+			$case = "start";
+		else if(is_null($result["evalbegin"]))
+			$case = "recruiting";
+		else if(is_null($result["enddate"]))
+			$case = "evaling";
+		else
+			$case = "end";
+
+		return $case;
+	}
 
 /*	function setEvalId()
 	{
@@ -49,26 +93,26 @@ class evaluation{
 
 		// 현재 진행중인 회차의 평가 일정의 회차를 확인한다.
 		$query = $DB->MakeQuery(
-			"SELECT 평가회차
-			FROM 평가일정
-			WHERE now()>=시작일
-				AND now()<=종료일")
-		$period = $DB->getResult($query);
+			"SELECT `평가회차`
+			FROM `평가일정`
+			WHERE now()>=`시작일`
+				AND now()<=`종료일`");
+		$this->period = $DB->getResult($query);
 
 		// 현재 접속중인 개발자가 현재 회차의 평가자 / 피평가자 그룹의 목록에 해당하는지 확인한다.
 		$query = $DB->MakeQuery(
 			"SELECT ifnull ( 1 , 0 )
-			FROM 평가자 선정
-			WHERE 평가회차=%s
-				AND 개발자id = %s",
+			FROM `평가자 선정`
+			WHERE `평가회차`=%s
+				AND `개발자id` = %s",
 			$period, $developerId);
 		$result1 = $DB->getResult($query);
 
 		$query = $DB->MakeQuery(
 			"SELECT ifnull ( 2 , 0 )
-			FROM 피평가자 선정
-			WHERE 평가회차=%s
-				AND 개발자id = %s",
+			FROM `피평가자 선정`
+			WHERE `평가회차`=%s
+				AND `개발자id` = %s",
 			$period, $developerId);
 		$result2 = $DB->getResult($query);
 
@@ -101,22 +145,22 @@ class evaluation{
 		if(is_null($id))
 		{
 			$query = $DB->MakeQuery(
-				"SELECT max(평가id)
-				FROM 평가");
+				"SELECT max(`평가id`)
+				FROM `평가`");
 			$result = $DB->getResult($query);
 
 			$id = $result + 1;
 
 			$query =$DB->MakeQuery(
-				"INSERT INTO 평가
-				SET 평가id=%d", $id
+				"INSERT INTO `평가`
+				SET `평가id`=%d", $id
 			);
 		}
 
 		// 평가하기에 data 입력
 		$query = $DB->MakeQuery(
-			"INSERT INTO 평가하기
-			(평가id, 자료id, 개발자id, 평가날짜)
+			"INSERT INTO `평가하기`
+			(`평가id`, `자료id`, `개발자id`, `평가날짜`)
 			VALUES(%d,%d,%d,now())
 			",$id,$dataId,$developerId);
 
@@ -124,8 +168,8 @@ class evaluation{
 
 		// 평가지표에 data 입력
 		$query = $DB->MakeQuery(
-			"INSERT INTO 평가지표
-			(평가id, 지표이름, 점수)
+			"INSERT INTO `평가지표`
+			(`평가id`, `지표이름`, `점수`)
 			VALUES(%d,%s,%d)
 			",$id,$indicator,$point);
 
