@@ -44,10 +44,15 @@ class User
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
 
-			$query = $DB->MakeQuery("SELECT * From `전문분야` where id=%s", $user_id);
-			$major_info = $DB->getRow($query);
-
-			$this->major = $major_info["전문분야"];
+			$query = $DB->MakeQuery("SELECT `전문분야` From `전문분야` where `id`=%s", $user_id);
+			$major_info = $DB->getResult($query);
+			// 전문 분야 array 생성 
+			$major_arr = array();
+			foreach ($major_info as $major) {
+				$major_arr[] = $major['전문분야'];
+			}
+			$this->major = $major_arr;
+			// $this->major = $major_info["전문분야"];
 
 			$query = $DB->MakeQuery("SELECT * From `근무` where id=%s", $this->developer_id);
 			$work_on_info = $DB->getRow($query);
@@ -270,8 +275,10 @@ class User
 
 }
 
-if (isset($_SESSION["id"]))
+if (isset($_SESSION["id"])){
 	$current_user = unserialize($_SESSION["id"]);
+	var_dump($current_user);
+}
 else
 	$current_user = User::getUser("");
 ?>
