@@ -14,36 +14,39 @@ class User
 	public $university = "";
 	public $hometown = "";
 
-	//전공은 배열로 만들어 주세요
+	// major는 일반 배열 형태로 이루어져 있음
 	public $major = "";
 
-	// 회사는 array(
-	// 		array(
-	// 			'name'=>&&&, 
-	// 			'start_day'=>YYYY-MM-DD, 
-	// 			'end_day'=>YYYY-MM-DD
-	// 		),
-	//    array(...)
-	// )
-	// 형태로 만들어 주세요.
+	/*company는 array(
+		array(
+			name => !@#$,
+			start_day => YYYY-MM-DD,
+			end_day => YYYY-MM-DD
+		), 
+		array (...
+		),
+		...
+	)의 형태로 구성됨 */
 	public $company = "";
-	public $department_id = "";
+	// 유저 정보에 부서 정보는 더 이상 포함되지 않음 
+	// public $department_id = "";
 
 	public $file_list = array();
 
+	//유저 아이디를 통하여 디비에서 정보를 불러와 신생 객체를 채움
 	protected function __construct($user_id)
 	{
 		$DB = getDB();
 		
 		if($user_id !== "") {
-			$query = $DB->MakeQuery("SELECT * From 유저 where id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From `유저` where `id`=%s", $user_id);
 			$user_info = $DB->getRow($query);
 
 			$this->user_id = $user_info["id"];
 			$this->password = ($user_info["비밀번호"]);
-			$this->name = $user_info["이름"];
+			$this->user_name = $user_info["이름"];
 
-			$query = $DB->MakeQuery("SELECT * From 개발자 where 유저id=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From `개발자` where `유저id`=%s", $user_id);
 			$developer_info = $DB->getRow($query);
 			if (!$developer_info) {
 				$this->user_type = "admin";
@@ -54,23 +57,25 @@ class User
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
 
-			$query = $DB->MakeQuery("SELECT * From 전문분야 where id=%s", $user_id);
-			$major_info = $DB->getRow($query);
+			$query = $DB->MakeQuery("SELECT `전문분야` From `전문분야` where `id`=%s", $user_id);
+			$major_info = $DB->getColumn($query);
+			$this->major = $major_info;
 
-			$this->major = $major_info["전문분야"];
-
-			$query = $DB->MakeQuery("SELECT * From 근무 where id=%s", $this->developer_id);
-			$work_on_info = $DB->getRow($query);
-
-			$this->company = $major_info["회사이름"];
-
-			$query = $DB->MakeQuery("SELECT * From 부서 where 회사이름=%s", $this->company);
+			$query = $DB->MakeQuery(
+				"SELECT `회사이름` as `name`, `입사일` as `start_day`, `퇴사일` as `end_day` 
+				From `근무` 
+				where `개발자id`=%s", $this->developer_id
+			);
+			$work_on_info = $DB->getResult($query);
+			$this->company = $work_on_info;
+			
+			// 유저 정보에 부서 정보는 더 이상 포함되지 않음
+			/*$query = $DB->MakeQuery("SELECT * From `부서` where `회사이름`=%s", $this->company);
 			$department_info = $DB->getRow($query);
-
-			$this->company = $department_info["부서id"];
+			$this->company = $department_info["부서id"];*/
 
 			//다중속성
-			$query = $DB->MakeQuery("SELECT 평가자료 From 평가자료 where 개발자id=%s", $this->developer_id);
+			$query = $DB->MakeQuery("SELECT `평가자료` From `평가자료` where `개발자id`=%s", $this->developer_id);
 			$file_list = $DB->getColumn($query);
 			
 		}
@@ -79,13 +84,9 @@ class User
 	// 이제 user를 구할 때는 $user = User::getUser($id); 처럼 한다
 	public static function getUser($user_id)
 	{
-		$DB = getDB();
+		// User 생성자에서 DB참조하여 정보를 채움
 		$temp = new User($user_id);
-		if ($user_id === "") return $temp;
-
-		$query = $DB->MakeQuery("SELECT * From 개발자 where id=%s", $user_id);
-		$developer_info = $DB->getRow($query);
-		return $temp;
+		return $temp;		
 	}
 
 	public function is_logged_in() {
@@ -94,7 +95,6 @@ class User
 
 	public function login($password)
 	{
-		// 처음부터 md5로 변환된 패스워드가 넘어옴
 		if($this->password == $password)
 		{
 			global $current_user;
@@ -241,7 +241,8 @@ class User
 		}
 
 	}
-	//평가라고 하기 부족함
+	//평가라고 하기 부족함 ** 삭제요망 **
+	/*
 	function Evalate($file_id)
 	{
 		global $DB;
@@ -271,7 +272,7 @@ class User
 			}
 		}
 	}
-
+*/
 	function StartEvaluate()
 	{
 
@@ -279,8 +280,9 @@ class User
 
 }
 
-if (isset($_SESSION["id"]))
+if (isset($_SESSION["id"])){
 	$current_user = unserialize($_SESSION["id"]);
+}
 else
 	$current_user = User::getUser("");
 ?>
