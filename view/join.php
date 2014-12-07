@@ -9,7 +9,6 @@ $company_list = $DB->getResult(
 	"SELECT `이름`
 	FROM `회사`"
 );
-var_dump($company_list);
 ?>
 <style>
   .mainform {
@@ -29,6 +28,21 @@ var_dump($company_list);
 
   .button-small {
   	font-size: 80%;
+  }
+
+  .delete-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #f15f5f;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    color: white;
+  }
+  .invisible {
+    display: none;
   }
 </style>
 
@@ -78,7 +92,7 @@ var_dump($company_list);
 			<div class="pure-control-group">
 				<label>회사명</label>
 				<select name="company-name[]">
-					<option>-회사를 선택해 주세요-</option>
+					<option value="">-회사를 선택해 주세요-</option>
 					<?
 					foreach ($company_list as $company) {
 					?>
@@ -87,6 +101,7 @@ var_dump($company_list);
 					}
 					?>
 				</select>
+				<div class="delete-button">×</div>
 			</div>
 			<div class="pure-control-group">
 				<label>시작일</label>
@@ -156,6 +171,11 @@ var_dump($company_list);
 		flagCheckUserIdDuple = false;
 	});
 
+	$(".delete-button").on('click', function () {
+	  $(this).parents(".company-input-part").remove();
+	});
+	$(".delete-button:first").addClass('invisible');
+
 	$("#add-company").on('click', function () {
 		$('.company-input-part:last').after(
 			$('.company-input-part:last').clone()
@@ -173,6 +193,11 @@ var_dump($company_list);
 			.val('');
 			// .datepicker();
 		newCompanyId += 1;
+
+		$(".delete-button:last").on('click', function () {
+		  $(this).parents(".company-input-part").remove();
+		});
+		$(".delete-button:last").removeClass('invisible');
 	});
 
 	$("#do-join").on('start', function (event, args, option) {

@@ -10,8 +10,10 @@ $company_list = $DB->getResult(
   FROM `회사`"
 );
 
+// $current_user = User::getUser($current_user->user_id);
 $major = implode(', ', $current_user->major);
-var_dump($current_user->company);
+// var_dump($current_user);
+
 ?>
 <style>
   .mainform {
@@ -32,6 +34,22 @@ var_dump($current_user->company);
   .button-small {
     font-size: 80%;
   }
+
+  .delete-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background-color: #f15f5f;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+    color: white;
+  }
+  .invisible {
+    display: none;
+  }
+
 </style>
 
 <!-- <div class="pure-g" style="text-align:center;"> -->
@@ -44,7 +62,11 @@ var_dump($current_user->company);
         <input id="id" value=<?=$current_user->user_id?> readonly>
       </div>
       <div class="pure-control-group">
-        <label for="pw">비밀번호</label>
+        <label for="cur-pw">현재 비밀번호</label>
+        <input id="cur-pw" type="password">
+      </div>
+      <div class="pure-control-group">
+        <label for="pw">새 비밀번호</label>
         <input id="pw" type="password">
       </div>
       <div class="pure-control-group">
@@ -72,6 +94,7 @@ var_dump($current_user->company);
       </p>
     </div>
     <?
+    $i = 0;
     foreach ($current_user->company as $user_company) {
     ?>
       <div class="company-input-part">
@@ -79,11 +102,9 @@ var_dump($current_user->company);
         <div class="pure-control-group">
           <label>회사명</label>
           <select name="company-name[]">
-            <option>-회사를 선택해 주세요-</option>
+            <option value="">-회사를 선택해 주세요-</option>
             <?
             foreach ($company_list as $company) {
-              var_dump($user_company);
-              var_dump($company);
             ?>
               <option value='<?=$company['이름']?>' 
               <? if ($user_company['name'] == $company['이름']) { ?>
@@ -96,6 +117,7 @@ var_dump($current_user->company);
             }
             ?>
           </select>
+          <div class="delete-button">×</div>
         </div>
         <div class="pure-control-group">
           <label>시작일</label>
@@ -109,6 +131,7 @@ var_dump($current_user->company);
         </div>
       </div>
     <?
+      $i++;
     }
     ?>
     <a id="add-company" class="button-small pure-button">
@@ -130,6 +153,12 @@ var_dump($current_user->company);
   </form>
 
   <script type="text/javascript">
+  $(".delete-button").on('click', function () {
+    $(this).parents(".company-input-part").remove();
+  });
+  $(".delete-button:first").addClass('invisible');
+
+
   $("#add-company").on('click', function () {
     $('.company-input-part:last').after(
       $('.company-input-part:last').clone()
@@ -141,7 +170,14 @@ var_dump($current_user->company);
       .val('');
     $("input[name='company-end-day[]']:last")
       .val('');
+
+    $(".delete-button:last").on('click', function () {
+      $(this).parents(".company-input-part").remove();
+    });
+    $(".delete-button:last").removeClass('invisible');
   });
+
+
 
   $("#do-edit-user-info").on('start', function (event, args, option) {
     //버튼 클래스 변경
@@ -149,6 +185,7 @@ var_dump($current_user->company);
 
     //회원가입 정보 전송
     args.user_id = $('#id').val();
+    args.user_cur_pw = $('#cur-pw').val();
     if ( $('#pw').val() || $('#pw-check').val() ) {
       args.user_pw = $('#pw').val();
       args.user_pw_check = $('#pw-check').val();
@@ -169,6 +206,9 @@ var_dump($current_user->company);
     var temp = <?=json_encode($current_user->company)?>;
 
     for (i = 0; i < $("select[name='company-name[]']").length; i++) {
+      if ( $("select[name='company-name[]']").length != temp.length) {
+        break;
+      }
       for (j = 0; j < temp.length; j++) {
         if ( temp[j].name == $($("select[name='company-name[]']")[i]).val() &&
           temp[j].start_day == $($("input[name='company-start-day[]']")[i]).val() &&
@@ -192,9 +232,11 @@ var_dump($current_user->company);
     }
     return true;
   }).on('finish', function (event, item, data) {
-    //버튼 클래스 변경
+    // 버튼 클래스 변경
     item.removeClass("pure-button-disabled");
 
+    // 페이지 새로고침
+    // current_user를 업데이트 해야함
     return true;
   });
   </script>
