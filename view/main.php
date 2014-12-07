@@ -11,8 +11,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 	<? else : ?>
 	진행중인 평가가 없습니다.
 	<? endif; ?>
-<? else : ?>
-	현재 <?=$current_user->company?>에서 근무중이십니다. 작업하신 프로젝트를 관리해보세요!
+<? else : 
+  $company_last_index = count($current_user->company)-1;
+  $company_name = $current_user->company[$company_last_index]['name'];
+  ?>
+	현재 <?=$company_name?>에서 근무중이십니다. 작업하신 프로젝트를 관리해보세요!
 <? endif; ?>
 	</p>
 </div>
