@@ -14,7 +14,14 @@ if (!$ARGS['flag_check_user_id_duple']) {
 }
 
 // major 배열화
-$major_list = explode(',', preg_replace('/\s+/', '', $ARGS['user_speciality']));
+$raw_major_list = explode(',', $ARGS['user_speciality']);
+$major_list = array();
+foreach ($raw_major_list as $raw_major) {
+  $major = preg_replace('/\s+/', '', $raw_major);
+  if ($major) {
+    $major_list[] = $major;
+  }
+}
 
 $query = $DB->MakeQuery("INSERT INTO `유저`(`id`, `비밀번호`, `이름`) VALUES(%s, %s, %s)", 
   $ARGS['user_id'],

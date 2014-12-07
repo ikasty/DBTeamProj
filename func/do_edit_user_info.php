@@ -11,50 +11,59 @@ if ($ARGS['user_pw'] != $ARGS['user_pw_check']) {
 
 $set_query = '';
 if (isset($ARGS['user_name'])) {
-  $set_query += "`이름`=`{$ARGS['user_name']}`,";
+  $set_query .= "`이름`='{$ARGS['user_name']}',";
 }
 if (isset($ARGS['user_pw'])) {
-  $set_query += "`비밀번호`=`{$ARGS['user_pw']}`,";
+  $set_query .= "`비밀번호`='{$ARGS['user_pw']}',";
 }
 if ( $set_query ) {
-  $set_query = rtrim($query, ",");
+  $set_query = rtrim($set_query, ",");
   $query = 
     "UPDATE `유저`
-     SET ".$set_queery.
-    "WHERE `id`=`{$ARGS['user_id']}`";
+    SET $set_query
+    WHERE `id`='{$ARGS['user_id']}'";
   $DB->query($query);
 }
 
 
 $set_query = '';
 if (isset($ARGS['user_university'])) {
-  $set_query += "`대학교`=`{$ARGS['user_university']}`,";
+  $set_query .= "`대학교`='{$ARGS['user_university']}',";
 }
-if (isset($ARGS['pw'])) {
-  $set_query += "`고향`=`{$ARGS['user_hometown']}`,";
+if (isset($ARGS['user_hometown'])) {
+  $set_query .= "`고향`='{$ARGS['user_hometown']}',";
 }
 if ( $set_query ) {
-  $set_query = rtrim($query, ",");
+  $set_query = rtrim($set_query, ",");
   $query = 
     "UPDATE `개발자`
-     SET ".$set_queery.
-    "WHERE `id`=`{$ARGS['user_id']}`";
+    SET $set_query
+    WHERE `id`='{$ARGS['user_id']}'";
   $DB->query($query);
+  var_dump($query);
 }
 
 if (isset($ARGS['user_speciality'])) {
   // major 배열화
-  $major_list = explode(',', preg_replace('/\s+/', '', $ARGS['user_speciality']));
+  $raw_major_list = explode(',', $ARGS['user_speciality']);
+  $major_list = array();
+  foreach ($raw_major_list as $raw_major) {
+    $major = preg_replace('/\s+/', '', $raw_major);
+    if ($major) {
+      $major_list[] = $major;
+    }
+  }
 
   $DB->query(
     "DELETE FROM `전문분야`
-    WHERE `id`=`{$ARGS['user_id']}`"
+    WHERE `id`='{$ARGS['user_id']}'"
   );
   foreach($major_list as $major) {
     $query = $DB->MakeQuery("INSERT INTO `전문분야`(`id`, `전문분야`) VALUES(%s, %s)", 
       $ARGS['user_id'],
       $major
     );
+    echo $qury;
     $DB->query($query);
   }
 }
@@ -62,7 +71,7 @@ if (isset($ARGS['user_speciality'])) {
 if (isset($ARGS['company_list'])) {
   $DB->query(
     "DELETE FROM `근무`
-    WHERE `개발자id`=`{$ARGS['user_id']}`"
+    WHERE `개발자id`='{$ARGS['user_id']}'"
   );
   foreach($ARGS['company_list'] as $company) {
     $query = $DB->MakeQuery("INSERT INTO `근무`(`회사이름`, `개발자id`, `입사일`, `퇴사일`) VALUES(%s, %s, %s, %s)", 

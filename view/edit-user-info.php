@@ -10,9 +10,7 @@ $company_list = $DB->getResult(
   FROM `회사`"
 );
 
-$major = implode(', ', $current_user->company);
-
-
+$major = implode(', ', $current_user->major);
 var_dump($current_user->company);
 ?>
 <style>
@@ -84,6 +82,8 @@ var_dump($current_user->company);
             <option>-회사를 선택해 주세요-</option>
             <?
             foreach ($company_list as $company) {
+              var_dump($user_company);
+              var_dump($company);
             ?>
               <option value='<?=$company['이름']?>' 
               <? if ($user_company['name'] == $company['이름']) { ?>
