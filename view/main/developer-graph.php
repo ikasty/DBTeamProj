@@ -28,7 +28,7 @@ $dummy_stat_data = array(
 		'eval-average' => 87
 	)
 );
-$dummy_work_data = array(
+/*$dummy_work_data = array(
 	array(
 		'date-start' => "2014-03-01",
 		'date-end' => "",
@@ -44,7 +44,17 @@ $dummy_work_data = array(
 		'date-end' => "2007-12-30",
 		'company' => "프리랜서",
 		'dept' => "")
-);
+);*/
+
+$dummy_work_data = array();
+foreach ($current_user->company as $company) {
+	$dummy_work_data[] = array(
+		'date-start' => $company['start_day'],
+		'date-end' => $company['end_day'],
+		'company' => $company['name'],
+		'dept' => ""
+	);
+}
 ///////////////////////////////
 
 ///////////////////////////////
