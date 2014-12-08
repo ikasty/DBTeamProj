@@ -201,45 +201,49 @@ class evaluation{
 	{
 		$DB = getDB();
 		//var_dump("Mapping", $period);
-		$query = $DB->MakeQuery("SELECT * FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id` ", $period);
+		$query = $DB->MakeQuery("SELECT * FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id` ORDER BY `평가그룹`", $period);
 		$evaluater = $DB->getResult($query);
 		$count= count($evaluater);
-		
+		//var_dump($count);
 		//이번 평가회차에 신청한 피평가자 리스트
 		//var_dump($evaluater);
 		//var_dump("=====");	
-		$query = $DB->MakeQuery("SELECT * FROM `평가자 선정` WHERE `평가회차`=%s GROUP BY `개발자id`",$period);
+		$query = $DB->MakeQuery("SELECT * FROM `평가자 선정` WHERE `평가회차` = %s ORDER BY `평가그룹` ASC",$period);
 		$evaluator = $DB->getResult($query);
+		$cnt = count($evaluator);
+		//var_dump($cnt);
 		//var_dump($evaluator);
 		//학연 지연이 다르면 매핑
 		$current = 0;
 		$curr=0;
-		while($count >= $current)
+		//var_dump($current,$curr);
+		
+		while($count > $current)
 		{	
 			$er_id = $evaluater[$current]["개발자id"];
 			$er_group = $evaluater[$current]["평가그룹"];
 			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$er_id); //피평가자의 고향, 대학교
 			$ter = $DB->getRow($query);
-
-			$or_id = $evaluater[$curr]["개발자id"];
-			$or_group = $evaluater[$curr]["평가그룹"];
-			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$er_id); //평가자의 고향, 대학교
+			//var_dump($er_id,$er_group,$ter);
+			$or_id = $evaluator[$curr]["개발자id"];
+			$or_group = $evaluator[$curr]["평가그룹"];
+			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$or_id); //평가자의 고향, 대학교
 			$tor = $DB->getRow($query);
-
+			//var_dump($or_id,$or_group,$tor);
 			if(($ter["고향"] != $tor["고향"]) && ($ter["대학교"] != $tor["대학교"]))
 			{
-				$query = $DB->MakeQuery("INSERT INTO `피평가자 그룹`(`평가회차`,`그룹id`,`평가자그룹`) VALUES(%d,%d,%d)",$period,$er_group,$or_group);
+				$query = $DB->MakeQuery("INSERT INTO `피평가자 그룹`(`평가회차id`,`그룹id`,`평가자그룹`) VALUES(%d,%d,%d)",$period,$er_group,$or_group);
 				$DB->query($query);	
 				$current++;
-			}else {
+				//var_dump("current=",$current);
+			} //매핑 성공 = 다음 피평가자 이동
+			else {
 			$curr++;
-			}
-			if($count >= $current) $curr=0;
-		}
-		/*count = 피평가자 수,  current = 현재 피평가자 번호, curr = 현재 평가자 번호
-		피평가자0번 부터 평가자와 비교하고 만약 학연,지연이 겹치면 평가자 번호 ++ , 만족하면 피평가자 번호 ++
-		그리고 돌때마다, 현재 피평가자 번호 < 피평가자 수 면 전부 다 매핑이 안됬으므로 while 반복
-		*/
+			//var_dump("curr=",$curr);
+			} //매핑 실패 = 다음 평가자 이동 아래부분 문제
+			if($cnt == $curr) $curr = 0; //평가자 리스트 끝에 도달 하면 평가자 위치 다시 0으로
+			//var_dump("curr=",$curr);
+		}  
 	}
 
 }
