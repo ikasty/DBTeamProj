@@ -273,10 +273,6 @@ CREATE TABLE `전문분야` (
 LOCK TABLES `전문분야` WRITE;
 /*!40000 ALTER TABLE `전문분야` DISABLE KEYS */;
 INSERT INTO `전문분야` (`id`, `전문분야`, `수정시간`) VALUES
-('1', '스타', '2014-12-09 23:52:05'),
-('1', '스타', '2014-12-09 23:53:40'),
-('1', '스타', '2014-12-09 23:53:41'),
-('1', '스타', '2014-12-09 23:53:47'),
 ('busan5', '지방대', '2014-12-09 23:52:05'),
 ('ewha9', '수도권', '2014-12-09 23:52:05'),
 ('gyeongi4', '수도권', '2014-12-09 23:52:05'),
@@ -564,7 +560,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIE
 DROP TABLE IF EXISTS `최신전문분야`;
 DROP VIEW IF EXISTS `최신전문분야`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`ikasty`@`localhost` SQL SECURITY DEFINER VIEW `최신전문분야` AS select `개발자`.`id` AS `개발자id`,`T`.`전문분야` AS `전문분야` from (`개발자` left join `전문분야` `T` on((`개발자`.`id` = `T`.`id`))) where (`T`.`수정시간` = (select max(`X`.`수정시간`) from `전문분야` `X` where ((`T`.`id` = `X`.`id`) and (`T`.`전문분야` = `X`.`전문분야`)) group by `X`.`id`,`X`.`전문분야`));
+CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `최신전문분야` AS select `개발자`.`id` AS `개발자id`,`T`.`전문분야` AS `전문분야` from (`개발자` left join `전문분야` `T` on((`개발자`.`id` = `T`.`id`))) where (`T`.`수정시간` = (select max(`X`.`수정시간`) from `전문분야` `X` where (`T`.`id` = `X`.`id`) group by `X`.`id`));
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
