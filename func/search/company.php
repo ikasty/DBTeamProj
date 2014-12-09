@@ -33,7 +33,6 @@ if ($ARGS["asc-desc"] === 'true')
 	$query .= " DESC";
 
 $result = $db->getResult($query);
-var_dump($query, $result);
 
 $return["success"] = "success";
 ob_start();
