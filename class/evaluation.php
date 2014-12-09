@@ -154,96 +154,159 @@ class evaluation{
 			",$id,$indicator,$point);
 		$result = $DB->getResult($query);
 	}
-	
+
 	function assginGroup($period)
 	{
 		$DB = getDB();
-		//var_dump("assignGroup", $period);
-		//개발자id 로 GROUP BY 해서 개발자id LIST 를 받고 피평가자 신청에서 각 개발자마다 그룹 id를 1부터 부여
 		$query = $DB->MakeQuery("SELECT `개발자id` FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id`",$period);
 		$evaluater = $DB->getResult($query);
-		
-		$count =0;
-		foreach($evaluater as $result)
-		{	
-			$count++;
-			$query = $DB->MakeQuery(
-			"UPDATE `피평가자 신청` SET `평가그룹` = %d WHERE `개발자id` = %s",$count, $result["개발자id"]);
-			$DB->query($query);			
+		$count = count($evaluater); // 신청한 피 평가자 수
+		$number=1; // 피평가자 그룹 번호 
+		//var_dump($count,$evaluater);
+		//var_dump("================");
+
+		for($i=0 ; $i<$count ; $i++)
+		{
+			$query = $DB->MakeQuery("SELECT * FROM `피평가자 신청` WHERE `평가회차`=%d AND `개발자id` = %s GROUP BY `개발자id`",$period,$evaluater[$i]["개발자id"]);
+			$check = $DB->getRow($query);
+			//var_dump("check=",$check);
+
+			//var_dump($check["평가그룹"] != 0);
+			if($check["평가그룹"] != 0)
+			{
+				continue;
+				//var_dump("평가그룹이 이미 지정되었으므로 continue");
+			} 
+
+			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluater[$i]["개발자id"]);
+			$er_profile = $DB->getRow($query); //이전 개발자의 프로필 
+			//var_dump("이전 개발자",$er_profile);
+
+			for($j=$i ; $j<$count ; $j++)
+			{
+				$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluater[$j]["개발자id"]);
+				$curr_profile = $DB->getRow($query); //현재 개발자의 프로필
+				//var_dump("현재 개발자",$curr_profile);
+
+				//var_dump("고향 결과 = ",($er_profile["고향"]==$curr_profile["고향"]),"대학교 결과 = ",($er_profile["대학교"]==$curr_profile["대학교"]));
+				if( ($er_profile["고향"]==$curr_profile["고향"]) && ($er_profile["대학교"]==$curr_profile["대학교"]) ) // 현재 피평가자 가 이전 profile 과 일치하면 같은 그룹에 배치
+				{
+					$query = $DB->MakeQuery(
+					"UPDATE `피평가자 신청` SET `평가그룹` = %d WHERE `개발자id` = %s",$number,$evaluater[$j]["개발자id"] );
+					$DB->query($query);	
+					//var_dump("업데이트 문 진입");
+				}
+			}
+			$number++;
+			//var_dump("현재 그룹 번호 =",$number);
 		}
 		//여기까지 피평가자 그루핑
-		
-		$query = "SELECT `개발자id` FROM `평가자료` GROUP BY `개발자id` ORDER BY `업로드시간` DESC";
+		//$number-1 이 결국 최종 그룹 수
+
+		$query = $DB->MakeQuery("SELECT `개발자id` FROM `평가자 선정` WHERE `평가회차`=%s",$period);
 		$evaluator = $DB->getResult($query);
-		//업로드 순으로 개발자 뽑기
-		$number =0;
-		foreach($evaluator as $result)
+		$count2 = count($evaluator); // 신청한 평가자 수
+		$number2=1; // 평가자 그룹 번호 
+		var_dump($count2,$evaluator);
+		var_dump("================");
+
+		for($i=0 ; $i<$count2 ; $i++)
 		{
-			//var_dump($result["개발자id"]);
-			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$result["개발자id"]);
-			//var_dump($query);
-			$info = $DB->getRow($query);
-			//var_dump($info);
-			//var_dump($info["고향"],$info["대학교"]);
-			if(($home != $info["고향"]) && ($univ != $info["대학교"])) {
-				$number++;
-				$home = $info["고향"];
-				$univ = $info["대학교"];
-				$query = $DB->MakeQuery("INSERT INTO `평가자 선정`(`평가회차`,`평가그룹`,`개발자id`) VALUES(%d,%d,%s)",$period,$number,$result["개발자id"]);
-				$DB->query($query);				
+			$query = $DB->MakeQuery("SELECT * FROM `평가자 선정` WHERE `평가회차`=%d AND `개발자id` = %s GROUP BY `개발자id`",$period,$evaluator[$i]["개발자id"]);
+			$check = $DB->getRow($query);
+			var_dump("check=",$check);
+
+			var_dump($check["평가그룹"] != 0);
+			if($check["평가그룹"] != 0)
+			{
+				continue;
+				var_dump("평가그룹이 이미 지정되었으므로 continue");
+			} 
+
+			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluator[$i]["개발자id"]);
+			$or_profile = $DB->getRow($query); //이전 개발자의 프로필 
+			var_dump("이전 개발자",$or_profile);
+
+			for($j=$i ; $j<$count2 ; $j++)
+			{
+				$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluator[$j]["개발자id"]);
+				$curr_profile = $DB->getRow($query); //현재 개발자의 프로필
+				var_dump("현재 개발자",$curr_profile);
+
+				var_dump("고향 결과 = ",($or_profile["고향"]==$curr_profile["고향"]),"대학교 결과 = ",($or_profile["대학교"]==$curr_profile["대학교"]));
+				if( ($or_profile["고향"]==$curr_profile["고향"]) && ($or_profile["대학교"]==$curr_profile["대학교"]) ) // 현재 피평가자 가 이전 profile 과 일치하면 같은 그룹에 배치
+				{
+					$query = $DB->MakeQuery(
+					"UPDATE `평가자 선정` SET `평가그룹` = %d WHERE `개발자id` = %s",$number2,$evaluator[$j]["개발자id"] );
+					$DB->query($query);	
+					var_dump("업데이트 문 진입");
+				}
 			}
-			if($number == $count) break;
+			$number2++;
+			var_dump("현재 그룹 번호 =",$number2);
 		}
-		//평가자 그루핑
 	}
 
 	function Mapping($period)
 	{
 		$DB = getDB();
-		//var_dump("Mapping", $period);
-		$query = $DB->MakeQuery("SELECT * FROM `피평가자 신청` WHERE `평가회차`=%s GROUP BY `개발자id` ORDER BY `평가그룹`", $period);
+		$query = $DB->MakeQuery("SELECT * FROM `피평가자 신청` WHERE `평가회차`=%s ORDER BY `평가그룹` ASC", $period);
 		$evaluater = $DB->getResult($query);
-		$count= count($evaluater);
-		//var_dump($count);
-		//이번 평가회차에 신청한 피평가자 리스트
-		//var_dump($evaluater);
-		//var_dump("=====");	
+		$no1 = count($evaluater);
+
+
 		$query = $DB->MakeQuery("SELECT * FROM `평가자 선정` WHERE `평가회차` = %s ORDER BY `평가그룹` ASC",$period);
 		$evaluator = $DB->getResult($query);
-		$cnt = count($evaluator);
-		//var_dump($cnt);
-		//var_dump($evaluator);
-		//학연 지연이 다르면 매핑
-		$current = 0;
-		$curr=0;
-		//var_dump($current,$curr);
-		
-		while($count > $current)
-		{	
-			$er_id = $evaluater[$current]["개발자id"];
-			$er_group = $evaluater[$current]["평가그룹"];
+		$no2 = count($evaluator);
+
+		$curr1 = 0;
+		$curr2 = 0;
+		$loop_cnt = 0;
+		while($no1 > $curr1) //curr1 피평가자 인덱스가 끝까지 도착할때까지 반복
+		{
+			$er_id = $evaluater[$curr1]["개발자id"];
+			$er_group = $evaluater[$curr1]["평가그룹"];
 			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$er_id); //피평가자의 고향, 대학교
-			$ter = $DB->getRow($query);
-			//var_dump($er_id,$er_group,$ter);
-			$or_id = $evaluator[$curr]["개발자id"];
-			$or_group = $evaluator[$curr]["평가그룹"];
-			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$or_id); //평가자의 고향, 대학교
+			$ter = $DB->getRow($query); 
+
+			$or_id = $evaluator[$curr2]["개발자id"];
+			$or_group = $evaluator[$curr2]["평가그룹"];
+			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$or_id); //피평가자의 고향, 대학교
 			$tor = $DB->getRow($query);
-			//var_dump($or_id,$or_group,$tor);
+
 			if(($ter["고향"] != $tor["고향"]) && ($ter["대학교"] != $tor["대학교"]))
 			{
 				$query = $DB->MakeQuery("INSERT INTO `피평가자 그룹`(`평가회차id`,`그룹id`,`평가자그룹`) VALUES(%d,%d,%d)",$period,$er_group,$or_group);
 				$DB->query($query);	
-				$current++;
-				//var_dump("current=",$current);
-			} //매핑 성공 = 다음 피평가자 이동
-			else {
-			$curr++;
-			//var_dump("curr=",$curr);
-			} //매핑 실패 = 다음 평가자 이동 아래부분 문제
-			if($cnt == $curr) $curr = 0; //평가자 리스트 끝에 도달 하면 평가자 위치 다시 0으로
-			//var_dump("curr=",$curr);
-		}  
+				$curr1++;
+
+				$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluater[$curr1]["개발자id"]); //피평가자의 고향, 대학교
+				$check = $DB->getRow($query);
+				while($check["평가그룹"] == $er_group) //다음 피평가자와 지금 피평가자 그룹이 같음. 계쏙 스킵
+				{
+					$curr1++;
+					$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluater[$curr1]["개발자id"]); //피평가자의 고향, 대학교
+					$check = $DB->getRow($query);
+				}
+			} //매핑 성공 삽입 후에 다음 피평가자 이동
+			else
+			{
+				$curr2++; 
+				
+				$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluator[$curr2]["개발자id"]); //평가자의 고향, 대학교
+				$check = $DB->getRow($query);
+				while($check["평가그룹" == $or_group]) //다음 평가자와 그룹이 같음 계속 스킵
+				{
+					$curr2++;
+					$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluator[$curr2]["개발자id"]); //평가자의 고향, 대학교
+					$check = $DB->getRow($query);
+					if($no2 == $curr2) break;
+				}
+
+			} //매핑실패 다음 평가자 이동 
+			if($no2 == $curr2) $curr2 = 0; //평가자 리스트 끝에 도달 하면 평가자 위치 다시 0으로
+			if($loop_cnt++ >100) break; // 100번 돌면 무한루프로 간주하고  탈출 : 이경우는 피평가자 그룹은 많은데 평가자 그룹수가 적어지는 경우 발생한다
+		}
 	}
 
 }
