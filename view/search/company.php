@@ -23,7 +23,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				전문분야 보이기
 			</label>
 			<label for="company-eval-view" class="pure-checkbox">
-				<input id="company-eval-view" class="view-array" type="checkbox" value="회사평가" checked>
+				<input id="company-eval-view" class="view-array" type="checkbox" value="평균점수" checked>
 				회사평가 보이기
 			</label>
 
