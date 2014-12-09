@@ -6,15 +6,19 @@ $DB = getDB();
 //폼 유효성을 관리하는 변수
 $validate = true;
 
-
+if ($ARGS['user_pw'] == "") {
+  addMessage("비밀번호를 입력해 주세요");
+  $return['success'] = 'failed';
+  $validate = false;
+}
 if ($ARGS['user_pw'] != $ARGS['user_pw_check']) {
   addMessage("비밀번호와 비밀번호 확인이 불일치합니다.");
-  $result['success'] = 'failed';
+  $return['success'] = 'failed';
   $validate = false;
 }
 if (!$ARGS['flag_check_user_id_duple']) {
   addMessage("아이디 중복 확인을 해주세요");
-  $result['success'] = 'failed';
+  $return['success'] = 'failed';
   $validate = false;
 }
 if ($validate) {

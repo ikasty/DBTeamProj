@@ -34,7 +34,7 @@ if (!file_exists($target . '.php')) die(json_encode(-1));
 
 if (substr($target, 0, 4) == 'view') {
 	// 권한 체크
-	if ( !$current_user->is_logged_in() ) {
+	if ( !$current_user->is_logged_in() && $target != "view/join" ) {
 		$target = 'view/login';
 		$ARGS['menu_reload'] = 'true';
 	}

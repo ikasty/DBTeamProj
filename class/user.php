@@ -57,7 +57,15 @@ class User
 			$this->university = $developer_info["대학교"];
 			$this->hometown = $developer_info["고향"];
 
-			$query = $DB->MakeQuery("SELECT `전문분야` From `전문분야` where `id`=%s", $user_id);
+			$query = $DB->MakeQuery(
+				"SELECT `전문분야` 
+				From `전문분야` 
+				where `id`=%s AND `수정시간`=(
+					SELECT MAX(`수정시간`)
+					FROM `전문분야`
+					WHERE `id`=%s
+				)" ,$user_id, $user_id
+			);
 			$major_info = $DB->getColumn($query);
 			$this->major = $major_info;
 
