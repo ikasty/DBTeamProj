@@ -11,7 +11,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				</a>
 			</li>
 			<li class="menu-item">
-				<a class="ajax_load" data-link="search/test" data-args="selector:#search-form">
+				<a class="ajax_load" data-link="search/company" data-args="selector:#search-form">
 					<span class="mega-octicon octicon-organization"></span> 회사 검색
 				</a>
 			</li>
@@ -22,12 +22,10 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 			</li>
 		</ul></div></div>
 	</div>
-	<div class="pure-u-4-4">
-		<div class="pure-u-1-4">
-		</div>
-		<div id="search-form" class="pure-u-3-4">
+	<div class="pure-u-1-1">
+		<div id="search-form">
 			<div class="mainform" style="min-height: 300px; text-align: left;">
-			좌측의 메뉴를 선택해서 검색 결과를 확인하세요!
+			상단의 메뉴를 선택해서 검색 결과를 확인하세요!
 			</div>
 		</div>
 	</div>
