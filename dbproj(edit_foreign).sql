@@ -535,30 +535,12 @@ LOCK TABLES `피평가자 신청` WRITE;
 UNLOCK TABLES;
 
 --
--- Stand-in structure for view `평가점수`
---
-CREATE TABLE IF NOT EXISTS `평가점수` (
-`평가id` int(11)
-,`평균점수` decimal(14,4)
-,`평가회차` int(11)
-,`개발자id` varchar(20)
-);
-
---
 -- Structure for view `평가점수`
 --
 DROP TABLE IF EXISTS `평가점수`;
 DROP VIEW IF EXISTS `평가점수`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `평가점수` AS select `평가지표`.`평가id` AS `평가id`,avg(`평가지표`.`점수`) AS `평균점수`,`평가하기`.`평가회차` AS `평가회차`,`평가하기`.`개발자id` AS `개발자id` from (`평가지표` left join `평가하기` on((`평가지표`.`평가id` = `평가하기`.`평가id`))) group by `평가지표`.`평가id`;
-
---
--- Stand-in structure for view `회사성적`
---
-CREATE TABLE IF NOT EXISTS `회사성적` (
-`회사이름` varchar(10)
-,`평균점수` decimal(18,8)
-);
 
 --
 -- Structure for view `회사성적`
@@ -569,20 +551,20 @@ DROP VIEW IF EXISTS `회사성적`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `회사성적` AS select `근무`.`회사이름` AS `회사이름`,avg(`평가점수`.`평균점수`) AS `평균점수` from (`근무` left join `평가점수` on((`근무`.`개발자id` = `평가점수`.`개발자id`))) where isnull(`근무`.`퇴사일`) group by `근무`.`회사이름`;
 
 --
--- Stand-in structure for view `회사전문분야`
---
-CREATE TABLE IF NOT EXISTS `회사전문분야` (
-`회사이름` varchar(10)
-,`전문분야` varchar(20)
-);
-
---
 -- Structure for view `회사전문분야`
 --
 DROP TABLE IF EXISTS `회사전문분야`;
 DROP VIEW IF EXISTS `회사전문분야`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `회사전문분야` AS select distinct `근무`.`회사이름` AS `회사이름`,`전문분야`.`전문분야` AS `전문분야` from ((`근무` left join `평가점수` on((`근무`.`개발자id` = `평가점수`.`개발자id`))) left join `전문분야` on((`전문분야`.`id` = `근무`.`개발자id`))) where isnull(`근무`.`퇴사일`);
+
+--
+-- Structure for view `최신전문분야`
+--
+DROP TABLE IF EXISTS `최신전문분야`;
+DROP VIEW IF EXISTS `최신전문분야`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`ikasty`@`localhost` SQL SECURITY DEFINER VIEW `최신전문분야` AS select `개발자`.`id` AS `개발자id`,`T`.`전문분야` AS `전문분야` from (`개발자` left join `전문분야` `T` on((`개발자`.`id` = `T`.`id`))) where (`T`.`수정시간` = (select max(`X`.`수정시간`) from `전문분야` `X` where ((`T`.`id` = `X`.`id`) and (`T`.`전문분야` = `X`.`전문분야`)) group by `X`.`id`,`X`.`전문분야`));
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
