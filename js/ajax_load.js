@@ -44,6 +44,7 @@ function setajax() {
 				item.on("click", clickfunc);
 			}, args);
 		};
+		$(this).off();
 		$(this).on("click", clickfunc);
 	});
 
@@ -88,6 +89,7 @@ function setajax() {
 				item.on("click", clickfunc);
 			});
 		};
+		$(this).off();
 		$(this).on("click", clickfunc);
 	});
 }
