@@ -29,11 +29,14 @@ ob_start();
 <? foreach ($ARGS["view"] as $name) : ?>
 		<th><?=$name?></th>
 <? endforeach; ?>
+		<th>회사명</th>
+		<th>부서명</th>
+		<th>근무기간</th>
 	</tr>
 </thead>
 <tbody>
 </tbody>
 </table>
 <?
-$return["html"] = ob_end_clean();
+$return["html"] = ob_get_clean();
 ?>
