@@ -18,6 +18,41 @@ USE `dbproj`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `유저`
+--
+
+DROP TABLE IF EXISTS `유저`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `유저` (
+  `id` varchar(20) NOT NULL DEFAULT '' COMMENT '유저id (개발자id와 다름)',
+  `비밀번호` varchar(20) DEFAULT NULL COMMENT '비밀번호',
+  `이름` varchar(20) DEFAULT NULL COMMENT '이름',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='유저(관리자 + 개발자)의 개인 정보 관리';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `유저`
+--
+
+LOCK TABLES `유저` WRITE;
+/*!40000 ALTER TABLE `유저` DISABLE KEYS */;
+INSERT INTO `유저` (`id`, `비밀번호`, `이름`) VALUES
+('test', 'test', '관리자'),
+('yonsei1', 'test', '연세1'),
+('korea2', 'test', 'korea2'),
+('seoul3', 'test', 'seoul3'),
+('gyeongi4', 'test', 'gyeongi4'),
+('busan5', 'test', 'busan5'),
+('ulsan6', 'test', 'ulsan6'),
+('postech7', 'test', 'postech7'),
+('kaist8', 'test', 'kaist8'),
+('ewha9', 'test', 'ewha9');
+/*!40000 ALTER TABLE `유저` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `개발자`
 --
 
@@ -41,7 +76,40 @@ CREATE TABLE `개발자` (
 
 LOCK TABLES `개발자` WRITE;
 /*!40000 ALTER TABLE `개발자` DISABLE KEYS */;
+INSERT INTO `개발자` (`id`, `대학교`, `고향`, `유저id`) VALUES
+('yonsei1', '연세대학교', '서울특별시 서대문구', '1'),
+('korea2', '고려대학교', '서울특별시 성북구', '2'),
+('seoul3', '서울대학교', '서울특별시 관악구', '3'),
+('gyeongi4', '경기대학교', '경기도', '4'),
+('busan5', '부산대학교', '부산', '5'),
+('ulsan6', '울산대학교', '울산', '6'),
+('postech7', '포항공대', '포항', '7'),
+('kaist8', '카이스트', '대전', '8'),
+('ewha9', '이화여자대학교', '서울특별시 서대문구', '9');
 /*!40000 ALTER TABLE `개발자` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `회사`
+--
+
+DROP TABLE IF EXISTS `회사`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `회사` (
+  `이름` varchar(10) NOT NULL DEFAULT '' COMMENT '회사이름',
+  PRIMARY KEY (`이름`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `회사`
+--
+
+LOCK TABLES `회사` WRITE;
+/*!40000 ALTER TABLE `회사` DISABLE KEYS */;
+INSERT INTO `회사` VALUES ('NHN'),('넥슨'),('프리랜서');
+/*!40000 ALTER TABLE `회사` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -69,6 +137,16 @@ CREATE TABLE `근무` (
 
 LOCK TABLES `근무` WRITE;
 /*!40000 ALTER TABLE `근무` DISABLE KEYS */;
+INSERT INTO `근무` (`회사이름`, `개발자id`, `입사일`, `퇴사일`) VALUES
+('NHN', 'busan5', '2014-12-05', NULL),
+('NHN', 'gyeongi4', '2014-12-05', NULL),
+('NHN', 'seoul3', '2014-12-05', NULL),
+('NHN', 'ulsan6', '2014-12-05', '2014-12-09'),
+('넥슨', 'kaist8', '2014-12-05', NULL),
+('넥슨', 'postech7', '2014-12-05', NULL),
+('넥슨', 'yonsei1', '2014-12-05', NULL),
+('프리랜서', 'ewha9', '2014-12-05', NULL),
+('프리랜서', 'korea2', '2014-12-05', NULL);
 /*!40000 ALTER TABLE `근무` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,27 +176,43 @@ INSERT INTO `부서` VALUES ('NHN',0),('NHN',1),('NHN',2),('넥슨',0),('넥슨'
 UNLOCK TABLES;
 
 --
--- Table structure for table `유저`
+-- Table structure for table `평가자료`
 --
 
-DROP TABLE IF EXISTS `유저`;
+DROP TABLE IF EXISTS `평가자료`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `유저` (
-  `id` varchar(20) NOT NULL DEFAULT '' COMMENT '유저id (개발자id와 다름)',
-  `비밀번호` varchar(20) DEFAULT NULL COMMENT '비밀번호',
-  `이름` varchar(20) DEFAULT NULL COMMENT '이름',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='유저(관리자 + 개발자)의 개인 정보 관리';
+CREATE TABLE `평가자료` (
+  `자료id` int(11) NOT NULL,
+  `자료이름` varchar(20) DEFAULT NULL COMMENT '사용자의 자료구분 편의를 위한 이름',
+  `개발자id` varchar(20) DEFAULT NULL,
+  `업로드시간` datetime DEFAULT NULL,
+  `기여도` float DEFAULT NULL COMMENT '기여도',
+  `자료정보` varchar(200) DEFAULT NULL COMMENT '업로드 자료 정보(url)',
+  PRIMARY KEY (`자료id`),
+  KEY `did_in_mat_to_did_idx` (`개발자id`),
+  CONSTRAINT `did_in_mat_to_did` FOREIGN KEY (`개발자id`) REFERENCES `개발자` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='평가자료 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `유저`
+-- Dumping data for table `평가자료`
 --
 
-LOCK TABLES `유저` WRITE;
-/*!40000 ALTER TABLE `유저` DISABLE KEYS */;
-/*!40000 ALTER TABLE `유저` ENABLE KEYS */;
+LOCK TABLES `평가자료` WRITE;
+/*!40000 ALTER TABLE `평가자료` DISABLE KEYS */;
+INSERT INTO `평가자료` (`자료id`, `자료이름`, `개발자id`, `업로드시간`, `기여도`, `자료정보`) VALUES
+(4, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 1, 'test'),
+(3, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 1, 'test'),
+(5, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 1, 'test'),
+(6, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 1, 'test'),
+(7, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 0.7, 'test'),
+(8, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 0.3, 'test'),
+(9, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 1, 'test'),
+(10, 'yonsei1 test', 'yonsei1', '2014-12-05 15:28:24', 0.5, 'test'),
+(11, 'korea2 test', 'korea2', '2014-12-05 15:28:24', 0.2, 'test'),
+(12, 'seoul3 test', 'seoul3', '2014-12-05 15:28:24', 0.3, 'test');
+/*!40000 ALTER TABLE `평가자료` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -142,6 +236,17 @@ CREATE TABLE `자료분야` (
 
 LOCK TABLES `자료분야` WRITE;
 /*!40000 ALTER TABLE `자료분야` DISABLE KEYS */;
+INSERT INTO `자료분야` (`자료id`, `자료분야`) VALUES
+(10, '논문'),
+(11, '소스코드'),
+(12, '논문'),
+(3, '소스코드'),
+(4, '보고서'),
+(5, '소스코드'),
+(6, '논문'),
+(7, '소스코드'),
+(8, '논문'),
+(9, '보고서');
 /*!40000 ALTER TABLE `자료분야` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,6 +272,22 @@ CREATE TABLE `전문분야` (
 
 LOCK TABLES `전문분야` WRITE;
 /*!40000 ALTER TABLE `전문분야` DISABLE KEYS */;
+INSERT INTO `전문분야` (`id`, `전문분야`, `수정시간`) VALUES
+('1', '스타', '2014-12-09 23:52:05'),
+('1', '스타', '2014-12-09 23:53:40'),
+('1', '스타', '2014-12-09 23:53:41'),
+('1', '스타', '2014-12-09 23:53:47'),
+('busan5', '지방대', '2014-12-09 23:52:05'),
+('ewha9', '수도권', '2014-12-09 23:52:05'),
+('gyeongi4', '수도권', '2014-12-09 23:52:05'),
+('kaist8', '공대', '2014-12-09 23:52:05'),
+('kaist8', '지방대', '2014-12-09 23:52:05'),
+('korea2', 'SKY', '2014-12-09 23:52:05'),
+('postech7', '공대', '2014-12-09 23:52:05'),
+('postech7', '지방대', '2014-12-09 23:52:05'),
+('seoul3', 'SKY', '2014-12-09 23:52:05'),
+('ulsan6', '지방대', '2014-12-09 23:52:05'),
+('yonsei1', 'SKY', '2014-12-09 23:52:05');
 /*!40000 ALTER TABLE `전문분야` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,6 +310,8 @@ CREATE TABLE `평가` (
 
 LOCK TABLES `평가` WRITE;
 /*!40000 ALTER TABLE `평가` DISABLE KEYS */;
+INSERT INTO `평가` (`평가id`) VALUES
+(1),(2),(3),(4),(5),(6);
 /*!40000 ALTER TABLE `평가` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,34 +392,6 @@ LOCK TABLES `평가자 선정` WRITE;
 /*!40000 ALTER TABLE `평가자 선정` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `평가자료`
---
-
-DROP TABLE IF EXISTS `평가자료`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `평가자료` (
-  `자료id` int(11) NOT NULL,
-  `자료이름` varchar(20) DEFAULT NULL COMMENT '사용자의 자료구분 편의를 위한 이름',
-  `개발자id` varchar(20) DEFAULT NULL,
-  `업로드시간` datetime DEFAULT NULL,
-  `기여도` float DEFAULT NULL COMMENT '기여도',
-  `자료정보` varchar(200) DEFAULT NULL COMMENT '업로드 자료 정보(url)',
-  PRIMARY KEY (`자료id`),
-  KEY `did_in_mat_to_did_idx` (`개발자id`),
-  CONSTRAINT `did_in_mat_to_did` FOREIGN KEY (`개발자id`) REFERENCES `개발자` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='평가자료 정보';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `평가자료`
---
-
-LOCK TABLES `평가자료` WRITE;
-/*!40000 ALTER TABLE `평가자료` DISABLE KEYS */;
-/*!40000 ALTER TABLE `평가자료` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `평가지표`
@@ -320,6 +415,26 @@ CREATE TABLE `평가지표` (
 
 LOCK TABLES `평가지표` WRITE;
 /*!40000 ALTER TABLE `평가지표` DISABLE KEYS */;
+INSERT INTO `평가지표` (`평가id`, `지표이름`, `점수`) VALUES
+(1, '속도', 10),
+(2, '범용성', 2),
+(3, '속도', 1),
+(1, '크기', 3),
+(1, '사용 편의성', 5),
+(2, '크기', 4),
+(2, '사용 편의성', 7),
+(3, '크기', 9),
+(3, '사용 편의성', 0),
+(3, '신뢰성', 0),
+(3, '견고성', 3),
+(4, '크기', 1),
+(4, '사용 편의성', 7),
+(5, '속도', 1),
+(5, '크기', 4),
+(5, '사용 편의성', 9),
+(5, '신뢰성', 7),
+(6, '속도', 3),
+(6, '크기', 4);
 /*!40000 ALTER TABLE `평가지표` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,6 +466,13 @@ CREATE TABLE `평가하기` (
 
 LOCK TABLES `평가하기` WRITE;
 /*!40000 ALTER TABLE `평가하기` DISABLE KEYS */;
+INSERT INTO `평가하기` (`평가id`, `자료id`, `개발자id`, `평가날짜`, `평가회차`) VALUES
+(1, 4, 'yonsei1', '2014-12-08', 2),
+(2, 5, 'yonsei1', '2014-12-08', 2),
+(3, 6, 'korea2', '2014-12-08', 2),
+(4, 9, 'seoul3', '2014-12-08', 2),
+(5, 10, 'yonsei1', '2014-12-08', 2),
+(6, 11, 'korea2', '2014-12-08', 2);
 /*!40000 ALTER TABLE `평가하기` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -413,27 +535,53 @@ LOCK TABLES `피평가자 신청` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `회사`
+-- Stand-in structure for view `평가점수`
 --
-
-DROP TABLE IF EXISTS `회사`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `회사` (
-  `이름` varchar(10) NOT NULL DEFAULT '' COMMENT '회사이름',
-  PRIMARY KEY (`이름`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+CREATE TABLE IF NOT EXISTS `평가점수` (
+`평가id` int(11)
+,`평균점수` decimal(14,4)
+,`평가회차` int(11)
+,`개발자id` varchar(20)
+);
 
 --
--- Dumping data for table `회사`
+-- Structure for view `평가점수`
 --
+DROP TABLE IF EXISTS `평가점수`;
 
-LOCK TABLES `회사` WRITE;
-/*!40000 ALTER TABLE `회사` DISABLE KEYS */;
-INSERT INTO `회사` VALUES ('NHN'),('넥슨'),('프리랜서');
-/*!40000 ALTER TABLE `회사` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `평가점수` AS select `평가지표`.`평가id` AS `평가id`,avg(`평가지표`.`점수`) AS `평균점수`,`평가하기`.`평가회차` AS `평가회차`,`평가하기`.`개발자id` AS `개발자id` from (`평가지표` left join `평가하기` on((`평가지표`.`평가id` = `평가하기`.`평가id`))) group by `평가지표`.`평가id`;
+
+--
+-- Stand-in structure for view `회사성적`
+--
+CREATE TABLE IF NOT EXISTS `회사성적` (
+`회사이름` varchar(10)
+,`평균점수` decimal(18,8)
+);
+
+--
+-- Structure for view `회사성적`
+--
+DROP TABLE IF EXISTS `회사성적`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `회사성적` AS select `근무`.`회사이름` AS `회사이름`,avg(`평가점수`.`평균점수`) AS `평균점수` from (`근무` left join `평가점수` on((`근무`.`개발자id` = `평가점수`.`개발자id`))) where isnull(`근무`.`퇴사일`) group by `근무`.`회사이름`;
+
+--
+-- Stand-in structure for view `회사전문분야`
+--
+CREATE TABLE IF NOT EXISTS `회사전문분야` (
+`회사이름` varchar(10)
+,`전문분야` varchar(20)
+);
+
+--
+-- Structure for view `회사전문분야`
+--
+DROP TABLE IF EXISTS `회사전문분야`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`dbproj`@`localhost` SQL SECURITY DEFINER VIEW `회사전문분야` AS select distinct `근무`.`회사이름` AS `회사이름`,`전문분야`.`전문분야` AS `전문분야` from ((`근무` left join `평가점수` on((`근무`.`개발자id` = `평가점수`.`개발자id`))) left join `전문분야` on((`전문분야`.`id` = `근무`.`개발자id`))) where isnull(`근무`.`퇴사일`);
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
