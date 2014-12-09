@@ -19,7 +19,7 @@ $query .= " FROM 회사성적 RIGHT JOIN 회사전문분야 ON 회사성적.회�
 // where절
 $where_clause = array();
 if ($ARGS["company-name"] !== "")
-	$where_clause[] = "회사이름 LIKE '%" . $ARGS["company-name"] . "%'' ";
+	$where_clause[] = "회사성적.회사이름 LIKE '%" . $ARGS["company-name"] . "%' ";
 if ($ARGS["company-major"] !== "")
 	$where_clause[] = "전문분야 LIKE '%" . $ARGS["company-major"] . "%' ";
 if (sizeof($where_clause) != 0) {
