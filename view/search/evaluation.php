@@ -17,32 +17,36 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
       <input id="get-evel-major" type="text">
 
       <label for="evel-start-date">평가 시기</label>
-      <input id="evel-start-date" type="text">~
-      <input id="evel-end-date" type="text">
+      <input id="evel-start-date" type="date">~
+      <input id="evel-end-date" type="date">
 
       <label for="evel-period">평가 회차</label>
-      <input id="evel-period" type="text">
+      <input id="evel-period" type="number">
     
       <label>검색 결과 선택</label>
       <label for="do-eval-id-view" class="pure-checkbox">
-        <input id="do-eval-id-view" class="view-array" type="checkbox" value="평가자_ID" checked>
+        <input id="do-eval-id-view" class="view-array" type="checkbox" value="평가자 ID" checked>
         평가자 ID 보이기
       </label>
       <label for="get-eval-id-view" class="pure-checkbox">
-        <input id="get-eval-id-view" class="view-array" type="checkbox" value="피평가자_ID" checked>
+        <input id="get-eval-id-view" class="view-array" type="checkbox" value="피평가자 ID" checked>
         피평가자 ID 보이기
       </label>
-      <label for="get-eval-major" class="pure-checkbox">
-        <input id="get-eval-major" class="view-array" type="checkbox" value="피평가자_전문_분야" checked>
+      <label for="get-eval-major-view" class="pure-checkbox">
+        <input id="get-eval-major-view" class="view-array" type="checkbox" value="피평가자 전문 분야" checked>
         피평가자 전문 분야 보이기
       </label>
-      <label for="evel_date" class="pure-checkbox">
-        <input id="eval_date" class="view-array" type="checkbox" value="평가_시기" checked>
+      <label for="evel-date-view" class="pure-checkbox">
+        <input id="eval-date-view" class="view-array" type="checkbox" value="평가 시기" checked>
         평가 시기 보이기
       </label>
-      <label for="eval_period" class="pure-checkbox">
-        <input id="eval_period" class="view-array" type="checkbox" value="평가_회차" checked>
+      <label for="eval-period-view" class="pure-checkbox">
+        <input id="eval-period-view" class="view-array" type="checkbox" value="평가 회차" checked>
         평가 회차 보이기
+      </label>
+      <label for="eval-point-view" class="pure-checkbox">
+        <input id="eval-point-view" class="view-array" type="checkbox" value="평가 점수" checked>
+        평가 점수 보이기
       </label>
 
       <label>정렬 방식</label>
@@ -52,13 +56,14 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
         <option>피평가자 전문 분야</option>
         <option>평가 시기</option>
         <option>평가 회차</option>
+        <option>평가 점수</option>
       </select>
       <label for="asc-desc" class="pure-checkbox">
         <input id="company-asc-desc" type="checkbox">
         내림차순 정렬
       </label>
 
-      <a id="search-btn" class="ajax_load pure-button pure-button-primary" data-func="search/company">검색하기</a>
+      <a id="search-btn" class="ajax_load pure-button pure-button-primary" data-func="search/evaluation">검색하기</a>
     </fieldset>
   </form>
   <div id="result" class="pure-u-3-4">
