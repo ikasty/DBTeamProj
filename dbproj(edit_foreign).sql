@@ -186,7 +186,7 @@ CREATE TABLE `평가자료` (
   `자료id` int(11) NOT NULL,
   `자료이름` varchar(20) DEFAULT NULL COMMENT '사용자의 자료구분 편의를 위한 이름',
   `개발자id` varchar(20) DEFAULT NULL,
-  `업로드시간` datetime DEFAULT NULL,
+  `업로드시간` timestamp DEFAULT NULL,
   `기여도` float DEFAULT NULL COMMENT '기여도',
   `자료정보` varchar(200) DEFAULT NULL COMMENT '업로드 자료 정보(url)',
   PRIMARY KEY (`자료id`),
@@ -260,7 +260,7 @@ DROP TABLE IF EXISTS `전문분야`;
 CREATE TABLE `전문분야` (
   `id` varchar(20) NOT NULL DEFAULT '0' COMMENT '개발자의 id',
   `전문분야` varchar(20) NOT NULL DEFAULT '0' COMMENT '개발자의 전문분야',
-  `수정시간` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `수정시간` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`,`전문분야`,`수정시간`),
   CONSTRAINT `id_in_major_to_did` FOREIGN KEY (`id`) REFERENCES `개발자` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='개발자의 전문 분야';
