@@ -46,8 +46,8 @@ ob_start();
 	</tr>
 </thead>
 <tbody>
-<? foreach ($result as $rows) : ?>
-	<tr>
+<? $i = 0; foreach ($result as $rows) : $i++; ?>
+	<tr<?=($i % 2) ? ' class="pure-table-odd"' : ""?>>
 	<? foreach ($rows as $value) : ?>
 		<td><?=$value?></td>
 	<? endforeach; ?>
