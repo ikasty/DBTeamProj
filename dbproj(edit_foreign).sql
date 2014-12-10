@@ -366,7 +366,7 @@ INSERT INTO `평가자 그룹` (`평가회차id`, `그룹id`) VALUES
 (1, 1),
 (1, 2),
 (2, 1),
-(2, 2),
+(2, 2);
 /*!40000 ALTER TABLE `평가자 그룹` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -501,10 +501,8 @@ CREATE TABLE `피평가자 그룹` (
   `평가자그룹` int(11) DEFAULT NULL COMMENT '어떤 평가자 그룹에',
   PRIMARY KEY (`평가회차id`,`그룹id`),
   KEY `deg_in_geg_to_deg_idx` (`평가자그룹`),
-  CONSTRAINT `period_in_geg_to_period` FOREIGN KEY (`평가회차id`) REFERENCES `평가일정` (`평가회차`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deg_in_geg_to_deg` FOREIGN KEY (`평가자그룹`) REFERENCES `평가자 그룹` (`그룹id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `period_in_geg_to_period` FOREIGN KEY (`평가회차id`, `그룹id`) REFERENCES `평가자 그룹` (`평가회차id`, `그룹id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='피평가자 그룹이 어떤 회차에 어떤 평가자 그룹에게 평가받는지';
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `피평가자 그룹`
