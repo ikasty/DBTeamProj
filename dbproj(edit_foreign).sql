@@ -39,16 +39,17 @@ CREATE TABLE `유저` (
 LOCK TABLES `유저` WRITE;
 /*!40000 ALTER TABLE `유저` DISABLE KEYS */;
 INSERT INTO `유저` (`id`, `비밀번호`, `이름`) VALUES
-('test', 'test', '관리자'),
-('yonsei1', 'test', '연세1'),
-('korea2', 'test', 'korea2'),
-('seoul3', 'test', 'seoul3'),
-('gyeongi4', 'test', 'gyeongi4'),
 ('busan5', 'test', 'busan5'),
-('ulsan6', 'test', 'ulsan6'),
-('postech7', 'test', 'postech7'),
+('busan_dump', '1234', '더미'),
+('ewha9', 'test', 'ewha9'),
+('gyeongi4', 'test', 'gyeongi4'),
 ('kaist8', 'test', 'kaist8'),
-('ewha9', 'test', 'ewha9');
+('korea2', 'test', 'korea2'),
+('postech7', 'test', 'postech7'),
+('seoul3', 'test', 'seoul3'),
+('test', 'test', '관리자'),
+('ulsan6', 'test', 'ulsan6'),
+('yonsei1', 'test', '연세1');
 /*!40000 ALTER TABLE `유저` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,9 +64,8 @@ CREATE TABLE `개발자` (
   `id` varchar(20) NOT NULL DEFAULT '',
   `대학교` varchar(20) DEFAULT NULL,
   `고향` varchar(20) DEFAULT NULL,
-  `유저id` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_to_user_id_idx` (`id`,`유저id`),
+  KEY `id_to_user_id_idx` (`id`),
   CONSTRAINT `id_to_user_id` FOREIGN KEY (`id`) REFERENCES `유저` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='개발자 신상정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -76,16 +76,17 @@ CREATE TABLE `개발자` (
 
 LOCK TABLES `개발자` WRITE;
 /*!40000 ALTER TABLE `개발자` DISABLE KEYS */;
-INSERT INTO `개발자` (`id`, `대학교`, `고향`, `유저id`) VALUES
-('yonsei1', '연세대학교', '서울특별시 서대문구', '1'),
-('korea2', '고려대학교', '서울특별시 성북구', '2'),
-('seoul3', '서울대학교', '서울특별시 관악구', '3'),
-('gyeongi4', '경기대학교', '경기도', '4'),
-('busan5', '부산대학교', '부산', '5'),
-('ulsan6', '울산대학교', '울산', '6'),
-('postech7', '포항공대', '포항', '7'),
-('kaist8', '카이스트', '대전', '8'),
-('ewha9', '이화여자대학교', '서울특별시 서대문구', '9');
+INSERT INTO `개발자` (`id`, `대학교`, `고향`) VALUES
+('busan5', '부산대학교', '부산'),
+('busan_dump', '부산대학교', '부산'),
+('ewha9', '이화여자대학교', '서울특별시 서대문구'),
+('gyeongi4', '경기대학교', '경기도'),
+('kaist8', '카이스트', '대전'),
+('korea2', '고려대학교', '서울특별시 성북구'),
+('postech7', '포항공대', '포항'),
+('seoul3', '서울대학교', '서울특별시 관악구'),
+('ulsan6', '울산대학교', '울산'),
+('yonsei1', '연세대학교', '서울특별시 서대문구');
 /*!40000 ALTER TABLE `개발자` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -333,7 +334,10 @@ CREATE TABLE `평가일정` (
 
 LOCK TABLES `평가일정` WRITE;
 /*!40000 ALTER TABLE `평가일정` DISABLE KEYS */;
-INSERT INTO `평가일정` VALUES (2,'2014-12-05 07:05:45',NULL,NULL);
+INSERT INTO `평가일정` (`평가회차`, `모집시작일`, `평가시작일`, `종료일`) VALUES
+(1, '2014-12-01 16:40:51', '2014-12-02 16:41:00', '2014-12-03 16:41:02'),
+(2, '2014-12-05 16:41:37', '2014-12-06 16:41:46', '2014-12-07 16:41:48'),
+(3, '2014-12-09 16:42:05', NULL, NULL);
 /*!40000 ALTER TABLE `평가일정` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,6 +362,14 @@ CREATE TABLE `평가자 그룹` (
 
 LOCK TABLES `평가자 그룹` WRITE;
 /*!40000 ALTER TABLE `평가자 그룹` DISABLE KEYS */;
+INSERT INTO `평가자 그룹` (`평가회차id`, `그룹id`) VALUES
+(1, 0),
+(1, 1),
+(1, 2),
+(2, 0),
+(2, 1),
+(2, 2),
+(3, 0);
 /*!40000 ALTER TABLE `평가자 그룹` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,6 +397,12 @@ CREATE TABLE `평가자 선정` (
 
 LOCK TABLES `평가자 선정` WRITE;
 /*!40000 ALTER TABLE `평가자 선정` DISABLE KEYS */;
+INSERT INTO `평가자 선정` (`평가회차`, `평가그룹`, `개발자id`) VALUES
+(2, 1, 'busan5'),
+(2, 1, 'busan_dump'),
+(1, 1, 'gyeongi4'),
+(1, 2, 'postech7'),
+(3, 0, 'ulsan6');
 /*!40000 ALTER TABLE `평가자 선정` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -497,6 +515,11 @@ CREATE TABLE `피평가자 그룹` (
 
 LOCK TABLES `피평가자 그룹` WRITE;
 /*!40000 ALTER TABLE `피평가자 그룹` DISABLE KEYS */;
+INSERT INTO `피평가자 그룹` (`평가회차id`, `그룹id`, `평가자그룹`) VALUES
+(1, 2, 1),
+(2, 1, 1),
+(2, 2, 1),
+(1, 1, 2);
 /*!40000 ALTER TABLE `피평가자 그룹` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,6 +551,13 @@ CREATE TABLE `피평가자 신청` (
 
 LOCK TABLES `피평가자 신청` WRITE;
 /*!40000 ALTER TABLE `피평가자 신청` DISABLE KEYS */;
+INSERT INTO `피평가자 신청` (`평가회차`, `평가그룹`, `개발자id`, `자료id`) VALUES
+(3, 0, 'korea2', 11),
+(1, 1, 'yonsei1', 3),
+(1, 1, 'yonsei1', 4),
+(2, 1, 'yonsei1', 3),
+(1, 2, 'korea2', 6),
+(2, 2, 'seoul3', 9);
 /*!40000 ALTER TABLE `피평가자 신청` ENABLE KEYS */;
 UNLOCK TABLES;
 
