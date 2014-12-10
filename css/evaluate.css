@@ -1,9 +1,9 @@
 .do-evaluate,{
 	padding: 0;
-	text-align: center;
+	/*text-align: center;*/
 }
 
-.evaluate-box, .src-code-box { margin: 0px auto; }
+/*.evaluate-box, .src-code-box { margin: 0px auto; }*/
 
 .do-evaluate > div {
 	padding: 30px;
@@ -11,4 +11,16 @@
 
 .evaluate-box > div > div, .src-code-box > div > div {
 	padding: 0;
+}
+
+form fieldset {
+  padding: 0;
+}
+form div {
+  padding: 0;
+}
+
+.box-title {
+  padding: 30px;
+  text-align: center;
 }

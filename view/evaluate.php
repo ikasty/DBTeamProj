@@ -1,137 +1,124 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
-$DB = getDB();
+$db = getDB();
 
-$eval = new evaluation;
-$period = $eval->get_period();
+// 평가 회차 구하기 //
+$cur_timestamp = date('Y-m-d H:i:s');
+$query = 
+  "SELECT `평가회차` 
+  FROM `평가일정` 
+  WHERE `모집시작일` <= '$cur_timestamp' AND ISNULL(`종료일`)";
+$row = $db->getRow($query);
+$period = $row['평가회차'];
 
-$query = $DB->MakeQuery("SELECT `평가그룹` FROM `평가자 선정` WHERE `평가회차`=%d AND `개발자id` = %s",$period,$current_user->developer_id);
-$tmp = $DB->getRow($query);
-$my_group = $tmp["평가그룹"];
-
-$query = $DB->MakeQuery("SELECT `그룹id` FROM `피평가자 그룹` WHERE `평가자그룹`=%d AND `평가회차id` = %d",$my_group ,$period);
-$tmp = $DB->getResult($query);
-$count = count($tmp); //담당한 그룹 id 수 
-
-for($i=0; $i<$count; $i++)
-{
-	$eval_list[$i]=$tmp[$i]["그룹id"];
-}
-
-for($i=0; $i<$count; $i++) //담당하는 그 룹 수 만큼
-{
-	$query = $DB->MakeQuery("SELECT `자료id` FROM `피평가자 신청` WHERE `평가그룹`=%d AND `평가회차` = %d",$eval_list[$i]=$tmp[$i]["그룹id"],$period);
-	$file_list[$i] = $DB->getResult($query);
-	$file_no[$i] = count($file_list[$i]);
-}
+$query = 
+	"SELECT `자료id` as `id`, `자료이름` as `name`, `자료정보` as `url`
+	FROM `평가자료`
+	WHERE `자료id` IN (
+		SELECT `자료id`
+		FROM `피평가자 신청`
+		WHERE `평가회차`=$period AND `평가그룹` IN (
+			SELECT `그룹id`
+			FROM `피평가자 그룹`
+			WHERE `평가회차id`=$period AND `평가자그룹` IN (
+				SELECT `평가그룹`
+				FROM `평가자 선정`
+				WHERE `개발자id`='$current_user->user_id'
+			)
+		)
+	)";
+$material_list = $db->getResult($query);
 
 ?>
-<div class="pure-g" style="text-align:center;">
-	<div class="evaluate-box pure-u-2-5">
-		<div class="mainform evaluate">
-			<div class="box-title" style="background: #519251;">
-				<span class="mega-octicon octicon-law"></span> 평가하기
-			</div>
-			<div class="descript">
-				먼저, 오른쪽 평가자료를 평가해 주세요
-			</div>
-			<form id="values" method="POST">
-				Speed
-				<input type="number" name="Speed" min="0" max="100" placeholder="0~100">
-				<br><br>
-				Size
-				<input type="number" name="Size" min="0" max="100" placeholder="0~100">
-				<br><br>
-				Ease of Use
-				<input type="number" name="Ease-of-Use" min="0" max="100" placeholder="0~100">
-				<br><br>
-				Reliability
-				<input type="number" name="Reliability" min="0" max="100" placeholder="0~100">
-				<br><br>
-				Robustness
-				<input type="number" name="Robustness 구성" min="0" max="100" placeholder="0~100">
-				<br><br>
-				Generality
-				<input type="number" name="Generality" min="0" max="100" placeholder="0~100">
-				<br><br>
-			</form>
-			<div>
-				<a id="do-evaluate" data-func="do-evaluate"
-				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
-					<span class="octicon octicon-checklist"></span> 평가하기
-				</a>
-			</div>
+<div class="pure-g">
+	<div class="src-code-box pure-u-1">
+		<div class="box-title" style="background: #519251;">
+			<span class="mega-octicon octicon-law"></span> 평가하기
 		</div>
-	</div>
-	<div class="src-code-box pure-u-2-5">
-		<div class="mainform src-code">
-			<div class="box-title" style="background: #2c4985;">
-				<span class="mega-octicon octicon-file-pdf"></span> 소스코드
-			</div>
-			<div class="descript">
-				평가할 개발자의 소스코드 URL 입니다.
-			</div>
-			<div>
-				<form method="get">
-  					<input list="select" name="select">
-  					<datalist id="select">
-  						<? for($i=0; $i<$count; $i++) {
-  							for($j=0; $j<$file_no[$i]; $j++) { ?>
-  							 <option value="<?= $file_list[$i][$j]["자료id"] ?>">
-  						<? } }?>
-  					</datalist><br><br>
-  					<a id="select_file" data-func="select_file"
-					class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
-					<span class="octicon octicon-checklist"></span> 선택하기
-					</a>
-  				</form> 			
-			</div>
+		<div class="mainform evaluate">
+			<form id="values" method="POST" class="pure-form pure-form-stacked">
+				<fieldset class="src-code-box pure-u-2-5">
+					<label for="datalist">평가할 자료 선택</label>
+					<div id="datalist">
+						<? foreach ($material_list as $material) : ?>
+							<label>
+								<input type="radio" name="material-id" value="<?= $material['id'] ?>">
+								<?= $material['name'] ?>(<?= $material['url'] ?>)
+							</label>
+						<? endforeach ?>
+					</div>
+				</fieldset>
+				<fieldset class="src-code-box pure-u-2-5 pure-g" >
+					<div class="pure-u-1-3">
+						<label for="speed">Speed</label>
+						<input id="speed" type="number" name="speed" min="0" max="100" placeholder="0~100">
+					</div>
+
+					<div class="pure-u-1-3">
+						<label for="size">Size</label>
+						<input id="size" type="number" name="size" min="0" max="100" placeholder="0~100">
+					</div>
+
+					<div class="pure-u-1-3">
+						<label for="ease-of-use">Ease of Use</label>
+						<input id="ease-of-use" type="number" name="ease-of-use" min="0" max="100" placeholder="0~100">
+					</div>
+
+					<div class="pure-u-1-3">
+						<label for="reliablity">Reliability</label>
+						<input id="reliablity" type="number" name="reliability" min="0" max="100" placeholder="0~100">
+					</div>
+
+					<div class="pure-u-1-3">
+						<label>Robustness</label>
+						<input id="robustness" type="number" name="robustness" min="0" max="100" placeholder="0~100">
+					</div>
+
+					<div class="pure-u-1-3">
+						<label>Generality</label>
+						<input id="generality" type="number" name="generality" min="0" max="100" placeholder="0~100">
+					</div>
+					<div>
+						<a id="do-evaluate" data-func="do_evaluate"
+						class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
+							<span class="octicon octicon-checklist"></span> 평가하기
+						</a>
+					</div>
+				</fieldset>
+			</form>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
-//select_file 버튼 func 추가
-	$("#select_file").each(function() {
-		var item = $(this);
-		item
-		.on('start', function (event, args) {
-			item.addClass("pure-button-disabled");
-			args.file_id = $('.evaluate input[name=select]').val();
-			return true;
-		}
-		).on('finish', function (event, item, data) {
-				if (data.success == 'failed') {
-				} else {
-				}
-				item.removeClass("pure-button-disabled");
-				return true;
-			}
-		);
-	});
-
 	$("#do-evaluate").each(function() {
 		var item = $(this);
 		item
 		.on('start', function (event, args) {
 			item.addClass("pure-button-disabled");
 			//뷰 이동
-			args.speed = $('.evaluate input[name=Speed]').val();
-			args.src_size = $('.evaluate input[name=Size]').val();
-			args.ease_use = $('.evaluate input[name=Ease-of-Use]').val();
-			args.reliability = $('.evaluate input[name=Reliability]').val();
-			args.robustness = $('.evaluate input[name=Robustness]').val();
-			args.generality = $('.evaluate input[name=Generality]').val();
+			args.file_id = $('.evaluate input[name|=material-id]:checked').val();
+			args.speed = $('.evaluate input[name|=speed]').val();
+			args.src_size = $('.evaluate input[name|=size]').val();
+			args.ease_use = $('.evaluate input[name|=ease-of-use]').val();
+			args.reliability = $('.evaluate input[name|=reliability]').val();
+			args.robustness = $('.evaluate input[name|=robustness]').val();
+			args.generality = $('.evaluate input[name|=generality]').val();
 			return true;
 		}
 		).on('finish', function (event, item, data) {
-				if (data.success == 'failed') {
-				} else {
-				}
-				item.removeClass("pure-button-disabled");
-				return true;
+			item.removeClass("pure-button-disabled");
+
+			if (data.success == 'failed') {
+			} 
+			else {
+				view_change_start();
+				load_view('evaluate', function(data) {
+					view_change_finish();
+				});
 			}
-		);
+			return true;
+		});
 	});
 </script>
 <?
