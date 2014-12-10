@@ -113,7 +113,6 @@ foreach ($work_data as &$value) {
 				<thead>
 					<tr>
 						<th>회사명</th>
-						<th>부서명</th>
 						<th>근무기간</th>
 					</tr>
 				</thead>
@@ -123,7 +122,6 @@ foreach ($work_data as &$value) {
 				<? $class = (($count++) % 2 == 0 ? ' class="pure-table-odd"' : "" ) ?>
 					<tr<?=$class?>>
 						<td><?=$company['company'];?></td>
-						<td><?=$company['dept'];?></td>
 						<td><?=$company['date-start'];?> ~ <?=($company['date-end'] === "") ? ("현재") : ($company['date-end'])?></td>
 					</tr>
 				<? endforeach; ?>
