@@ -36,12 +36,12 @@ $menu_item = array(
 	//array("user", "", "octicon", "graph", "Graph"),
 	array("user", "upload", "octicon", "cloud-upload", "Upload"),
 	array("user", "evaluate", "octicon", "law", "Evaluate"),
+	array("admin", "eval_manage", "octicon", "tools", "Eval_manage"),
 	array("all", "search", "octicon", "search", "Search"),
 	//array("admin", "", "octicon", "tools", "Setting"),
 	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
-	array("all", "userlist", "octicon", "home", "Userlist"),
-	array("all", "companylist", "octicon", "home", "Companylist"),
-	array("all", "eval_manage", "octicon", "tools", "Eval_manage")
+	//array("all", "userlist", "octicon", "home", "Userlist"),
+	//array("all", "companylist", "octicon", "home", "Companylist"),
 );
 
 
