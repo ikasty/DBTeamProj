@@ -16,9 +16,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
       <label for="get-eval-major">피평가자 전문 분야</label>
       <input id="get-eval-major" type="text">
 
-      <label for="eval-start-date">평가 시기</label>
-      <input id="eval-start-date" type="date">~
-      <input id="eval-end-date" type="date">
+      <label>평가 시기</label>
+      <div class="pure-form">
+        <input id="eval-start-date" type="date" style="width:40%; display: inline-block;">~
+        <input id="eval-end-date" type="date" style="width:40%; display: inline-block;">
+      </div>
 
       <label for="eval-period">평가 회차</label>
       <input id="eval-period" type="number">
