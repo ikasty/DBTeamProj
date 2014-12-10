@@ -10,17 +10,23 @@ $db = getDB();
 
 $query = "SELECT ";
 
-$query_select = array();	
-$query .= implode(',', $ARGS["view"]);
-$query = str_replace("회사이름", "회사성적.회사이름 AS 회사이름", $query);
+$query_select = array();
+if (in_array("회사이름", $ARGS["view"]))
+	$query_select[] = "회사성적.회사이름 AS 회사이름";
+if (in_array("전문분야", $ARGS["view"]))
+	$query_select[] = "전문분야";
+if (in_array("평균점수", $ARGS["view"]))
+	$query_select[] = "평균점수";
+
+$query .= implode(',', $query_select);
 
 $query .= " FROM 회사성적 RIGHT JOIN 회사전문분야 ON 회사성적.회사이름 = 회사전문분야.회사이름";
 
 // where절
 $where_clause = array();
-if ($ARGS["company-name"] !== "")
+if ($ARGS["company-name"] !== "" && in_array("회사이름", $ARGS["view"]))
 	$where_clause[] = "회사성적.회사이름 LIKE '%" . $ARGS["company-name"] . "%' ";
-if ($ARGS["company-major"] !== "")
+if ($ARGS["company-major"] !== "" && in_array("전문분야", $ARGS["view"]))
 	$where_clause[] = "전문분야 LIKE '%" . $ARGS["company-major"] . "%' ";
 if (sizeof($where_clause) != 0) {
 	$query .= " WHERE ";
