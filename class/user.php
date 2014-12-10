@@ -72,7 +72,7 @@ class User
 			$query = $DB->MakeQuery(
 				"SELECT `회사이름` as `name`, `입사일` as `start_day`, `퇴사일` as `end_day` 
 				From `근무` 
-				where `개발자id`=%s", $this->developer_id
+				where `개발자id`=%s ORDER BY `입사일`", $this->developer_id
 			);
 			$work_on_info = $DB->getResult($query);
 			$this->company = $work_on_info;

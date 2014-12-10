@@ -85,12 +85,17 @@ if ($validate) {
       WHERE `개발자id`='{$ARGS['user_id']}'"
     );
     foreach($ARGS['company_list'] as $company) {
-      $query = $DB->MakeQuery("INSERT INTO `근무`(`회사이름`, `개발자id`, `입사일`, `퇴사일`) VALUES(%s, %s, %s, %s)", 
+      var_dump($company['end_day']);
+      if ($company['end_day'] == '') $company['end_day'] = "NULL";
+      else $company['end_day'] = "'" . $company['end_day'] . "'";
+      $query = $DB->MakeQuery("INSERT INTO `근무`(`회사이름`, `개발자id`, `입사일`, `퇴사일`) VALUES(%s, %s, %s,", 
         $company['name'],
         $ARGS['user_id'],
         $company['start_day'],
         $company['end_day']
       );
+      $query .= $company['end_day'] . ")";
+var_dump($query, $company['end_day']);
       $DB->query($query);
     }
   }
