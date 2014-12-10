@@ -363,13 +363,10 @@ CREATE TABLE `평가자 그룹` (
 LOCK TABLES `평가자 그룹` WRITE;
 /*!40000 ALTER TABLE `평가자 그룹` DISABLE KEYS */;
 INSERT INTO `평가자 그룹` (`평가회차id`, `그룹id`) VALUES
-(1, 0),
 (1, 1),
 (1, 2),
-(2, 0),
 (2, 1),
 (2, 2),
-(3, 0);
 /*!40000 ALTER TABLE `평가자 그룹` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,6 +384,7 @@ CREATE TABLE `평가자 선정` (
   PRIMARY KEY (`개발자id`,`평가회차`),
   KEY `period_in_pde_to_period_idx` (`평가회차`),
   CONSTRAINT `period_in_pde_to_period` FOREIGN KEY (`평가회차`) REFERENCES `평가일정` (`평가회차`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+
   CONSTRAINT `did_in_pde_to_did` FOREIGN KEY (`개발자id`) REFERENCES `개발자` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='개발자의 어떤 평가 회차별 소속 평가자 그룹';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -481,12 +479,12 @@ CREATE TABLE `평가하기` (
 LOCK TABLES `평가하기` WRITE;
 /*!40000 ALTER TABLE `평가하기` DISABLE KEYS */;
 INSERT INTO `평가하기` (`평가id`, `자료id`, `개발자id`, `평가날짜`, `평가회차`) VALUES
-(1, 4, 'yonsei1', '2014-12-08', 2),
-(2, 5, 'yonsei1', '2014-12-08', 2),
-(3, 6, 'korea2', '2014-12-08', 2),
-(4, 9, 'seoul3', '2014-12-08', 2),
-(5, 10, 'yonsei1', '2014-12-08', 2),
-(6, 11, 'korea2', '2014-12-08', 2);
+(1, 6, 'yonsei1', '2014-12-08', 2),
+(2, 9, 'yonsei1', '2014-12-08', 2),
+(3, 4, 'korea2', '2014-12-08', 2),
+(4, 5, 'seoul3', '2014-12-08', 2),
+(5, 11, 'yonsei1', '2014-12-08', 2),
+(6, 10, 'korea2', '2014-12-08', 2);
 /*!40000 ALTER TABLE `평가하기` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -504,8 +502,7 @@ CREATE TABLE `피평가자 그룹` (
   PRIMARY KEY (`평가회차id`,`그룹id`),
   KEY `deg_in_geg_to_deg_idx` (`평가자그룹`),
   CONSTRAINT `period_in_geg_to_period` FOREIGN KEY (`평가회차id`) REFERENCES `평가일정` (`평가회차`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deg_in_geg_to_deg` FOREIGN KEY (`평가자그룹`) REFERENCES `평가자 그룹` (`평가회차id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `gegid_in_geg_to_parge` FOREIGN KEY (`그룹id`) REFERENCES `피평가자 신청` (`평가그룹`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `deg_in_geg_to_deg` FOREIGN KEY (`평가자그룹`) REFERENCES `평가자 그룹` (`그룹id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='피평가자 그룹이 어떤 회차에 어떤 평가자 그룹에게 평가받는지';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
