@@ -1,4 +1,4 @@
-.main-area .mainform { padding: 0; }
+.main-area .mainform { padding: 0 0 10px; }
 .main-area .mainform > .box-title { padding: 30px; text-align: center; }
 .main-area .boxinfo {
 	width: 100px;
