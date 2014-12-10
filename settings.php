@@ -10,12 +10,7 @@ define("AUTO_LOGOUT_TIME", 900);
 
 //////////////////////////////////////////////////////
 // DB Settings
-$db_setting = array(
-	"db_name"	=> "dbproj",
-	"db_host"	=> "localhost",
-	"db_id"		=> "dbproj",
-	"db_pw"		=> "dbproj"
-);
+include('dbconnect.php');
 
 //////////////////////////////////////////////////////
 // include classes
@@ -30,16 +25,18 @@ include('class/evaluation.php');
 $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
 	array("all", "main", "octicon", "home", "Home"),
-	array("user", "eval-attend", "fa", "pencil", "Attend evaluate"),
+	array("all", "edit-user-info", "octicon", "pencil", "Edit"),
+	array("user", "eval-attend", "fa", "sign-in", "Attend evaluate"),
+
 	//array("user", "", "octicon", "graph", "Graph"),
 	array("user", "upload", "octicon", "cloud-upload", "Upload"),
 	array("user", "evaluate", "octicon", "law", "Evaluate"),
+	array("admin", "eval_manage", "octicon", "tools", "Eval_manage"),
 	array("all", "search", "octicon", "search", "Search"),
-	array("admin", "", "octicon", "tools", "Setting"),
+	//array("admin", "", "octicon", "tools", "Setting"),
 	array("all", "login", "octicon", "sign-out", "Logout", array('data-reload'=>'true')),
-	array("all", "userlist", "octicon", "home", "Userlist"),
-	array("all", "companylist", "octicon", "home", "Companylist"),
-	array("all", "eval_manage", "octicon", "tools", "Eval_manage")
+	//array("all", "userlist", "octicon", "home", "Userlist"),
+	//array("all", "companylist", "octicon", "home", "Companylist"),
 );
 
 

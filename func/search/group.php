@@ -5,19 +5,30 @@ if (!defined("DBPROJ")) die(json_encode(-1));
 if (sizeof($ARGS["view"]) == 0) die(json_encode(-1));
 $db = getDB();
 
+$header = array();
 
 $query = "SELECT ";
 $query_select = array();	
-if (in_array("평가회차", $ARGS["view"]))
+if (in_array("평가회차", $ARGS["view"])) {
 	$query_select[] = "평가회차id";
-if (in_array("피평가자 그룹", $ARGS["view"]))
+	$header[] = "평가회차";
+}
+if (in_array("피평가자 그룹", $ARGS["view"])) {
 	$query_select[] = "그룹id";
-if (in_array("피평가자 목록", $ARGS["view"]))
+	$header[] = "피평가자 그룹";
+}
+if (in_array("피평가자 목록", $ARGS["view"])) {
 	$query_select[] = "`피평가자 신청`.개발자id as `피평가자 id`";
-if (in_array("평가자 그룹", $ARGS["view"]))
+	$header[] = "피평가자 목록";
+}
+if (in_array("평가자 그룹", $ARGS["view"])) {
 	$query_select[] = "평가자그룹";
-if (in_array("평가자 목록", $ARGS["view"]))
+	$header[] = "평가자 그룹";
+}
+if (in_array("평가자 목록", $ARGS["view"])) {
 	$query_select[] = "`평가자 선정`.개발자id";
+	$header[] = "평가자 목록";
+}
 
 
 $query .= implode(',',$query_select);
@@ -49,7 +60,7 @@ ob_start();
 <table class="pure-table pure-table-horizontal">
 <thead>
 	<tr>
-	<? foreach ($ARGS["view"] as $name) : ?>
+	<? foreach ($header as $name) : ?>
 		<th><?=$name?></th>
 	<? endforeach; ?>
 	</tr>

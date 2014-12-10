@@ -90,6 +90,11 @@ a:hover {
 	font-size: 13px;
 }
 
+.container {
+	max-width: 1200px;
+	margin: 0px auto;
+}
+
 /* mainform class */
 .mainform {
 	position: relative;

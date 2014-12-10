@@ -1,4 +1,5 @@
 function load_view(target, done_func, args) {
+	if (typeof args == "undefined") args = {menu_reload: "false"};
 	menu_reload = args.menu_reload;
 
 	$.ajax({
@@ -46,6 +47,7 @@ function setajax() {
 				item.on("click", clickfunc);
 			}, args);
 		};
+		$(this).off();
 		$(this).on("click", clickfunc);
 	});
 
@@ -66,21 +68,25 @@ function setajax() {
 			$.ajax({
 				url: '/ajax.php',
 				type: 'POST',
-				dataType: 'json',
+				dataType: 'html',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
-				//console.log("ajax_load.js func data: ", data);
-				//data = JSON.parse(data);
+				try {
+					data = JSON.parse(data);
 
-				if (typeof data['debug-message'] !== "undefined")
-					console.log(data['debug-message']);
+					if (typeof data['debug-message'] !== "undefined")
+						console.log(data['debug-message']);
 
-				if (typeof data['noti-message'] !== "undefined") {
-					$("#notice-message").html(data['noti-message']);
-					get_notice();
+					if (typeof data['noti-message'] !== "undefined") {
+						$("#notice-message").html(data['noti-message']);
+						get_notice();
+					}
+					if (typeof data['orig-return'] !== "undefined")
+						data = data['orig-return'];
+				} catch (err) {
+					console.log("ajax ERROR! message:" , err);
+					console.log("ajax_load.js func data\n", data);
 				}
-				if (typeof data['orig-return'] !== "undefined")
-					data = data['orig-return'];
 
 				// trigger finish func
 				item.trigger('finish', [item, data]);
@@ -90,7 +96,8 @@ function setajax() {
 				item.on("click", clickfunc);
 			});
 		};
-		$(this).on("click", clickfunc);
+
+		$(this).off("click").on("click", clickfunc);
 	});
 }
 

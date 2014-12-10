@@ -12,10 +12,19 @@ unset($_SESSION['id']);
 		<p><input type="text" name="login" value="" placeholder="Username"></p>
 		<p><input type="password" name="password" value="" placeholder="Password"></p>
 		<p class="submit">
+			<a data-link="join" class="pure-button ajax_load" style="color:#a7c7e6;border:1px solid #a7c7e6;background:white">Join</a>
 			<a data-func="do_login" class="pure-button submit ajax_load" type="button" name="commit">Login</a>
 		</p>
 	</form>
 	<script type="text/javascript">
+
+	//enter key 입력 처리
+	$("input").on('keypress', function (e) {
+		if (e.keyCode == 13) {
+			$("a[name|='commit']").click();        
+		}
+	});
+
 	// class명이 login인 객체 > form 객체 > a객체 중 class명이 submit인 객체
 	$(".login form a.submit")
 	// 클릭 이벤트 시작시
@@ -41,20 +50,19 @@ unset($_SESSION['id']);
 		}
 	// 클릭 이벤트 종료시 (= 서버에서 데이터를 정상적으로 받아온 경우)
 	).on('finish', function (event, item, data) {
-			// item == 클릭한 버튼 객체, data == 서버에서 받아온 데이터
-			if (data.success == 'failed') {
-				$(item).parents(".login").parent().effect("shake", {distance: 4, times: 7, duration: 30});
-				$('.login input[type=password]').val('');
-			} else {
-				view_change_start();
-				load_view('main', function(data) {
-					view_change_finish();
-					menu_init();
-				}, {menu_reload:'true'});
-			}
-			return true;
+		// item == 클릭한 버튼 객체, data == 서버에서 받아온 데이터
+		if (data.success == 'failed') {
+			$(item).parents(".login").parent().effect("shake", {distance: 4, times: 7, duration: 30});
+			$('.login input[type=password]').val('');
+		} else {
+			view_change_start();
+			load_view('main', function(data) {
+				view_change_finish();
+				menu_init();
+			}, {menu_reload:'true'});
 		}
-	);
+		return true;
+	});
 	</script>
 </div>
 </div>

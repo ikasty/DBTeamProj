@@ -84,6 +84,7 @@ $data = $db->getResult($query);unset($current_eval);
 
 				item.parent().children(".checker").html('<img src="/image/throbber_small.gif">');
 				item.addClass("pure-button-disabled");
+				console.log('hahaha');
 				return true;
 			}
 		).on('finish', function (event, item, data) {console.log(data, item.parent().children(".checker"));
