@@ -13,8 +13,8 @@ define("AUTO_LOGOUT_TIME", 900);
 $db_setting = array(
 	"db_name"	=> "dbproj",
 	"db_host"	=> "localhost",
-	"db_id"		=> "root",
-	"db_pw"		=> "1234"
+	"db_id"		=> "dbproj",
+	"db_pw"		=> "dbproj"
 );
 
 //////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ $menu_item = array(
 /*	array("menu_type", "view name", "icon type", "icon name", "tooltip name", "optional")	*/	
 	array("all", "main", "octicon", "home", "Home"),
 	array("all", "join", "octicon", "beer", "Join"),
-	array("all", "edit-member-info", "octicon", "pencil", "Edit"),
+	array("all", "edit-user-info", "octicon", "pencil", "Edit"),
 	array("user", "eval-attend", "fa", "sign-in", "Attend evaluate"),
 
 	//array("user", "", "octicon", "graph", "Graph"),
