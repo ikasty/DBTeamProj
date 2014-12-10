@@ -31,7 +31,7 @@ if (!is_array($ARGS)) var_dump($ARGS);
 $ARGS = array_merge($ARGS, $_POST);
 
 if (!file_exists($target . '.php')) die(json_encode(-1));
-//var_dump($ARGS);
+
 if (substr($target, 0, 4) == 'view') {
 	// 권한 체크
 	if ( !$current_user->is_logged_in() && $target != "view/join" ) {

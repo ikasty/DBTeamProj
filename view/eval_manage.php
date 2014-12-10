@@ -1,9 +1,6 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
-// force logout
-unset($_SESSION['id']);
-
 $eval = new evaluation;
 
 $case = $eval->current_state();
@@ -32,8 +29,8 @@ var_dump($case);
 			view_change_start();
 			load_view('main', function(data) {
 				view_change_finish();
-				menu_init();
-			}, {menu_reload:'false'});
+				//menu_init();
+			});
 			
 			return true;
 		}
@@ -62,8 +59,8 @@ var_dump($case);
 			view_change_start();
 			load_view('main', function(data) {
 				view_change_finish();
-				menu_init();
-			}, {menu_reload:'false'});
+				//menu_init();
+			});
 			
 			return true;
 		}
@@ -92,8 +89,8 @@ var_dump($case);
 			view_change_start();
 			load_view('main', function(data) {
 				view_change_finish();
-				menu_init();
-			}, {menu_reload:'false'});
+				//menu_init();
+			});
 			
 			return true;
 		}

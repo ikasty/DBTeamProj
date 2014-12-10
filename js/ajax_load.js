@@ -1,4 +1,5 @@
 function load_view(target, done_func, args) {
+	if (typeof args == "undefined") args = {menu_reload: "false"};
 	menu_reload = args.menu_reload;
 
 	$.ajax({
@@ -70,8 +71,8 @@ function setajax() {
 				dataType: 'json',
 				data: {TARGET: 'func/' + item.attr('data-func'), AJAXKEY: ajaxkey, ARGS: args}
 			}).done(function(data) {
-				//console.log("ajax_load.js func data: ", data);
-				//data = JSON.parse(data);
+				// console.log("ajax_load.js func data: ", data);
+				// data = JSON.parse(data);
 
 				if (typeof data['debug-message'] !== "undefined")
 					console.log(data['debug-message']);
