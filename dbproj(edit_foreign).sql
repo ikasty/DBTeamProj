@@ -486,7 +486,8 @@ CREATE TABLE `피평가자 그룹` (
   PRIMARY KEY (`평가회차id`,`그룹id`),
   KEY `deg_in_geg_to_deg_idx` (`평가자그룹`),
   CONSTRAINT `period_in_geg_to_period` FOREIGN KEY (`평가회차id`) REFERENCES `평가일정` (`평가회차`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `deg_in_geg_to_deg` FOREIGN KEY (`평가자그룹`) REFERENCES `평가자 그룹` (`평가회차id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `deg_in_geg_to_deg` FOREIGN KEY (`평가자그룹`) REFERENCES `평가자 그룹` (`평가회차id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `gegid_in_geg_to_parge` FOREIGN KEY (`그룹id`) REFERENCES `피평가자 신청` (`평가그룹`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='피평가자 그룹이 어떤 회차에 어떤 평가자 그룹에게 평가받는지';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -517,7 +518,7 @@ CREATE TABLE `피평가자 신청` (
   KEY `mid_in_parge_to_mid_idx` (`자료id`),
   CONSTRAINT `did_in_parge_to_did` FOREIGN KEY (`개발자id`) REFERENCES `개발자` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `mid_in_parge_to_mid` FOREIGN KEY (`자료id`) REFERENCES `평가자료` (`자료id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `geg_in_parge_to_geg` FOREIGN KEY (`평가회차`, `평가그룹`) REFERENCES `피평가자 그룹` (`평가회차id`, `그룹id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `period_in_parge_to_geg` FOREIGN KEY (`평가회차`) REFERENCES `평가일정` (`평가회차`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='피평가받는 개발자가 어떤 회차에 어떤 그룹인지';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
