@@ -24,8 +24,8 @@ for($i=0; $i<$count; $i++) //담당하는 그 룹 수 만큼
 	$query = $DB->MakeQuery("SELECT `자료id` FROM `피평가자 신청` WHERE `평가그룹`=%d AND `평가회차` = %d",$eval_list[$i]=$tmp[$i]["그룹id"],$period);
 	$file_list[$i] = $DB->getResult($query);
 	$file_no[$i] = count($file_list[$i]);
-	
 }
+
 ?>
 <div class="pure-g" style="text-align:center;">
 	<div class="evaluate-box pure-u-2-5">
@@ -92,12 +92,30 @@ for($i=0; $i<$count; $i++) //담당하는 그 룹 수 만큼
 </div>
 <script type="text/javascript">
 //select_file 버튼 func 추가
-
-	$("#evaluate").each(function() {
+	$("#select_file").each(function() {
 		var item = $(this);
 		item
 		.on('start', function (event, args) {
 			item.addClass("pure-button-disabled");
+			args.file_id = $('.evaluate input[name=select]').val();
+			return true;
+		}
+		).on('finish', function (event, item, data) {
+				if (data.success == 'failed') {
+				} else {
+				}
+				item.removeClass("pure-button-disabled");
+				return true;
+			}
+		);
+	});
+
+	$("#do-evaluate").each(function() {
+		var item = $(this);
+		item
+		.on('start', function (event, args) {
+			item.addClass("pure-button-disabled");
+			//뷰 이동
 			args.speed = $('.evaluate input[name=Speed]').val();
 			args.src_size = $('.evaluate input[name=Size]').val();
 			args.ease_use = $('.evaluate input[name=Ease-of-Use]').val();
