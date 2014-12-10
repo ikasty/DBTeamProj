@@ -105,11 +105,11 @@ $company_list = $DB->getResult(
 			</div>
 			<div class="pure-control-group">
 				<label>시작일</label>
-				<input id="company-start-day0" name="company-start-day[]" type="date" placeholder="YYYY-MM-DD">
+				<input id="company-start-day0" name="company-start-day[]" type="date" placeholder="ex) YYYY-MM-DD">
 			</div>
 			<div class="pure-control-group">
 				<label>종료일</label>
-				<input id="company-end-day0" name="company-end-day[]" type="date" placeholder="YYYY-MM-DD">
+				<input id="company-end-day0" name="company-end-day[]" type="date" placeholder="ex) YYYY-MM-DD">
 			</div>
 		</div>
 		<a id="add-company" class="button-small pure-button">
@@ -131,12 +131,6 @@ $company_list = $DB->getResult(
 			</div>
 		</fieldset>
 	</form>
-
-
-	<!-- <a class="ajax_load" data-link="error-page" data-reload="true" data-args="testdata:test, name:<?=$name?>">페이지 이동 테스트</a>
-	<p>이 링크는 view/error-page.php를 불러오는 링크입니다. 왼쪽 메뉴를 다시 불러오며, testdata와 name이라는 변수를 전달합니다.</p>
-	<a class="ajax_load" data-func="error-func" id="error-func">함수 테스트</a>
-	<p>이 링크는 func/error-func.php를 수행한 뒤 결과를 받아옵니다.</p> -->
 
 	<script type="text/javascript">
 	var flagCheckUserIdDuple = 0;

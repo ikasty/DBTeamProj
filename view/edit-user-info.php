@@ -128,12 +128,12 @@ else
         <div class="pure-control-group">
           <label>시작일</label>
           <input name="company-start-day[]" type="date" value='<?=$user_company['start_day']?>'
-          placeholder="YYYY-MM-DD">
+          placeholder="ex) YYYY-MM-DD">
         </div>
         <div class="pure-control-group">
           <label>종료일</label>
           <input name="company-end-day[]" type="date" value='<?=$user_company['end_day']?>' 
-          placeholder="YYYY-MM-DD">
+          placeholder="ex) YYYY-MM-DD">
         </div>
       </div>
     <?
@@ -247,7 +247,7 @@ else
     } 
     else {
       view_change_start();
-      load_view('edit-user-info', function(data) {
+      load_view('main', function(data) {
         view_change_finish();
       }, {});
     }
