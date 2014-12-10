@@ -17,6 +17,14 @@ unset($_SESSION['id']);
 		</p>
 	</form>
 	<script type="text/javascript">
+
+	//enter key 입력 처리
+	$("input").on('keypress', function (e) {
+		if (e.keyCode == 13) {
+			$("a[name|='commit']").click();        
+		}
+	});
+
 	// class명이 login인 객체 > form 객체 > a객체 중 class명이 submit인 객체
 	$(".login form a.submit")
 	// 클릭 이벤트 시작시
