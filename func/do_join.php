@@ -39,11 +39,10 @@ if ($validate) {
   );
   $DB->query($query);
 
-  $query = $DB->MakeQuery("INSERT INTO `개발자`(`id`, `대학교`, `고향`, `유저id`) VALUES(%s, %s, %s, %s)", 
+  $query = $DB->MakeQuery("INSERT INTO `개발자`(`id`, `대학교`, `고향`) VALUES(%s, %s, %s)", 
     $ARGS['user_id'],
     $ARGS['user_university'],
-    $ARGS['user_hometown'],
-    $ARGS['user_id']
+    $ARGS['user_hometown']
   );
   $DB->query($query);
 
@@ -56,15 +55,18 @@ if ($validate) {
   }
 
   foreach($ARGS['company_list'] as $company) {
-    $query = $DB->MakeQuery("INSERT INTO `근무`(`회사이름`, `개발자id`, `입사일`, `퇴사일`) VALUES(%s, %s, %s, %s)", 
-      $company['name'],
-      $ARGS['user_id'],
-      $company['start_day'],
-      $company['end_day']
-    );
+    if ( $company['end_day'] === '' ) {
+      $company['end_day'] = 'NULL';
+    }
+    else {
+      $company['end_day'] = "'{$company['end_day']}'";
+    }
+    $query = "INSERT INTO `근무`(`회사이름`, `개발자id`, `입사일`, `퇴사일`) 
+    VALUES('{$company['name']}', '{$ARGS['user_id']}', '{$company['start_day']}', {$company['end_day']})";
     $DB->query($query);
   }
 
+  $return['query'] = $query;
   $return['success'] = 'successed';
 }
 ?>
