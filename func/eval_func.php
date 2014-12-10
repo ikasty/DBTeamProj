@@ -28,7 +28,8 @@ $query = $DB->MakeQuery(
 
 $DB->query($query);
 
-// 평가신청된 자료들의 평가자/피평가자 매핑
+$eval->assginGroup($period);
+$eval->Mapping($period);
 // 평가자들의 평가가 가능하도록 한다.
 
 

@@ -10,6 +10,8 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 			</div>
 			<div class="descript">
 				<form method="post">
+					자료이름 :
+					<input type="text" name="fname"><br><br>
 					URL :
 					<input type="URL" name="URL" placeholder="Input Your URL"><br><br>
 					FIle Type :
@@ -20,7 +22,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				</form>
 			</div>
 			<div>
-				<a id="upload" data-func="upload"
+				<a id="upload" data-func="do_upload"
 				class="pure-button pure-button-primary submit ajax_load" type="button" name="commit">
 					<span class="octicon octicon-checklist"></span> 제출하기
 				</a>
@@ -34,12 +36,9 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 		item
 		.on('start', function (event, args) {
 			item.addClass("pure-button-disabled");
+			args.fname = $('.upload input[type=text]').val();
 			args.url = $('.upload input[name=URL]').val();
 			args.filetype = $('.upload input[name=FileType]').val();
-<<<<<<< HEAD
-			args.majortype = $('.upload input[name=MajorType]').val();
-=======
->>>>>>> upload03
 			args.contribution = $('.upload input[name=Contribution]').val();
 			return true;
 		}
