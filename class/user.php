@@ -46,7 +46,7 @@ class User
 			$this->password = ($user_info["비밀번호"]);
 			$this->user_name = $user_info["이름"];
 
-			$query = $DB->MakeQuery("SELECT * From `개발자` where `유저id`=%s", $user_id);
+			$query = $DB->MakeQuery("SELECT * From `개발자` where `id`=%s", $user_id);
 			$developer_info = $DB->getRow($query);
 			if (!$developer_info) {
 				$this->user_type = "admin";

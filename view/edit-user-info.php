@@ -11,7 +11,10 @@ $company_list = $DB->getResult(
 );
 
 // $current_user = User::getUser($current_user->user_id);
-$major = implode(', ', $current_user->major);
+if (is_array($current_user->major))
+  $major = implode(', ', $current_user->major);
+else
+  $major = '';
 // var_dump($current_user);
 
 ?>
@@ -77,6 +80,7 @@ $major = implode(', ', $current_user->major);
         <label for="name">이름</label>
         <input id="name" value='<?=$current_user->user_name?>' placeholder="ex) 홍길동">
       </div>
+      <?if (!$current_user->is_admin()) : ?>
       <div class="pure-control-group">
         <label for="hometown">고향</label>
         <input id="hometown" value='<?=$current_user->hometown?>' placeholder="ex) 서울시">
@@ -92,10 +96,12 @@ $major = implode(', ', $current_user->major);
       <p class="description">
         ※전문 분야의 구분은 ,(컴마)로 해주시기 바랍니다.<br>
       </p>
+      <?endif;?>
     </div>
     <?
+    if (!$current_user->is_admin()) :
     $i = 0;
-    foreach ($current_user->company as $user_company) {
+    foreach ($current_user->company as $user_company) :
     ?>
       <div class="company-input-part">
         <hr>
@@ -132,7 +138,7 @@ $major = implode(', ', $current_user->major);
       </div>
     <?
       $i++;
-    }
+      endforeach;
     ?>
     <a id="add-company" class="button-small pure-button">
       회사 추가
@@ -142,6 +148,7 @@ $major = implode(', ', $current_user->major);
       ※프리랜서로 활동한 기간동안 회사명은 프리랜서로 선택해 주시기 바랍니다.<br>
       ※현재 프리랜서로 활동 중이거나 취직한 경우, 마지막 종료일은 비워주시기 바랍니다.<br>
     </p>
+    <?endif;?>
     <fieldset>
       <div class="pure-controls">
         <a id="do-edit-user-info" class="pure-button pure-button-primary ajax_load"
