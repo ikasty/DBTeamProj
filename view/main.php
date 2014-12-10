@@ -6,8 +6,13 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 <div class="mainform">
 	<p>안녕하세요, <?=$current_user->user_name?>님!
 <? if ($current_user->is_admin()) : ?>
-	<? if (isset($current_eval)) : ?>
-	<?=$current_eval->getTime()?>회차 평가가 <?=($current_eval->isON() ? "진행중입니다" : "종료되었습니다")?>.
+	<? if ($current_eval->is_start()) : ?>
+	<?=$current_eval->get_period()?>회차 평가가 진행중입니다.
+		<? if ($current_eval->is_recruit()) : ?>
+		현재 참가자를 모집 중입니다.
+		<? elseif ($current_eval->is_evaling()) : ?>
+		현재 평가자들이 평가를 진행중입니다.
+		<? endif; ?>
 	<? else : ?>
 	진행중인 평가가 없습니다.
 	<? endif; ?>
@@ -21,8 +26,8 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 </div>
 </div></div>
 <?
-//if ($current_user->is_admin())
-//	include("main/admin-graph.php");
-//else
+if ($current_user->is_admin())
+	include("main/admin-graph.php");
+else
 	include("main/developer-graph.php");
 ?>

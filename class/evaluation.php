@@ -18,7 +18,8 @@ class evaluation{
 	private $evalDate;				// evaldate @평가하기
 	private $indicator;				// eval indicator @평가지표
 	private $point;					// eval point @평가지표
-	private $period;				// period 평가회차 @평가자 그룹, @피평가자 그룹
+	private $period = NULL;			// period 평가회차 @평가자 그룹, @피평가자 그룹
+	private $case = NULL;
 
 //	private $evalGroup;				// eval Group
 
@@ -30,6 +31,7 @@ class evaluation{
 
 	function get_period()
 	{
+		if ( $this->period !== NULL ) return $this->period;
 		$DB = getDB();
 
 		$query = "SELECT `평가회차` as period
@@ -43,6 +45,7 @@ class evaluation{
 
 	function current_state()
 	{
+		if ($this->case !== NULL) return $this->case;
 		$period = $this->get_period();
 
 		$DB = getDB();
@@ -53,19 +56,29 @@ class evaluation{
 
 		$result = $DB->getRow($query);
 
-		var_dump($period);
-		var_dump($result);
+//		var_dump($period);
+//		var_dump($result);
 
 		if(is_null($period)||is_null($result["reqdate"]))
-			$case = "start";
+			$this->case = "start";
 		else if(is_null($result["evalbegin"]))
-			$case = "recruiting";
+			$this->case = "recruiting";
 		else if(is_null($result["enddate"]))
-			$case = "evaling";
+			$this->case = "evaling";
 		else
-			$case = "end";
+			$this->case = "end";
 
-		return $case;
+		return $this->case;
+	}
+
+	function is_start() {
+		return $this->current_state() != "end";
+	}
+	function is_recruit() {
+		return $this->current_state() == "recruiting";
+	}
+	function is_evaling() {
+		return $this->current_state() == "evaling";
 	}
 
 
@@ -207,43 +220,43 @@ class evaluation{
 		$evaluator = $DB->getResult($query);
 		$count2 = count($evaluator); // 신청한 평가자 수
 		$number2=1; // 평가자 그룹 번호 
-		var_dump($count2,$evaluator);
-		var_dump("================");
+		// var_dump($count2,$evaluator);
+		// var_dump("================");
 
 		for($i=0 ; $i<$count2 ; $i++)
 		{
 			$query = $DB->MakeQuery("SELECT * FROM `평가자 선정` WHERE `평가회차`=%d AND `개발자id` = %s GROUP BY `개발자id`",$period,$evaluator[$i]["개발자id"]);
 			$check = $DB->getRow($query);
-			var_dump("check=",$check);
+//			var_dump("check=",$check);
 
 			var_dump($check["평가그룹"] != 0);
 			if($check["평가그룹"] != 0)
 			{
 				continue;
-				var_dump("평가그룹이 이미 지정되었으므로 continue");
+//				var_dump("평가그룹이 이미 지정되었으므로 continue");
 			} 
 
 			$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluator[$i]["개발자id"]);
 			$or_profile = $DB->getRow($query); //이전 개발자의 프로필 
-			var_dump("이전 개발자",$or_profile);
+//			var_dump("이전 개발자",$or_profile);
 
 			for($j=$i ; $j<$count2 ; $j++)
 			{
 				$query = $DB->MakeQuery("SELECT * FROM `개발자` WHERE id = %s",$evaluator[$j]["개발자id"]);
 				$curr_profile = $DB->getRow($query); //현재 개발자의 프로필
-				var_dump("현재 개발자",$curr_profile);
+//				var_dump("현재 개발자",$curr_profile);
 
-				var_dump("고향 결과 = ",($or_profile["고향"]==$curr_profile["고향"]),"대학교 결과 = ",($or_profile["대학교"]==$curr_profile["대학교"]));
+//				var_dump("고향 결과 = ",($or_profile["고향"]==$curr_profile["고향"]),"대학교 결과 = ",($or_profile["대학교"]==$curr_profile["대학교"]));
 				if( ($or_profile["고향"]==$curr_profile["고향"]) && ($or_profile["대학교"]==$curr_profile["대학교"]) ) // 현재 피평가자 가 이전 profile 과 일치하면 같은 그룹에 배치
 				{
 					$query = $DB->MakeQuery(
 					"UPDATE `평가자 선정` SET `평가그룹` = %d WHERE `개발자id` = %s",$number2,$evaluator[$j]["개발자id"] );
 					$DB->query($query);	
-					var_dump("업데이트 문 진입");
+//					var_dump("업데이트 문 진입");
 				}
 			}
 			$number2++;
-			var_dump("현재 그룹 번호 =",$number2);
+//			var_dump("현재 그룹 번호 =",$number2);
 		}
 	}
 
@@ -310,4 +323,6 @@ class evaluation{
 	}
 
 }
+
+$current_eval = new evaluation;
 ?>
