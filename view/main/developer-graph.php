@@ -2,7 +2,7 @@
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
 ///////////////////////////////
-$dummy_stat_data = array(
+/*$dummy_stat_data = array(
 	1 => array(
 		'count' => 1,
 		'date-start' => "2013-12-01",
@@ -27,7 +27,7 @@ $dummy_stat_data = array(
 		'date-end' => "2014-12-05",
 		'eval-average' => 87
 	)
-);
+);*/
 /*$dummy_work_data = array(
 	array(
 		'date-start' => "2014-03-01",
@@ -51,16 +51,34 @@ foreach ($current_user->company as $company) {
 	$dummy_work_data[] = array(
 		'date-start' => $company['start_day'],
 		'date-end' => $company['end_day'],
-		'company' => $company['name'],
-		'dept' => ""
+		'company' => $company['name']
+		// 'dept' => ""
 	);
 }
+
+//최근 평가 5차례간 나의 점수
+$db = getDB();
+$dummy_stat_data = $db->getResult(
+	"SELECT `평가회차` as `count`, avg(`평균점수`) as `eval-average`
+	FROM `평가점수`
+	WHERE `평가회차`=(
+		SELECT `평가회차`
+		FROM `평가일정`
+		ORDER BY `모집시작일`
+		LIMIT 5
+	) AND
+	`개발자id`='$current_user->user_id'
+	GROUP BY `평가회차`"
+);
+
+
+
 ///////////////////////////////
 
 ///////////////////////////////
 // stat data
 $data = $dummy_stat_data; // 실제 데이터 불러오는 코드 넣을 것
-$label = array_keys($data);
+$label = array_column($data, 'count');
 array_walk($label, create_function('&$value', ' $value .= "회차"; ')); // 1회차, 2회차, 3회차...
 
 $stat_all = array("labels" => $label, "datasets" => array(
@@ -98,7 +116,7 @@ foreach ($work_data as &$value) {
 				<span class="mega-octicon octicon-graph"></span> 내 평가 통계
 			</div>
 			<div style="margin:15px; display:inline-block;">
-				<p>최근 6회간 평균 평가점수</p>
+				<p>최근 평가 5회간 점수</p>
 				<canvas id="eval-stat-all" width="500" height="200"></canvas>
 			</div>
 		</div>
@@ -109,7 +127,7 @@ foreach ($work_data as &$value) {
 				<span class="mega-octicon octicon-briefcase"></span> 내 근무 이력
 			</div>
 			<div style="padding:20px;">
-				<table class="pure-table pure-table-horizontal" style="margin:0 auto;">
+				<table class="pure-table pure-table-horizontal" style="margin:0 auto; width:100%">
 				<thead>
 					<tr>
 						<th>회사명</th>
@@ -133,11 +151,16 @@ foreach ($work_data as &$value) {
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var eval_stat_all_ctx = $("#eval-stat-all").get(0).getContext("2d");
-			var eval_stat_all_data = <?=json_encode($stat_all)?>;
-			var eval_stat_all_chart = new Chart(eval_stat_all_ctx).Line(eval_stat_all_data, {
-				scaleBeginAtZero : false,
-				bezierCurve: false
+			var eval_stat_all_data = <?=json_encode($stat_all, JSON_NUMERIC_CHECK)?>;
+			var eval_stat_all_chart = new Chart(eval_stat_all_ctx).Bar(eval_stat_all_data, {
+				scaleBeginAtZero : true,
+				bezierCurve: false,
+				scaleOverride: true,
+				scaleSteps: 5,
+				scaleStepWidth: 20,
+				scaleStartValue: 0
 			});
+			console.log(eval_stat_all_data);
 		});
 	</script>
 </div>
