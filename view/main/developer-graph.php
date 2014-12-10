@@ -61,24 +61,26 @@ $db = getDB();
 $dummy_stat_data = $db->getResult(
 	"SELECT `평가회차` as `count`, avg(`평균점수`) as `eval-average`
 	FROM `평가점수`
-	WHERE `평가회차`=(
+	WHERE `평가회차` IN (
 		SELECT `평가회차`
 		FROM `평가일정`
 		ORDER BY `모집시작일`
-		LIMIT 5
 	) AND
 	`개발자id`='$current_user->user_id'
-	GROUP BY `평가회차`"
+	GROUP BY `평가회차`
+	LIMIT 5"
 );
-
-
 
 ///////////////////////////////
 
 ///////////////////////////////
 // stat data
 $data = $dummy_stat_data; // 실제 데이터 불러오는 코드 넣을 것
-$label = array_column($data, 'count');
+//$label = array_column($data, 'count');
+$label = array();
+foreach ($data as $value) {
+	$label[] = $value['count'];
+}
 array_walk($label, create_function('&$value', ' $value .= "회차"; ')); // 1회차, 2회차, 3회차...
 
 $stat_all = array("labels" => $label, "datasets" => array(
@@ -151,7 +153,7 @@ foreach ($work_data as &$value) {
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var eval_stat_all_ctx = $("#eval-stat-all").get(0).getContext("2d");
-			var eval_stat_all_data = <?=json_encode($stat_all, JSON_NUMERIC_CHECK)?>;
+			var eval_stat_all_data = <?=json_encode($stat_all)?>;
 			var eval_stat_all_chart = new Chart(eval_stat_all_ctx).Bar(eval_stat_all_data, {
 				scaleBeginAtZero : true,
 				bezierCurve: false,
