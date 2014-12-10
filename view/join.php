@@ -122,9 +122,11 @@ $company_list = $DB->getResult(
 		</p>
 		<fieldset>
 			<div class="pure-controls">
-				<a id="do-join" class="pure-button pure-button-primary ajax_load"
-					data-func="do_join">
+				<a id="do-join" class="pure-button pure-button-primary ajax_load" data-func="do_join">
 					회원 가입
+				</a>
+				<a class="pure-button pure-button-primary ajax_load" style="border:1px solid rgb(0, 120, 231);color:rgb(0, 120, 231);background:white" data-link="login">
+					취소
 				</a>
 			</div>
 		</fieldset>
