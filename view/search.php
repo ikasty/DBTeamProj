@@ -20,6 +20,11 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 					<span class="mega-octicon octicon-octoface"></span> 그룹 검색
 				</a>
 			</li>
+			<li class="menu-item">
+				<a class="ajax_load" data-link="search/evaluation" data-args="selector:#search-form">
+					<span class="mega-octicon octicon-checklist"></span> 평가 검색
+				</a>
+			</li>
 		</ul></div></div>
 	</div>
 	<div class="pure-u-1-1">
