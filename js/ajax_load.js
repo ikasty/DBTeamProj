@@ -91,8 +91,8 @@ function setajax() {
 				item.on("click", clickfunc);
 			});
 		};
-		$(this).off();
-		$(this).on("click", clickfunc);
+
+		$(this).off("click").on("click", clickfunc);
 	});
 }
 
