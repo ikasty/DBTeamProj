@@ -1,8 +1,6 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
-$current_eval->id = 1; // temp current eval
-
 $db = getDB();
 $query = $db->makeQuery(
 	"SELECT * FROM `평가자료` a WHERE `업로드시간` = (\n"
@@ -10,20 +8,20 @@ $query = $db->makeQuery(
 	. " AND a.`자료id` NOT IN (\n"
 		. $db->makeQuery(
 			"SELECT `자료id` FROM `피평가자 신청` c WHERE c.`평가회차` = %d AND c.`개발자id` = %s",
-			$current_eval->id, $current_user->developer_id)
+			$current_eval->get_period(), $current_user->developer_id)
 		. ")"
 	. " AND `개발자id`=%s", $current_user->developer_id);
 
-$data = $db->getResult($query);unset($current_eval);
+$data = $db->getResult($query);
 ?>
 <div class="mainform">
-	<? if ( isset($current_eval) && $current_eval->is_attendable() ) : ?>
-	<span class="octicon octicon-info"></span> <?=$current_eval->getTime()?>회 평가 신청을 받고 있습니다. 아래에서 신청해주세요!
+	<? if ( isset($current_eval) && $current_eval->is_recruit() ) : ?>
+	<span class="octicon octicon-info"></span> <?=$current_eval->get_period()?>회 평가 신청을 받고 있습니다. 아래에서 신청해주세요!
 	<? else: ?>
 	<span class="octicon octicon-alert"></span> 신청할 수 있는 평가가 없습니다. 다음 번에 신청해주세요!
 	<? endif; ?>
 </div>
-<? if ( isset($current_eval) && $current_eval->is_attendable() || true ) : ?>
+<? if ( isset($current_eval) && $current_eval->is_recruit() ) : ?>
 <div class="pure-g" style="text-align:center;">
 	<div class="eval-attend-box pure-u-2-5">
 		<div class="mainform get-eval">
@@ -84,7 +82,7 @@ $data = $db->getResult($query);unset($current_eval);
 
 				item.parent().children(".checker").html('<img src="/image/throbber_small.gif">');
 				item.addClass("pure-button-disabled");
-				console.log('hahaha');
+				
 				return true;
 			}
 		).on('finish', function (event, item, data) {console.log(data, item.parent().children(".checker"));
