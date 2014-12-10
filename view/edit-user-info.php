@@ -247,7 +247,7 @@ else
     } 
     else {
       view_change_start();
-      load_view('edit-user-info', function(data) {
+      load_view('main', function(data) {
         view_change_finish();
       }, {});
     }
