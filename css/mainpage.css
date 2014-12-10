@@ -1,2 +1,31 @@
-.graph-area .mainform { padding: 0; }
-.graph-area .mainform > .box-title { padding: 30px; text-align: center; }
+.main-area .mainform { padding: 0 0 10px; }
+.main-area .mainform > .box-title { padding: 30px; text-align: center; }
+.main-area .boxinfo {
+	width: 100px;
+	height: 100px;
+	margin: 5px auto;
+	font-size: 20px;
+	text-align: center;
+
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+.main-area .boxgroup {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+.main-area .boxinfo > span { margin: 0px auto; }
