@@ -13,18 +13,18 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 			<label for="company-major">전문분야</label>
 			<input id="company-major" type="text">
 		
-			<label>검색 결과 선택</label>
+			<legend>검색 결과 선택</legend>
 			<label for="company-name-view" class="pure-checkbox">
 				<input id="company-name-view" class="view-array" type="checkbox" value="회사이름" checked>
-				회사이름 보이기
+				회사이름
 			</label>
 			<label for="company-major-view" class="pure-checkbox">
 				<input id="company-major-view" class="view-array" type="checkbox" value="전문분야" checked>
-				전문분야 보이기
+				전문분야
 			</label>
 			<label for="company-eval-view" class="pure-checkbox">
 				<input id="company-eval-view" class="view-array" type="checkbox" value="평균점수" checked>
-				평균점수 보이기
+				평균점수
 			</label>
 
 			<label>정렬 방식</label>

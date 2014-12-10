@@ -10,20 +10,24 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
       <label for="do-eval-id">평가자 ID</label>
       <input id="do-eval-id" type="text">
     
-      <label for="get-evel-id">피평가자 ID</label>
-      <input id="get-evel-id" type="text">
+      <label for="get-eval-id">피평가자 ID</label>
+      <input id="get-eval-id" type="text">
 
-      <label for="get-evel-major">피평가자 전문 분야</label>
-      <input id="get-evel-major" type="text">
+      <label for="get-eval-major">피평가자 전문 분야</label>
+      <input id="get-eval-major" type="text">
 
-      <label for="evel-start-date">평가 시기</label>
-      <input id="evel-start-date" type="date">~
-      <input id="evel-end-date" type="date">
+      <label for="eval-start-date">평가 시기</label>
+      <input id="eval-start-date" type="date">~
+      <input id="eval-end-date" type="date">
 
-      <label for="evel-period">평가 회차</label>
-      <input id="evel-period" type="number">
+      <label for="eval-period">평가 회차</label>
+      <input id="eval-period" type="number">
     
       <label>검색 결과 선택</label>
+      <label for="material-id-view" class="pure-checkbox">
+        <input id="material-id-view" class="view-array" type="checkbox" value="자료 ID" checked>
+        평가 자료 ID 보이기
+      </label>
       <label for="do-eval-id-view" class="pure-checkbox">
         <input id="do-eval-id-view" class="view-array" type="checkbox" value="평가자 ID" checked>
         평가자 ID 보이기
@@ -36,7 +40,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
         <input id="get-eval-major-view" class="view-array" type="checkbox" value="피평가자 전문 분야" checked>
         피평가자 전문 분야 보이기
       </label>
-      <label for="evel-date-view" class="pure-checkbox">
+      <label for="eval-date-view" class="pure-checkbox">
         <input id="eval-date-view" class="view-array" type="checkbox" value="평가 시기" checked>
         평가 시기 보이기
       </label>
@@ -51,6 +55,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 
       <label>정렬 방식</label>
       <select id="sort-type">
+        <option>자료 ID</option>
         <option>평가자 ID</option>
         <option>피평가자 ID</option>
         <option>피평가자 전문 분야</option>
@@ -77,7 +82,7 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
     args["get-eval-id"] = $("#get-eval-id").val();
     args["get-eval-major"] = $("#get-eval-major").val();
     args["eval-start-date"] = $("#eval-start-date").val();
-    args["eval-end-date"] = $("#eval-end-id").val();
+    args["eval-end-date"] = $("#eval-end-date").val();
     args["eval-period"] = $("#eval-period").val();
     args["view"] = [];
     // args["view"] 에 체크된 체크박스 value 넣기
