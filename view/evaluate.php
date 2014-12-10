@@ -12,8 +12,8 @@ $query =
 $row = $db->getRow($query);
 $period = $row['평가회차'];
 
-$query = 
-	"SELECT `자료id` as `id`, `자료이름` as `name`, `자료정보` as `url`
+$query = "
+	SELECT `자료id` as `id`, `자료이름` as `name`, `자료정보` as `url`
 	FROM `평가자료`
 	WHERE `자료id` IN (
 		SELECT `자료id`
@@ -27,7 +27,12 @@ $query =
 				WHERE `개발자id`='$current_user->user_id'
 			)
 		)
+	) AND `자료id` NOT IN (
+		SELECT `자료id`
+		FROM `평가하기`
+		WHERE `평가회차` = $period AND `개발자id`='$current_user->user_id'
 	)";
+
 $material_list = $db->getResult($query);
 
 ?>
