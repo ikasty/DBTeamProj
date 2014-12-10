@@ -12,6 +12,7 @@ unset($_SESSION['id']);
 		<p><input type="text" name="login" value="" placeholder="Username"></p>
 		<p><input type="password" name="password" value="" placeholder="Password"></p>
 		<p class="submit">
+			<a data-link="join" class="pure-button ajax_load" style="color:#a7c7e6;border:1px solid #a7c7e6;background:white">Join</a>
 			<a data-func="do_login" class="pure-button submit ajax_load" type="button" name="commit">Login</a>
 		</p>
 	</form>

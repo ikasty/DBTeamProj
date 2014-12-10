@@ -137,7 +137,7 @@ $company_list = $DB->getResult(
 	<p>이 링크는 func/error-func.php를 수행한 뒤 결과를 받아옵니다.</p> -->
 
 	<script type="text/javascript">
-	var flagCheckUserIdDuple = false;
+	var flagCheckUserIdDuple = 0;
 	var newCompanyId = 1;
 
 	// $("input[name='company_start_day[]']:last").datepicker();
@@ -159,16 +159,16 @@ $company_list = $DB->getResult(
 		item.removeClass("pure-button-disabled");
 		
 		if (data.success == 'failed') {
-			flagCheckUserIdDuple = false;
+			flagCheckUserIdDuple = 0;
 		}
 		else {
-			flagCheckUserIdDuple = true;
+			flagCheckUserIdDuple = 1;
 		}
 		return true;
 	});
 
 	$("#id").on('change', function () {
-		flagCheckUserIdDuple = false;
+		flagCheckUserIdDuple = 0;
 	});
 
 	$(".delete-button").on('click', function () {
@@ -228,6 +228,15 @@ $company_list = $DB->getResult(
 		//버튼 클래스 변경
 		$('#check-user-id-duple').removeClass("pure-button-disabled");
 		item.removeClass("pure-button-disabled");
+
+		if (data.success == 'failed') {
+		} 
+		else {
+			view_change_start();
+			load_view('login', function(data) {
+				view_change_finish();
+			}, {});
+		}
 
 		return true;
 	});

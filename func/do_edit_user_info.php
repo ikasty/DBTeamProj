@@ -13,13 +13,13 @@ $pw = $DB->getColumn(
 $pw = $pw[0];
 if ( $ARGS['user_cur_pw'] != $pw ) {
   addMessage("현재 비밀번호가 불일치합니다.");
-  $result['success'] = 'failed';
+  $return['success'] = 'failed';
   $validate = false;
 }
 
 if ( $ARGS['user_pw'] != $ARGS['user_pw_check'] ) {
   addMessage("비밀번호와 비밀번호 확인이 불일치합니다.");
-  $result['success'] = 'failed';
+  $return['success'] = 'failed';
   $validate = false;
 }
 
@@ -70,10 +70,6 @@ if ($validate) {
       }
     }
 
-    $DB->query(
-      "DELETE FROM `전문분야`
-      WHERE `id`='{$ARGS['user_id']}'"
-    );
     foreach($major_list as $major) {
       $query = $DB->MakeQuery("INSERT INTO `전문분야`(`id`, `전문분야`) VALUES(%s, %s)", 
         $ARGS['user_id'],
@@ -98,6 +94,8 @@ if ($validate) {
       $DB->query($query);
     }
   }
+
+  $_SESSION["id"] = serialize(User::getUser($ARGS['user_id']));
   $return['success'] = 'successed';
 }
 ?>

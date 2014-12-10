@@ -241,9 +241,16 @@ else
   }).on('finish', function (event, item, data) {
     // 버튼 클래스 변경
     item.removeClass("pure-button-disabled");
-
-    // 페이지 새로고침
-    // current_user를 업데이트 해야함
+    
+    // 페이지 리로드
+    if (data.success == 'failed') {
+    } 
+    else {
+      view_change_start();
+      load_view('edit-user-info', function(data) {
+        view_change_finish();
+      }, {});
+    }
     return true;
   });
   </script>
