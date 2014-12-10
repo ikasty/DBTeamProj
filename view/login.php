@@ -41,20 +41,19 @@ unset($_SESSION['id']);
 		}
 	// 클릭 이벤트 종료시 (= 서버에서 데이터를 정상적으로 받아온 경우)
 	).on('finish', function (event, item, data) {
-			// item == 클릭한 버튼 객체, data == 서버에서 받아온 데이터
-			if (data.success == 'failed') {
-				$(item).parents(".login").parent().effect("shake", {distance: 4, times: 7, duration: 30});
-				$('.login input[type=password]').val('');
-			} else {
-				view_change_start();
-				load_view('main', function(data) {
-					view_change_finish();
-					menu_init();
-				}, {menu_reload:'true'});
-			}
-			return true;
+		// item == 클릭한 버튼 객체, data == 서버에서 받아온 데이터
+		if (data.success == 'failed') {
+			$(item).parents(".login").parent().effect("shake", {distance: 4, times: 7, duration: 30});
+			$('.login input[type=password]').val('');
+		} else {
+			view_change_start();
+			load_view('main', function(data) {
+				view_change_finish();
+				menu_init();
+			}, {menu_reload:'true'});
 		}
-	);
+		return true;
+	});
 	</script>
 </div>
 </div>
