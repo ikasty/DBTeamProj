@@ -10,12 +10,7 @@ define("AUTO_LOGOUT_TIME", 900);
 
 //////////////////////////////////////////////////////
 // DB Settings
-$db_setting = array(
-	"db_name"	=> "dbproj",
-	"db_host"	=> "localhost",
-	"db_id"		=> "dbproj",
-	"db_pw"		=> "dbproj"
-);
+include('dbconnect.php');
 
 //////////////////////////////////////////////////////
 // include classes
