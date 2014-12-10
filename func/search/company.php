@@ -8,15 +8,22 @@ $db = getDB();
 // query문
 // SELECT 회사이름, 평균점수, 전문분야 FROM 회사성적 RIGHT JOIN 회사전문분야 ON 회사성적.회사이름 = 회사전문분야.회사이름
 
+$header = array();
 $query = "SELECT ";
 
 $query_select = array();
-if (in_array("회사이름", $ARGS["view"]))
+if (in_array("회사이름", $ARGS["view"])) {
 	$query_select[] = "회사성적.회사이름 AS 회사이름";
-if (in_array("전문분야", $ARGS["view"]))
+	$header[] = "회사이름";
+}
+if (in_array("전문분야", $ARGS["view"])) {
 	$query_select[] = "전문분야";
-if (in_array("평균점수", $ARGS["view"]))
+	$header[] = "전문분야";
+}
+if (in_array("평균점수", $ARGS["view"])) {
 	$query_select[] = "평균점수";
+	$header[] = "평균점수";
+}
 
 $query .= implode(',', $query_select);
 
@@ -46,7 +53,7 @@ ob_start();
 <table class="pure-table pure-table-horizontal">
 <thead>
 	<tr>
-	<? foreach ($ARGS["view"] as $name) : ?>
+	<? foreach ($header as $name) : ?>
 		<th><?=$name?></th>
 	<? endforeach; ?>
 	</tr>

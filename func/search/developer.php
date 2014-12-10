@@ -12,23 +12,38 @@ $db = getDB();
 // LEFT JOIN 근무 ON 근무.개발자id=개발자.id
 // LEFT JOIN 최신전문분야 ON 최신전문분야.개발자id=개발자.id
 
+$header = array();
 $query = "SELECT ";
 
 $query_select = array();
-if (in_array("개발자 id", $ARGS["view"]))
+if (in_array("개발자 id", $ARGS["view"])) {
 	$query_select[] = "개발자.id AS 개발자id";
-if (in_array("개발자 이름", $ARGS["view"]))
+	$header[] = "개발자 id";
+}
+if (in_array("개발자 이름", $ARGS["view"])) {
 	$query_select[] = "유저.이름 AS 개발자이름";
-if (in_array("회사이름", $ARGS["view"]))
+	$header[] = "개발자 이름";
+}
+if (in_array("회사이름", $ARGS["view"])) {
 	$query_select[] = "근무.회사이름 AS 회사이름";
-if (in_array("평균점수", $ARGS["view"]))
+	$header[] = "회사이름";
+}
+if (in_array("평균점수", $ARGS["view"])) {
 	$query_select[] = "IF(AVG(평가점수.평균점수) IS NULL, '0.0', AVG(평가점수.평균점수)) AS 평균점수";
-if (in_array("입사일", $ARGS["view"]))
+	$header[] = "평균점수";
+}
+if (in_array("입사일", $ARGS["view"])) {
 	$query_select[] = "근무.입사일 AS 입사일";
-if (in_array("퇴사일", $ARGS["view"]))
+	$header[] = "입사일";
+}
+if (in_array("퇴사일", $ARGS["view"])) {
 	$query_select[] = "IF( (근무.퇴사일 IS NULL), '근무중', 근무.퇴사일 ) AS 퇴사일";
-if (in_array("전문분야", $ARGS["view"]))
+	$header[] = "퇴사일";
+}
+if (in_array("전문분야", $ARGS["view"])) {
 	$query_select[] = "최신전문분야.전문분야 AS 전문분야";
+	$header[] = "전문분야";
+}
 
 $query .= implode(',', $query_select);
 
@@ -52,10 +67,12 @@ if ($ARGS["developer-major"] !== "" && in_array("전문분야", $ARGS["view"]))
 $start_date	= $ARGS["change-start"] === "" 	? "'0000-00-00'" : "'" . $ARGS["change-start"] . "'";
 $end_date 	= $ARGS["change-end"] === "" 	? "NOW()" : "'" . $ARGS["change-end"] . "'";
 
+$date_where = array();
 if (in_array("입사일", $ARGS["view"]))
-	$where_clause[] = "(근무.입사일 BETWEEN " . $start_date . " AND " . $end_date . ")";
+	$date_where[] = "(근무.입사일 BETWEEN " . $start_date . " AND " . $end_date . ")";
 if (in_array("퇴사일", $ARGS["view"]))
-	$where_clause[] = "( IF(근무.퇴사일 IS NULL, NOW(), 근무.퇴사일) BETWEEN " . $start_date . " AND " . $end_date . ")";
+	$date_where[] = "( IF(근무.퇴사일 IS NULL, NOW(), 근무.퇴사일) BETWEEN " . $start_date . " AND " . $end_date . ")";
+$where_clause[] = implode(' OR ', $date_where);
 
 if (sizeof($where_clause) != 0) {
 	$query .= " WHERE ";
@@ -81,7 +98,7 @@ ob_start();
 <table class="pure-table pure-table-horizontal">
 <thead>
 	<tr>
-	<? foreach ($ARGS["view"] as $name) : ?>
+	<? foreach ($header as $name) : ?>
 		<th><?=$name?></th>
 	<? endforeach; ?>
 	</tr>
