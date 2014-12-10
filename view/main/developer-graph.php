@@ -153,7 +153,7 @@ foreach ($work_data as &$value) {
 	<script type="text/javascript">
 		$(document).ready(function(){
 			var eval_stat_all_ctx = $("#eval-stat-all").get(0).getContext("2d");
-			var eval_stat_all_data = <?=json_encode($stat_all, JSON_NUMERIC_CHECK)?>;
+			var eval_stat_all_data = <?=json_encode($stat_all)?>;
 			var eval_stat_all_chart = new Chart(eval_stat_all_ctx).Bar(eval_stat_all_data, {
 				scaleBeginAtZero : true,
 				bezierCurve: false,
