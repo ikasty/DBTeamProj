@@ -91,7 +91,7 @@ foreach ($work_data as &$value) {
 }
 
 ?>
-<div class="pure-g graph-area">
+<div class="pure-g main-area">
 	<div class="pure-u-3-5">
 		<div class="mainform">
 			<div class="box-title" style="background: #519251;">
