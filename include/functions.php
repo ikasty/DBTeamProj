@@ -10,11 +10,11 @@ function makeLink($class, $text, $link = array(), $attr = '') {
 }
 
 function printMenuHeader() {
-	global $menu_item;
+	global $menu_item, $current_user;
 
 	$current_menu_type[] = 'all';
 	if (!isset($_SESSION['id'])) return ;
-	else $current_menu_type[] = 'user';
+	$current_menu_type[] = $current_user->usertype();
 
 	$i = 0;
 	foreach($menu_item as $menu) :
@@ -28,11 +28,11 @@ function printMenuHeader() {
 }
 
 function printMenuContents() {
-	global $menu_item;
+	global $menu_item, $current_user;
 
 	$current_menu_type[] = 'all';
 	if (!isset($_SESSION['id'])) return ;
-	else $current_menu_type[] = 'user';
+	$current_menu_type[] = $current_user->usertype();
 ?>
 	<a class="bt-menu-trigger"><span>Menu</span></a>
 	<ul>
