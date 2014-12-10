@@ -16,8 +16,8 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 				</a>
 			</li>
 			<li class="menu-item">
-				<a class="ajax_load" data-link="search/test" data-args="selector:#search-form">
-					
+				<a class="ajax_load" data-link="search/group" data-args="selector:#search-form">
+					<span class="mega-octicon octicon-octoface"></span> 그룹 검색
 				</a>
 			</li>
 		</ul></div></div>
