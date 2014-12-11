@@ -35,12 +35,12 @@ $query .= implode(',',$query_select);
 
 $query .= " FROM `피평가자 그룹` RIGHT JOIN `평가자 선정` ON `피평가자 그룹`.평가자그룹 = `평가자 선정`.평가그룹 RIGHT JOIN `피평가자 신청` ON `피평가자 그룹`.그룹id = `피평가자 신청`.평가그룹";
 
+//var_dump($query, "<-- FROM 까지, --> WHERE절");
 // where절
 $where_clause = array();
-if ($ARGS["period"] !== "") {
-	$where_clause[] = "평가회차id = " . $ARGS["period"];
-	$where_clause[] .= "`피평가자 신청`.평가회차 = " . $ARGS["period"];
-	$where_clause[] .= "`평가자 선정`.평가회차 =" . $ARGS["period"];
+$where_clause[] = "평가회차id = `피평가자 신청`.평가회차 AND 평가회차id = `평가자 선정`.평가회차";
+if ($ARGS["period"] !== "" && in_array("평가회차", $ARGS["view"])) {
+	$where_clause[] = "평가회차id = ".$ARGS["period"];
 }
 if (sizeof($where_clause) != 0) {
 	$query .= " WHERE ";
@@ -53,6 +53,7 @@ if ($ARGS["asc-desc"] === 'true')
 	$query .= " DESC";
 
 $result = $db->getResult($query);
+
 
 $return["success"] = "success";
 ob_start();
