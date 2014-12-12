@@ -72,7 +72,7 @@ if (in_array("입사일", $ARGS["view"]))
 	$date_where[] = "(근무.입사일 BETWEEN " . $start_date . " AND " . $end_date . ")";
 if (in_array("퇴사일", $ARGS["view"]))
 	$date_where[] = "( IF(근무.퇴사일 IS NULL, NOW(), 근무.퇴사일) BETWEEN " . $start_date . " AND " . $end_date . ")";
-$where_clause[] = implode(' OR ', $date_where);
+$where_clause[] = "(" . implode(' OR ', $date_where) . ")";
 
 if (sizeof($where_clause) != 0) {
 	$query .= " WHERE ";
