@@ -1,5 +1,14 @@
 <?
 if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
+
+$db = getDB();
+$query = $db->makeQuery(
+	"SELECT * FROM `평가자료` a WHERE `업로드시간` = (\n"
+    	. "SELECT MAX(`업로드시간`) FROM `평가자료` b WHERE a.`자료id` = b.`자료id` GROUP BY b.`자료id`)"
+	. " AND `개발자id`=%s", $current_user->developer_id);
+
+$data = $db->getResult($query);
+
 ?>
 
 <div class="pure-g">
@@ -29,6 +38,16 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 			</div>
 		</div>
 	</div>
+	<div class="pure-u-1-3">
+		<div class="mainform">
+			<h4>자료 수정</h4>
+			<form class="pure-form">
+			<?foreach ($data as $value) :?>
+				<label class="pure-checkbox"><input type="checkbox" class="upload-edit" value="<?=$value['자료id']?>"> <?=$value['자료이름']?></label>
+			<?endforeach;?>
+			</form>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 	$("#upload").each(function() {
@@ -40,6 +59,8 @@ if (!defined("DBPROJ")) header('Location: /', TRUE, 303);
 			args.url = $('.upload input[name=URL]').val();
 			args.filetype = $('.upload input[name=FileType]').val();
 			args.contribution = $('.upload input[name=Contribution]').val();
+			change = $('.upload-edit:checked');
+			if (typeof change !== "undefined") args.changeid = change.val();
 			return true;
 		}
 		).on('finish', function (event, item, data) {
